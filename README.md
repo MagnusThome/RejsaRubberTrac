@@ -7,6 +7,8 @@ A distance sensor is also included for tracking/logging suspension movements.
 
 All data is available over bluetooth BLE.
 
+Current code is for Adafruit's Bluefruit nRF52832 board. 
+
 ...
 
 Work in progress...
