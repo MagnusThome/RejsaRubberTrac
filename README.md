@@ -22,9 +22,8 @@ Just an example where to find it: https://www.electrokit.com/produkt/adafruit-fe
 
 The board can be run on 5 volts or a rechargable Lipo battery.
 
-...
 
-This is work in progress.
+# Work in progress...
 
 The temperature part is rock stable and the bluetooth BLE seem to be running very very nicely but the distance sensor drops out from the I2C bus sometimes. Some code to get it more stable and/or soft reset it so it restarts properly is missing.
 
