@@ -17,3 +17,6 @@ Work in progress...
 
 The code for the IR temperature array sensor MLX90621 is 100% untouched from longjos https://github.com/longjos/MLX90621_Arduino_Camera which in turn is an adaption from robinvanemden https://github.com/robinvanemden/MLX90621_Arduino_Processing
 
+...
+
+![Display](partsizes.jpg)
