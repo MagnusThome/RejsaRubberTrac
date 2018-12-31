@@ -24,7 +24,7 @@ The board is powered by a built in rechargable Lipo battery, a USB micro connect
 
 # Work in progress...
 
-The temperature part is rock stable and the bluetooth BLE seem to be running very very nicely. But the distance sensor drops out from the I2C bus sometimes. Some code to get it more stable and/or soft reset it so it restarts properly is missing.
+The temperature part is rock stable and the Bluetooth Low Energy BLE seems to be running very very nicely. But the distance sensor drops out from the I2C bus sometimes. Some code to get it more stable and/or soft reset it so it restarts properly is missing.
 
 A small enclosure to 3D-print must be designed. This will include a design that protects the sensors and a snap-in holder so the whole enclosure can easily be removed and put back on the car. If printed in nylon/carbon fiber it will be very light and strong to endure the harsh environment in the wheel well.
 
