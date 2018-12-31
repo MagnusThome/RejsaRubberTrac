@@ -20,12 +20,17 @@ Just an example where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=VL53L0X
  - Processor/Bluetooth board Adafruit BlueFruit nRF52  
 Just an example where to find it: https://www.electrokit.com/produkt/adafruit-feather-nrf52-bluefruit-le-nrf52832/ 
 
-The board can be run on 5 volts or a rechargable Lipo battery.
-
+The board is powered by a built in rechargable Lipo battery, a USB micro connector or 12 volts.
 
 # Work in progress...
 
-The temperature part is rock stable and the bluetooth BLE seem to be running very very nicely but the distance sensor drops out from the I2C bus sometimes. Some code to get it more stable and/or soft reset it so it restarts properly is missing.
+The temperature part is rock stable and the bluetooth BLE seem to be running very very nicely. But the distance sensor drops out from the I2C bus sometimes. Some code to get it more stable and/or soft reset it so it restarts properly is missing.
+
+A small enclosure to 3D-print must be designed. This will include a design that protects the sensors and a snap-in holder so the whole enclosure can easily be removed and put back on the car. If printed in nylon/carbon fiber it will be very light and strong to endure the harsh environment in the wheel well.
+
+The two major track loggers for mobile phones www.gps-laptimer.de and www.racechrono.com already have units and have both done initial tests for integrating support for it.
+
+Discussion thread (in Swedish but feel absolutely free to write in english!) https://rejsa.nu/forum/viewtopic.php?t=113976
 
 # Credits
 
