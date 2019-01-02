@@ -22,6 +22,12 @@ Just an example where to find it: https://www.electrokit.com/produkt/adafruit-fe
 
 The board is powered by a built in rechargable Lipo battery, a USB micro connector or 12 volts.
 
+# Connecting
+
+Four wires in a bus configuration connects the two sensors and the cpu board.
+
+![Display](connecting.png)
+
 # Work in progress...
 
 The temperature part is rock stable and the Bluetooth Low Energy BLE seems to be running very very nicely. But the distance sensor drops out from the I2C bus sometimes. Some code to get it more stable and/or soft reset it so it restarts properly is missing.
