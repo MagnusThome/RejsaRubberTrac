@@ -26,7 +26,7 @@ The board is powered by a built in rechargable Lipo battery, a USB micro connect
 
 Four wires in a bus configuration connects the two sensors and the cpu board.
 
-![Display](connecting.png)
+![Display](connecting.gif)
 
 # Work in progress...
 
