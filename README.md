@@ -38,6 +38,10 @@ Four wires in a bus configuration connects the two sensors and the cpu board.
 ![Display](images/connecting.gif)
 ![Display](images/connect-drawing.jpg)
 
+# Arduino
+
+Basic info to add the Adafruit Bluefruit nRF52 board to the Arduino IDE: https://learn.adafruit.com/bluefruit-nrf52-feather-learning-guide/arduino-bsp-setup
+
 # Work in progress...
 <img align="right" width="231" src="images/harrys_early_preview.jpg">
 The temperature part is rock stable and Bluetooth BLE seems to be running very nicely. But the distance sensor drops out from the I2C bus sometimes. Some code to get it more stable and/or soft reset it so it restarts properly is missing.
