@@ -11,8 +11,7 @@ All data is available over bluetooth BLE.
 Current code is for Adafruit's Bluefruit nRF52832 board. 
 
 # Parts
-<img align="right" width="231" src="partsizes.jpg">
- - Temperature IR-arraysensor MLX90621 GY-906LLC-BAB (120 degrees field of view, more narrow existst too)  
+<img align="right" width="231" src="partsizes.jpg"> - Temperature IR-arraysensor MLX90621 GY-906LLC-BAB (120 degrees field of view, more narrow existst too)  
 Example of where to find it: https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module 
 
  - Laser distance sensor VLX53L0X  
