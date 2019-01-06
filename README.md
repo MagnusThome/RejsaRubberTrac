@@ -29,7 +29,7 @@ Example where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=3.7V+lipo+JST-P
 
 # Power supply
 
-The CPU board and the two sensor boards are all powered by connecting power to the CPU board's USB micro connector. The CPU board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery. A 12 volt to 5 volt DC-DC step down converter can be added to run the system on the car's 12V.
+The CPU board and the two sensor boards are all powered by connecting power to the CPU board's USB micro connector. The CPU board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery. The system can also be run directly from the car's power, not using any Lipo battery, but then a 12 volt to USB 5 volt converter must be added.
 
 # Connecting the three boards
 
