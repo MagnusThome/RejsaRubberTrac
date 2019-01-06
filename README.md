@@ -1,12 +1,14 @@
 # RejsaRubberTrac
 
-A CPU board with a bluetooth BLE transmitter + IR multi point temperature sensor + laser based distance sensor
+A CPU board with a bluetooth BLE transmitter + IR multi point temperature sensor + laser based distance sensor.
 
-Intended to track/view/logg tire temperatures on race- or trackday cars. The temperature is measured at sixteen different points over each tire's full width.
+_Intended to track/view/logg tire temperatures on race- or trackday cars._
+
+Temperatures are measured at sixteen different points over each tire's full width.
 
 A distance sensor is also included for tracking/logging suspension movements.
 
-All data is available over bluetooth BLE.
+All data is available over Bluetooth Low Energy BLE.
 
 Current code is for Adafruit's Bluefruit nRF52832 board. 
 
