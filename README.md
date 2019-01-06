@@ -1,7 +1,7 @@
 # RejsaRubberTrac
 An IR multi point temperature sensor + laser based distance sensor + CPU board with a bluetooth BLE transmitter
 
-Intended to track/view/logg tire temperatures on race- or trackday cars. The temperature is measured at sixteen different points over the full tire width.
+Intended to track/view/logg tire temperatures on race- or trackday cars. The temperature is measured at sixteen different points over each tire's full width.
 
 A distance sensor is also included for tracking/logging suspension movements.
 
