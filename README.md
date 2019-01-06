@@ -10,16 +10,16 @@ All data is available over bluetooth BLE.
 
 Current code is for Adafruit's Bluefruit nRF52832 board. 
 
-# Parts<img align="right" width="231" src="partsizes.jpg">
-
+# Parts
+<img align="right" width="231" src="partsizes.jpg">
  - Temperature IR-arraysensor MLX90621 GY-906LLC-BAB (120 degrees field of view, more narrow existst too)  
 Example of where to find it: https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module 
 
  - Laser distance sensor VLX53L0X  
-Example where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=VL53L0X&_sop=15  
+Example of where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=VL53L0X&_sop=15  
 
  - CPU and Bluetooth board Adafruit BlueFruit nRF52  
-Example where to find it: https://www.electrokit.com/produkt/adafruit-feather-nrf52-bluefruit-le-nrf52832/ 
+Example of where to find it: https://www.electrokit.com/produkt/adafruit-feather-nrf52-bluefruit-le-nrf52832/ 
 
  - Rechargable 3,7V Lipo battery 250mAh or larger with JST-PH 2.0mm connector (Optional)
 Example where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=3.7V+lipo+JST-PH+2.0&_sop=15 
