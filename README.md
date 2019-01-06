@@ -46,6 +46,7 @@ Basic info to add the Adafruit Bluefruit nRF52 board to the Arduino IDE: https:/
 <img align="right" width="231" src="images/harrys_early_preview.jpg">
 The temperature part is rock stable and Bluetooth BLE seems to be running very nicely. But the distance sensor drops out from the I2C bus sometimes. Some code to get it more stable and/or soft reset it so it restarts properly is missing.
 
+
 A small enclosure to 3D-print must be designed. This will include a design that protects the sensors and a snap-in holder so the whole enclosure can easily be removed and put back on the car. If printed in nylon/carbon fiber it will be very light and strong to endure the harsh environment in the wheel well.
 
 The main remaining hurdle is protecting the temperature and distance sensors from dirt and to make it easy to clean off when needed.
