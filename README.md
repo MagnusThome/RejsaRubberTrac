@@ -24,8 +24,8 @@ Example of where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=VL53L0X&_sop
  - CPU and Bluetooth board Adafruit BlueFruit nRF52  
 Example of where to find it: https://www.electrokit.com/produkt/adafruit-feather-nrf52-bluefruit-le-nrf52832/ 
 
- - Rechargable 3,7V Lipo battery 250mAh or larger with JST-PH 2.0mm connector (Optional)
-Example where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=3.7V+lipo+JST-PH+2.0&_sop=15 
+ - Optional: Rechargable 3,7V Lipo battery 250mAh or larger with JST-PH 2.0mm connector
+ Example where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=3.7V+lipo+JST-PH+2.0&_sop=15 
 
 # Power supply
 
