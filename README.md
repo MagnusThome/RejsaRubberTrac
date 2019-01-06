@@ -15,14 +15,17 @@ Current code is for Adafruit's Bluefruit nRF52832 board.
 Example of where to find it: https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module 
 
  - Laser distance sensor VLX53L0X  
-Example where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=VL53L0X 
+Example where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=VL53L0X&_sop=15  
 
  - CPU and Bluetooth board Adafruit BlueFruit nRF52  
 Example where to find it: https://www.electrokit.com/produkt/adafruit-feather-nrf52-bluefruit-le-nrf52832/ 
 
+ - Rechargable 3,7V Lipo battery 250mAh or larger with JST-PH 2.0mm connector (Optional)
+Example where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=3.7V+lipo+JST-PH+2.0&_sop=15 
+
 # Power
 
-The CPU board and the two sensor boards are all powered from the CPU board's USB micro connector. The CPU board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery. A 12 volt to 5 volt DC-DC step down converter can be added to run the system on the cars 12V.
+The CPU board and the two sensor boards are all powered by connecting power to the CPU board's USB micro connector. The CPU board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery. A 12 volt to 5 volt DC-DC step down converter can be added to run the system on the car's 12V.
 
 # Connecting the three boards
 
@@ -38,12 +41,12 @@ A small enclosure to 3D-print must be designed. This will include a design that 
 
 The main remaining hurdle is protecting the temperature and distance sensors from dirt and to make it easy to clean off when needed.
 
-![Display](harrys_early_preview.jpg)
-Picture: early preview from Harry's Laptimer
+<img align="right" width="200" src="harrys_early_preview.jpg">
+The two major track loggers for mobile phones www.gps-laptimer.de and www.racechrono.com already have units and have both done initial tests for integrating support for it. Picture from early preview of Harry's Laptimer.
 
-The two major track loggers for mobile phones www.gps-laptimer.de and www.racechrono.com already have units and have both done initial tests for integrating support for it.
+# Questions and more info
 
-Discussion thread (in Swedish but feel absolutely free to write in english!) https://rejsa.nu/forum/viewtopic.php?t=113976
+The main discussion thread (in Swedish but feel absolutely free to write in english!) https://rejsa.nu/forum/viewtopic.php?t=113976
 
 
 # Credits
