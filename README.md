@@ -2,7 +2,7 @@
 
 A CPU board with a bluetooth BLE transmitter + IR multi point temperature sensor + laser based distance sensor.
 
-_Intended to track/view/logg tire temperatures on race- or trackday cars._
+*__Intended to track/view/logg tire temperatures on race- or trackday cars.__*
 
 Temperatures are measured at sixteen different points over each tire's full width.
 
