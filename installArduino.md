@@ -37,9 +37,9 @@ Connect the Adafruit Bluefruit board to your computer's USB and choose the corre
 
 <img hspace="50" src="images/installArduinoIDE-6.gif">
 
-- Place all the downloaded src files in a directory called "main"
+Place all the downloaded src files in a directory called "main"
 
-- Open the main.ino file and choose "Upload"
+Open the main.ino file and choose "Upload"
 
 <img hspace="50" src="images/installArduinoIDE-7.gif">
 
