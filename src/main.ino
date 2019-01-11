@@ -5,10 +5,27 @@
 #include "ble_gatt.h"
 #include "adc_vbat.h"
 
-uint16_t distData[1];
-uint8_t tempData[16];
-uint16_t battData[2];
+#define PROTOCOL 0x01
 
+
+typedef struct {
+  uint8_t  protocol;         // currently: 0x01
+  uint8_t  unused;
+  uint16_t distance;         // millimeters
+  int16_t  temps[8];         // all even numbered temp spots (degrees Celsius x 10)
+} one_t;
+
+
+typedef struct {
+  uint8_t  protocol;         // currently: 0x01
+  uint8_t  charge;           // percent: 0-100
+  uint16_t voltage;          // millivolts (normally circa 3500-4200)
+  int16_t  temps[8];         // all uneven numbered temp spots (degrees Celsius x 10)
+} two_t;
+
+
+one_t datapackOne;
+two_t datapackTwo;
 
 Adafruit_VL53L0X distSensor = Adafruit_VL53L0X();
 MLX90621 tempSensor; 
@@ -16,8 +33,8 @@ MLX90621 tempSensor;
 
 // Function declarations
 void printStatus(void);
+void blinkOnTempChange(int16_t);
 void blinkOnDistChange(uint16_t);
-void blinkOnTempChange(uint8_t);
   
 
 // ----------------------------------------
@@ -28,15 +45,19 @@ void setup(){
   Bluefruit.autoConnLed(false);
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
+
+  datapackOne.protocol = PROTOCOL;
+  datapackTwo.protocol = PROTOCOL;
   
   Serial.println("Init distance sensor");
-  if (distSensor.begin(VL53L0X_I2C_ADDR, false));
+  if (distSensor.begin(VL53L0X_I2C_ADDR, false));     // Sometimes the sensor hangs here. Current fix is power cycling. Needs some more work.
+  
   Serial.println("Init temp sensor");
   tempSensor.initialise(2);
 
   Serial.println("Starting bluetooth");
   Bluefruit.begin();
-  Bluefruit.setName("RejsaRubberTracker"); 
+  Bluefruit.setName("RejsaRubberTrac"); 
   setupMainService();
   startAdvertising(); 
   Serial.println("Running");
@@ -48,57 +69,49 @@ void setup(){
 void loop() {  
   
 
-  delay(60);  // MAIN LOOP TIMING
-  unsigned long now = millis();
-
-
   // - - D I S T A N C E - -
   VL53L0X_RangingMeasurementData_t measure;
   if (distSensor.rangingTest(&measure, false) != VL53L0X_ERROR_NONE) {
-    distSensor.begin();   // Restart sensor on error
-    distData[0] = 0;
+//    distSensor.begin();                             // Restart sensor on error. Works for some errors but not all. Needs more work.
+    datapackOne.distance = 0;
   }
   else {
-    distData[0] = measure.RangeMilliMeter;
+    datapackOne.distance = measure.RangeMilliMeter;
     if (measure.RangeStatus == 4) {
-      distData[0] = 0;
+      datapackOne.distance = 0;
     }
   }
-  if ( Bluefruit.connected() ) {
-    distCharacteristics.notify(distData, sizeof(distData));
-  }
-  blinkOnDistChange(distData[0]/10);   // nn/10 -> Ignore smaller changes, noise would be enough to trigger blinking all the time
   
-
   
   // - - T E M P S - -
-  static unsigned long tTimer = 500;  // 2Hz
-  if (now - tTimer >= 500) {
-    tTimer = now;
-    tempSensor.measure(true); 
-    for(uint8_t i=0;i<16;i++){
-      tempData[i] = (uint8_t) ((tempSensor.getTemperature(i*4+1)+tempSensor.getTemperature(i*4+2))/2);  // Mean value of the two middle rows of the four rows total (the first and last rows are ignored)
-    }
-    if ( Bluefruit.connected() ) {
-      tempCharacteristics.notify(tempData, sizeof(tempData));
-    }
-    blinkOnTempChange(tempData[8]); // Use one single temp in the middle of the array
+  tempSensor.measure(true); 
+  for(uint8_t i=0;i<8;i++){
+    datapackOne.temps[i] = (int16_t) ((tempSensor.getTemperature(i*8+1)+tempSensor.getTemperature(i*8+2))*5);  // Mean value of the two middle rows of the *four* (4x16) rows total (the first and last rows are ignored)
+    datapackTwo.temps[i] = (int16_t) ((tempSensor.getTemperature(i*8+5)+tempSensor.getTemperature(i*8+6))*5);  
   }
-
 
 
   // - - B A T T E R Y - -
-  static unsigned long bTimer = 600000; // 10 minutes
-  if (now - bTimer >= 1000) {
-    bTimer = now;
-    battData[0] = getVbat();
-    battData[1] = lipoPercent(battData[0]);
-    if ( Bluefruit.connected() ) {
-      battCharacteristics.notify(battData, sizeof(battData));
-    }
+  unsigned long now = millis();
+  static unsigned long timer = 60000;  // check every 60 seconds
+  if (now - timer >= 60000) {
+    timer = now;
+    datapackTwo.voltage = getVbat();
+    datapackTwo.charge = lipoPercent(datapackTwo.voltage);
   }
 
+  
+  if ( Bluefruit.connected() ) {
+    GATTone.notify(&datapackOne, sizeof(datapackOne));
+    GATTtwo.notify(&datapackTwo, sizeof(datapackTwo));
+  }
+
+
+  blinkOnTempChange(datapackOne.temps[4]/5);    // Use one single temp in the middle of the array
+  blinkOnDistChange(datapackOne.distance/20);   // value/nn -> Ignore smaller changes to prevent noise triggering blinks
+
   printStatus();
+
 }
 
 
@@ -107,16 +120,26 @@ void loop() {
 // ----------------------------------------
 
 void printStatus(void) {
-  Serial.print(battData[0]);
+
+  static unsigned long then;
+  unsigned long now = millis();
+  Serial.print(1000/(float)(now - then),1); // Loop speed in Hz
+  Serial.print("Hz\t");
+  then = now;
+
+  Serial.print(datapackTwo.voltage);
   Serial.print("mV\t");
-  Serial.print(battData[1]);
+  Serial.print(datapackTwo.charge);
   Serial.print("%\t");
-  Serial.print(distData[0]);
+  Serial.print(datapackOne.distance);
   Serial.print("mm\t");
-  for (uint8_t i=0; i<16; i++) {
-    Serial.print(tempData[i]);
+  for (uint8_t i=0; i<8; i++) {
+    Serial.print(datapackOne.temps[i]);
+    Serial.print("\t");
+    Serial.print(datapackTwo.temps[i]);
     Serial.print("\t");
   }
+
   Serial.println();
 }
 
@@ -136,8 +159,8 @@ void blinkOnDistChange(uint16_t distnew) {
 
 // ----------------------------------------
 
-void blinkOnTempChange(uint8_t tempnew) {
-  static uint8_t tempold = 0;
+void blinkOnTempChange(int16_t tempnew) {
+  static int16_t tempold = 0;
   if (tempold != tempnew) {
     digitalWrite(LED_BLUE, HIGH);
     delay(3);
