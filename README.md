@@ -42,6 +42,8 @@ Four wires in a bus configuration connects the two sensors and the cpu board.
 
 Basic info to add the Adafruit Bluefruit nRF52 board to the Arduino IDE: https://learn.adafruit.com/bluefruit-nrf52-feather-learning-guide/arduino-bsp-setup
 
+There is a <a href=/installArduino.md>__STEP BY STEP instruction here to install, compile and upload the code__</a> 
+
 # Work in progress...
 <img align="right" width="231" src="images/harrys_early_preview.jpg">
 
