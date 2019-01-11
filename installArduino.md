@@ -13,33 +13,33 @@ https://www.arduino.cc/en/Main/Software
 
 <img hspace="50" src="images/installArduinoIDE-0.gif">
 
-Go to "Boards Manager"
+- Go to "Boards Manager"
 
 <img hspace="50" src="images/installArduinoIDE-1.gif">
 
-Enter "nRF52" in the search box and then install "Adafruit nRF52 Boards". This will take a while to complete...
+- Enter "nRF52" in the search box and then install "Adafruit nRF52 Boards". This will take a while to complete...
 
 <img hspace="50" src="images/installArduinoIDE-2.gif">
 
-Choose "Adafruit Bluefruit nRF52832 Feather"
+- Choose "Adafruit Bluefruit nRF52832 Feather"
 
 <img hspace="50" src="images/installArduinoIDE-3.gif">
 
-Go to "Manage Libraries"
+- Go to "Manage Libraries"
 
 <img hspace="50" src="images/installArduinoIDE-4.gif">
 
-Enter "vl53" in the search box and then install "Adafruit_VL53L0X"
+- Enter "vl53" in the search box and then install "Adafruit_VL53L0X"
 
 <img hspace="50" src="images/installArduinoIDE-5.gif">
 
-Connect the Adafruit Bluefruit board to your computer's USB and choose the correct COM port
+- Connect the Adafruit Bluefruit board to your computer's USB and choose the correct COM port
 
 <img hspace="50" src="images/installArduinoIDE-6.gif">
 
-Place all the downloaded src files in a directory called "main"
+- Place all the downloaded src files in a directory called "main"
 
-Open the main.ino file and choose "Upload"
+- Open the main.ino file and choose "Upload"
 
 <img hspace="50" src="images/installArduinoIDE-7.gif">
 
