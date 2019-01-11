@@ -49,7 +49,7 @@ The temperature part is rock stable and Bluetooth BLE seems to be running very n
 
 A small enclosure to 3D-print must be designed. This will include a design that protects the sensors and a snap-in holder so the whole enclosure can easily be removed and put back on the car. If printed in nylon/carbon fiber it will be very light and strong to endure the harsh environment in the wheel well.
 
-A small IR-transparent sensor protection window is on it's way to be source too.
+A small IR-transparent sensor protection window is on it's way to be sourced too.
 
 The two major track loggers for mobile phones www.gps-laptimer.de and www.racechrono.com already have units and have both done initial tests for integrating support for it. Picture to the right from an early preview of Harry's Laptimer.
 
