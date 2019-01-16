@@ -36,7 +36,7 @@ The CPU board and the two sensor boards are all powered by connecting power to t
 Four wires in a bus configuration connects the two sensors and the cpu board.
 
 ![Display](images/connecting.gif)
-![Display](images/connect-drawing.jpg)
+![Display](images/connect-drawing2.jpg)
 
 # Arduino
 
