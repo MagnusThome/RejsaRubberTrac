@@ -33,7 +33,7 @@ The CPU board and the two sensor boards are all powered by connecting power to t
 
 # Connecting the three boards
 
-Four wires in a bus configuration connects the two sensors and the cpu board.
+Four wires in a bus configuration connects the two sensors and the cpu board.  
 One extra optional wire greatly improves the stability of the distance sensor.
 
 | Adafruit Bluefruit nRF52832 	| VL53L0X 	| MLX90621 	|
