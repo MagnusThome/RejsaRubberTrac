@@ -5,8 +5,12 @@
 #include "ble_gatt.h"
 #include "adc_vbat.h"
 
+
+#define DUMMYDATA           // ENABLE DEBUGGING WITH FAKE DATA
+
+
 #define PROTOCOL 0x01
-#define DISTRESET 27        // GPIO pin number
+#define DISTSENSORSLEEP 27   // GPIO pin number
 
 typedef struct {
   uint8_t  protocol;         // currently: 0x01
@@ -32,11 +36,17 @@ Adafruit_VL53L0X distSensor = Adafruit_VL53L0X();
 MLX90621 tempSensor; 
 
 
+
 // Function declarations
 void printStatus(void);
 void blinkOnTempChange(int16_t);
 void blinkOnDistChange(uint16_t);
 uint8_t InitDistanceSensor(void);
+
+
+#ifdef DUMMYDATA
+  #include "dummydata.h"
+#endif  
 
   
 
@@ -48,7 +58,7 @@ void setup(){
   Bluefruit.autoConnLed(false);
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
-  pinMode(DISTRESET, OUTPUT);
+  pinMode(DISTSENSORSLEEP, OUTPUT);
 
   datapackOne.distance = 0;
   datapackOne.protocol = PROTOCOL;
@@ -58,7 +68,7 @@ void setup(){
   distSensorPresent = InitDistanceSensor();
 
   Serial.println("Init temp sensor");
-  tempSensor.initialise(2);
+  tempSensor.initialise(16);
 
   Serial.println("Starting bluetooth");
   Bluefruit.begin();
@@ -66,6 +76,11 @@ void setup(){
   setupMainService();
   startAdvertising(); 
   Serial.println("Running");
+
+#ifdef DUMMYDATA
+  dummyloop();
+#endif  
+
 }
 
 
@@ -117,7 +132,7 @@ void loop() {
   }
 
 
-  blinkOnTempChange(datapackOne.temps[4]/5);    // Use one single temp in the middle of the array
+  blinkOnTempChange(datapackOne.temps[4]/10);    // Use one single temp in the middle of the array
   blinkOnDistChange(datapackOne.distance/20);   // value/nn -> Ignore smaller changes to prevent noise triggering blinks
 
   printStatus();
@@ -130,9 +145,9 @@ void loop() {
 // ----------------------------------------
 
 uint8_t InitDistanceSensor(void) {
-  digitalWrite(DISTRESET, LOW);
+  digitalWrite(DISTSENSORSLEEP, LOW);
   delay(50);
-  digitalWrite(DISTRESET, HIGH);
+  digitalWrite(DISTSENSORSLEEP, HIGH);
   delay(50);
   return distSensor.begin(VL53L0X_I2C_ADDR, false); 
 }
