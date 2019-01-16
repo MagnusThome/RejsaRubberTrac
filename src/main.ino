@@ -26,6 +26,7 @@ typedef struct {
 
 one_t datapackOne;
 two_t datapackTwo;
+uint8_t distSensorPresent;
 
 Adafruit_VL53L0X distSensor = Adafruit_VL53L0X();
 MLX90621 tempSensor; 
@@ -35,7 +36,7 @@ MLX90621 tempSensor;
 void printStatus(void);
 void blinkOnTempChange(int16_t);
 void blinkOnDistChange(uint16_t);
-void InitDistanceSensor(void);
+uint8_t InitDistanceSensor(void);
 
   
 
@@ -54,7 +55,7 @@ void setup(){
   datapackTwo.protocol = PROTOCOL;
 
   Serial.println("Init distance sensor");
-  InitDistanceSensor();
+  distSensorPresent = InitDistanceSensor();
 
   Serial.println("Init temp sensor");
   tempSensor.initialise(2);
@@ -74,18 +75,20 @@ void loop() {
   
 
   // - - D I S T A N C E - -
-  VL53L0X_RangingMeasurementData_t measure;
-  if (distSensor.rangingTest(&measure, false) != VL53L0X_ERROR_NONE) {
-    datapackOne.distance = 0;                                           // sensor fail
-    Serial.println("Reset distance sensor");
-    InitDistanceSensor();
-  }
-  else {
-    if (measure.RangeStatus == 4 || measure.RangeMilliMeter > 8190) {   // measure fail
-      datapackOne.distance = 0;
+  if (distSensorPresent) {
+    VL53L0X_RangingMeasurementData_t measure;
+    if (distSensor.rangingTest(&measure, false) != VL53L0X_ERROR_NONE) {
+      datapackOne.distance = 0;                                           // sensor fail
+      Serial.println("Reset distance sensor");
+      InitDistanceSensor();
     }
     else {
-      datapackOne.distance = measure.RangeMilliMeter;
+      if (measure.RangeStatus == 4 || measure.RangeMilliMeter > 8190) {   // measure fail
+        datapackOne.distance = 0;
+      }
+      else {
+        datapackOne.distance = measure.RangeMilliMeter;
+      }
     }
   }
 
@@ -126,12 +129,12 @@ void loop() {
 
 // ----------------------------------------
 
-void InitDistanceSensor(void) {
+uint8_t InitDistanceSensor(void) {
   digitalWrite(DISTRESET, LOW);
   delay(50);
   digitalWrite(DISTRESET, HIGH);
   delay(50);
-  distSensor.begin(VL53L0X_I2C_ADDR, false); 
+  return distSensor.begin(VL53L0X_I2C_ADDR, false); 
 }
 
 
