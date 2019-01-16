@@ -35,7 +35,15 @@ The CPU board and the two sensor boards are all powered by connecting power to t
 
 Four wires in a bus configuration connects the two sensors and the cpu board.
 
-![Display](images/connecting.gif)
+| Adafruit Bluefruit nRF52832 	| VL53L0X 	| MLX90621 	|
+|-----------------------------	|---------	|----------	|
+| 3.3V                        	| VIN     	| VIN      	|
+| GND                         	| GND     	| GND      	|
+| SCL                         	| SCL     	| SCL      	|
+| SDA                         	| SDA     	| SDA      	|
+| 27                          	| XSHUT   	| -        	|
+| -                           	| GPIO1   	| -        	|
+
 ![Display](images/connect-drawing2.jpg)
 
 # Arduino
