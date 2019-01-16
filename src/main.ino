@@ -6,7 +6,7 @@
 #include "adc_vbat.h"
 
 
-#define DUMMYDATA           // ENABLE DEBUGGING WITH FAKE DATA
+//#define DUMMYDATA           // ENABLE DEBUGGING WITH FAKE DATA
 
 
 #define PROTOCOL 0x01
