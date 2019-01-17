@@ -3,16 +3,17 @@
 void dummyloop(void) {
 
   randomSeed(100);
-  int8_t stepchange = 4;
+  int8_t stepchange = 3;
   unsigned long dtimer = 0;
   unsigned long ttimer = 0;
   unsigned long ctimer = 0;
   unsigned long btimer = 0;
 
+  datapackOne.distance = 150;
   datapackTwo.voltage = 4220;
   for(uint8_t i=0;i<8;i++){
-    datapackOne.temps[i] = 60;
-    datapackTwo.temps[i] = 60;
+    datapackOne.temps[i] = 70;
+    datapackTwo.temps[i] = 70;
   }
   
 
@@ -21,8 +22,7 @@ void dummyloop(void) {
   while(1) {
 
     unsigned long now = millis();
-
-   
+    
 
 
     // - - D I S T A N C E - -
@@ -31,7 +31,7 @@ void dummyloop(void) {
       datapackOne.distance = random(130,190);
     }
     else {
-      datapackOne.distance = datapackOne.distance + random(-20,20);
+      datapackOne.distance = datapackOne.distance + random(-20,21);
     }
     
     
@@ -40,8 +40,8 @@ void dummyloop(void) {
     if (now - ttimer >= 320) {
       ttimer = now;
       for(uint8_t i=0;i<8;i++){
-        datapackOne.temps[i] += stepchange + random(-1,1);
-        datapackTwo.temps[i] += stepchange + random(-1,1);
+        datapackOne.temps[i] += stepchange + random(-1,2);
+        datapackTwo.temps[i] += stepchange + random(-1,2);
         if (datapackOne.temps[i] > 130) {
           datapackOne.temps[i] = 120;
         }
