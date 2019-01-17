@@ -6,7 +6,7 @@
 #include "adc_vbat.h"
 
 
-//#define DUMMYDATA           // ENABLE DEBUGGING WITH FAKE DATA
+//#define DUMMYDATA           // ENABLE DEBUGGING WITH FAKE DATA WITH NO SENSORS
 
 
 #define PROTOCOL 0x01
@@ -54,7 +54,7 @@ uint8_t InitDistanceSensor(void);
 
 void setup(){
   Serial.begin(115200);
-  Serial.println("\nStarting");
+  Serial.println("\nBegin startup");
   Bluefruit.autoConnLed(false);
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
@@ -64,18 +64,36 @@ void setup(){
   datapackOne.protocol = PROTOCOL;
   datapackTwo.protocol = PROTOCOL;
 
-  Serial.println("Init distance sensor");
+  Serial.println("Starting distance sensor");
   distSensorPresent = InitDistanceSensor();
 
-  Serial.println("Init temp sensor");
+  Serial.println("Starting temp sensor");
   tempSensor.initialise(16);
 
-  Serial.println("Starting bluetooth");
+  Serial.print("Starting bluetooth with MAC address ");
   Bluefruit.begin();
-  Bluefruit.setName("RejsaRubberTrac"); 
+  uint8_t mac[6];
+  Bluefruit.Gap.getAddr(mac);
+  Serial.printBufferReverse(mac, 6, ':');
+  Serial.println();
+  
+  char blename[19] = "RejsaRubber";
+  for(uint8_t i=0; i<4; i++) {
+    uint8_t a = sizeof(blename)-(i*2)-2;
+    uint8_t b = sizeof(blename)-(i*2)-1;
+    blename[a] = (mac[i] >> 4);  
+    if (blename[a] > 0x9) blename[a] += 55; else blename[a] += 48;
+    blename[b] = (mac[i] & 0xf); 
+    if (blename[b] > 0x9) blename[b] += 55; else blename[b] += 48;
+  }
+
+  blename[sizeof(blename)] = 0;
+  Serial.print("Device name: ");
+  Serial.println(blename);
+  Bluefruit.setName(blename); 
   setupMainService();
   startAdvertising(); 
-  Serial.println("Running");
+  Serial.println("Running!");
 
 #ifdef DUMMYDATA
   dummyloop();
