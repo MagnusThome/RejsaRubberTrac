@@ -2,18 +2,21 @@
 
 void dummyloop(void) {
 
-  randomSeed(100);
-  int8_t stepchange = 3;
+  randomSeed(11);          // The exact same sequence of semi random data will playback if this number isn't changed
+                           // You can change it to get other semi random sequences
+                           
+  int8_t stepchange = 1;
   unsigned long dtimer = 0;
   unsigned long ttimer = 0;
   unsigned long ctimer = 0;
+  unsigned long cdelay = 9000;
   unsigned long btimer = 0;
 
   datapackOne.distance = 150;
   datapackTwo.voltage = 4220;
   for(uint8_t i=0;i<8;i++){
-    datapackOne.temps[i] = 70;
-    datapackTwo.temps[i] = 70;
+    datapackOne.temps[i] = 60;
+    datapackTwo.temps[i] = 60;
   }
   
 
@@ -22,7 +25,6 @@ void dummyloop(void) {
   while(1) {
 
     unsigned long now = millis();
-    
 
 
     // - - D I S T A N C E - -
@@ -56,9 +58,10 @@ void dummyloop(void) {
         }
       }
     }
-    if (now - ctimer >= 1500 + random(2500)) {
+    if (now - ctimer >= cdelay) {
       ctimer = now;
-      stepchange = random(-5,5);
+      cdelay = 1500 + random(2500);
+      stepchange = random(-4,5);
     }
   
 
