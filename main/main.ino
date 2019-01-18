@@ -9,7 +9,7 @@
 // -------------------------------------------------------------------------
 
 
-#define WHEEL_ID 2    // 0 = Automatic unique ID (taken from MAC address)
+#define WHEEL_ID 0    // 0 = Automatic unique ID (taken from MAC address)
                       // 1 = FrontL
                       // 2 = FrontR
                       // 3 = RearL
