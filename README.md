@@ -56,6 +56,16 @@ The two sensorboards can easily be correctly connected together electrically and
 
 ![Display](images/sensorsandwichmount.jpg)
 
+This is the COMPLETE wiring needed:
+
+![Display](images/connectingSandwichFront.jpg)
+
+![Display](images/connectingSandwichRear.jpg)
+
+Just an enclosure for initial testing:
+
+![Display](images/testbox.jpg)
+
 # Device name
 
 The default Bluetooth name of each device is "RejsaRubber" + the last four bytes in the semi unique bluetooth MAC address, like this:  
