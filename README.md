@@ -42,10 +42,14 @@ One extra optional wire to the distance sensor's XSHUT pin greatly improves its 
 | GND                         	| GND     	| GND      	|
 | SCL                         	| SCL     	| SCL      	|
 | SDA                         	| SDA     	| SDA      	|
-| 27                          	| XSHUT   	| -        	|
 | -                           	| GPIO1   	| -        	|
+| 27                          	| XSHUT   	| -        	|
 
 ![Display](images/connect-drawing2.jpg)
+
+The two sensorboards can easily be correctly connected together electrically and mechanically by "sandwiching" them together with a pin header as in the picture below.
+
+![Display](images/sensorsandwichmount.jpg)
 
 # Device name
 
