@@ -5,12 +5,27 @@
 #include "ble_gatt.h"
 #include "adc_vbat.h"
 
+// -------------------------------------------------------------------------
+// -------------------------------------------------------------------------
 
-//#define DUMMYDATA           // ENABLE DEBUGGING WITH FAKE DATA WITH NO SENSORS
+
+#define WHEEL_ID 2    // 0 = Automatic unique ID (taken from MAC address)
+                      // 1 = FrontL
+                      // 2 = FrontR
+                      // 3 = RearL
+                      // 4 = RearR
+                    
+
+//#define DUMMYDATA   // UNCOMMENT TO ENABLE FAKE RANDOM DATA WITH NO SENSORS NEEDED
+
+
+// -------------------------------------------------------------------------
+// -------------------------------------------------------------------------
 
 
 #define PROTOCOL 0x01
 #define DISTSENSORSLEEP 27   // GPIO pin number
+
 
 typedef struct {
   uint8_t  protocol;         // currently: 0x01
@@ -31,24 +46,26 @@ typedef struct {
 one_t datapackOne;
 two_t datapackTwo;
 uint8_t distSensorPresent;
+uint8_t macaddr[6];
+char bleName[19];
+
 
 Adafruit_VL53L0X distSensor = Adafruit_VL53L0X();
 MLX90621 tempSensor; 
 
 
-
 // Function declarations
+uint8_t InitDistanceSensor(void);
+void setBLEname(void);
 void printStatus(void);
 void blinkOnTempChange(int16_t);
 void blinkOnDistChange(uint16_t);
-uint8_t InitDistanceSensor(void);
 
 
 #ifdef DUMMYDATA
   #include "dummydata.h"
 #endif  
 
- 
 
 // ----------------------------------------
 
@@ -72,25 +89,15 @@ void setup(){
 
   Serial.print("Starting bluetooth with MAC address ");
   Bluefruit.begin();
-  uint8_t mac[6];
-  Bluefruit.Gap.getAddr(mac);
-  Serial.printBufferReverse(mac, 6, ':');
+  Bluefruit.Gap.getAddr(macaddr);
+  Serial.printBufferReverse(macaddr, 6, ':');
   Serial.println();
   
-  char blename[19] = "RejsaRubber";
-  for(uint8_t i=0; i<4; i++) {
-    uint8_t a = sizeof(blename)-(i*2)-2;
-    uint8_t b = sizeof(blename)-(i*2)-1;
-    blename[a] = (mac[i] >> 4);  
-    if (blename[a] > 0x9) blename[a] += 55; else blename[a] += 48;
-    blename[b] = (mac[i] & 0xf); 
-    if (blename[b] > 0x9) blename[b] += 55; else blename[b] += 48;
-  }
-
-  blename[sizeof(blename)] = 0;
   Serial.print("Device name: ");
-  Serial.println(blename);
-  Bluefruit.setName(blename); 
+  setBLEname();
+  Serial.println(bleName);
+  Bluefruit.setName(bleName); 
+
   setupMainService();
   startAdvertising(); 
   Serial.println("Running!");
@@ -144,7 +151,7 @@ void loop() {
   }
 
   
-  if ( Bluefruit.connected() ) {
+  if (Bluefruit.connected()) {
     GATTone.notify(&datapackOne, sizeof(datapackOne));
     GATTtwo.notify(&datapackTwo, sizeof(datapackTwo));
   }
@@ -170,6 +177,40 @@ uint8_t InitDistanceSensor(void) {
   return distSensor.begin(VL53L0X_I2C_ADDR, false); 
 }
 
+
+// ----------------------------------------
+
+void setBLEname(void) {
+
+  if (WHEEL_ID == 0) {
+    strncpy(bleName, "RejsaRubber", 11);
+    for(uint8_t i=0; i<4; i++) {
+      uint8_t a = sizeof(bleName)-(i*2)-2;
+      uint8_t b = sizeof(bleName)-(i*2)-1;
+      bleName[a] = (macaddr[i] >> 4);  
+      if (bleName[a] > 0x9) bleName[a] += 55; else bleName[a] += 48;
+      bleName[b] = (macaddr[i] & 0xf); 
+      if (bleName[b] > 0x9) bleName[b] += 55; else bleName[b] += 48;
+    }
+    bleName[sizeof(bleName)] = '\0';
+  }
+  else if (WHEEL_ID == 1) {
+      strncpy(bleName, "RejsaRubberFrontL\0", 18);
+  }
+  else if (WHEEL_ID == 2) {
+      strncpy(bleName, "RejsaRubberFrontR\0", 18);
+  }
+  else if (WHEEL_ID == 3) {
+      strncpy(bleName, "RejsaRubberRearL\0", 17);
+  }
+  else if (WHEEL_ID == 4) {
+      strncpy(bleName, "RejsaRubberRearR\0", 17);
+  }
+  else {
+    strncpy(bleName, "RejsaRubberTrac\0", 16);
+  }
+}
+  
 
 // ----------------------------------------
 
