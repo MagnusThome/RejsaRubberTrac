@@ -79,7 +79,7 @@ With the Arduino IDE (or other serial terminal software) you can view the printe
 
 # Positioning the sensors
 
-Click to enlarge!  
+Download to view larger version!  
 ![Display](images/sensorpositioning.jpg)
 
 
