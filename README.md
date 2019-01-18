@@ -77,6 +77,12 @@ With the Arduino IDE (or other serial terminal software) you can view the printe
 
 <img src="images/usbterminal.PNG">
 
+# Positioning the sensors
+
+Click to enlarge!  
+![Display](images/sensorpositioning.jpg)
+
+
 # Work in progress...
 <img align="right" width="231" src="images/harrys_early_preview.jpg">
 
