@@ -31,6 +31,11 @@ Example where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=3.7V+lipo+JST-P
 
 The CPU board and the two sensor boards are all powered by connecting power to the CPU board's USB micro connector. The CPU board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery. The system can also be run directly from the car's power, not using any Lipo battery, but then a 12 volt to USB 5 volt converter must be added.
 
+# Positioning the sensors
+
+Please download to view a larger version!  
+![Display](images/sensorpositioning.jpg)
+
 # Connecting the three boards
 
 Four wires in a bus configuration connects the two sensors and the cpu board.  
@@ -81,12 +86,6 @@ With the Arduino IDE (or other serial terminal software) you can view the printe
 
 <img src="images/usbterminal.PNG">
 
-# Positioning the sensors
-
-Please download to view a larger version!  
-![Display](images/sensorpositioning.jpg)
-
-
 # Work in progress...
 <img align="right" width="231" src="images/harrys_early_preview.jpg">
 
@@ -101,7 +100,6 @@ The two major track loggers for mobile phones www.gps-laptimer.de and www.racech
 # Questions and more info
 
 The main discussion thread (in Swedish but feel absolutely free to write in english!) https://rejsa.nu/forum/viewtopic.php?t=113976
-
 
 # Credits
 
