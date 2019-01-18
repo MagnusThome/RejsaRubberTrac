@@ -47,6 +47,17 @@ One extra optional wire to the distance sensor's XSHUT pin greatly improves its 
 
 ![Display](images/connect-drawing2.jpg)
 
+# Device name
+
+The default Bluetooth name of each device is "RejsaRubber" + the last four bytes in the semi unique bluetooth MAC address, like this:  
+- RejsaRubber6412051B - for a device with MAC address CC:C9:64:12:05:1B
+
+At compile time there is alternatively a choice of manually setting a device to one of four fixed names:  
+- RejsaRubberFrontL 
+- RejsaRubberFrontR 
+- RejsaRubberRearL
+- RejsaRubberRearR
+
 # Arduino
 
 Basic info to add the Adafruit Bluefruit nRF52 board to the Arduino IDE: https://learn.adafruit.com/bluefruit-nrf52-feather-learning-guide/arduino-bsp-setup
