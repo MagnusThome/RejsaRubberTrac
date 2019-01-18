@@ -66,7 +66,7 @@ At compile time there is alternatively a choice of manually setting a device to 
 
 Basic info to add the Adafruit Bluefruit nRF52 board to the Arduino IDE: https://learn.adafruit.com/bluefruit-nrf52-feather-learning-guide/arduino-bsp-setup
 
-There is a <a href=/installArduino.md>__STEP BY STEP instruction here to install, compile and upload the code__</a> 
+Here is a <a href=/installArduino.md>__STEP BY STEP instruction to install, compile and upload the code__</a> 
 
 # Testing Bluetooth BLE
 
@@ -83,7 +83,7 @@ With the Arduino IDE (or other serial terminal software) you can view the printe
 
 # Positioning the sensors
 
-Download to view larger version!  
+Please download to view a larger version!  
 ![Display](images/sensorpositioning.jpg)
 
 
