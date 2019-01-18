@@ -56,7 +56,7 @@ The two sensorboards can easily be correctly connected together electrically and
 
 ![Display](images/sensorsandwichmount.jpg)
 
-This is the COMPLETE wiring needed:
+This is the COMPLETE wiring needed. Currently looking at making a small pcb as an interconnect for all connections. Soldered wires are not optimal in this tough environment. The main board will probably be turned over to get its reset button aiming to the enclosure's front. 
 
 ![Display](images/connectingSandwichFront.jpg)
 
