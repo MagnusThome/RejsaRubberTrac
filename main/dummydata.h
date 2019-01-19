@@ -2,10 +2,10 @@
 
 void dummyloop(void) {
 
-  randomSeed(11);          // The exact same sequence of semi random data will playback if this number isn't changed
+  randomSeed(2);          // The exact same sequence of semi random data will playback if this number isn't changed
                            // You can change it to get other semi random sequences
                            
-  int8_t stepchange = 1;
+  int8_t stepchange = 10;
   unsigned long dtimer = 0;
   unsigned long ttimer = 0;
   unsigned long ctimer = 0;
@@ -15,8 +15,8 @@ void dummyloop(void) {
   datapackOne.distance = 150;
   datapackTwo.voltage = 4220;
   for(uint8_t i=0;i<8;i++){
-    datapackOne.temps[i] = 60;
-    datapackTwo.temps[i] = 60;
+    datapackOne.temps[i] = 600;
+    datapackTwo.temps[i] = 600;
   }
   
 
@@ -42,26 +42,26 @@ void dummyloop(void) {
     if (now - ttimer >= 320) {
       ttimer = now;
       for(uint8_t i=0;i<8;i++){
-        datapackOne.temps[i] += stepchange + random(-1,2);
-        datapackTwo.temps[i] += stepchange + random(-1,2);
-        if (datapackOne.temps[i] > 130) {
-          datapackOne.temps[i] = 120;
+        datapackOne.temps[i] += stepchange + random(-5,6);
+        datapackTwo.temps[i] += stepchange + random(-5,6);
+        if (datapackOne.temps[i] > 1200) {
+          datapackOne.temps[i] = 1140;
         }
-        if (datapackTwo.temps[i] > 130) {
-          datapackTwo.temps[i] = 120;
+        if (datapackTwo.temps[i] > 1200) {
+          datapackTwo.temps[i] = 1140;
         }
-        if (datapackOne.temps[i] < 60) {
-          datapackOne.temps[i] = 64;
+        if (datapackOne.temps[i] < 600) {
+          datapackOne.temps[i] = 640;
         }
-        if (datapackTwo.temps[i] < 60) {
-          datapackTwo.temps[i] = 64;
+        if (datapackTwo.temps[i] < 600) {
+          datapackTwo.temps[i] = 640;
         }
       }
     }
     if (now - ctimer >= cdelay) {
       ctimer = now;
       cdelay = 1500 + random(2500);
-      stepchange = random(-4,5);
+      stepchange = random(-40,41);
     }
   
 
