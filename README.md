@@ -93,7 +93,7 @@ https://play.google.com/store/apps/details?id=com.punchthrough.lightblueexplorer
 
 # Testing over USB
 
-With the Arduino IDE (or other serial terminal software) you can view the printed output from the board over USB.
+With the Arduino IDE (or other serial terminal software) you can view the printed output from the board over USB. Temperatures are shown as degrees in celsius times ten.
 
 <img src="images/usbterminal.PNG">
 
