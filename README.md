@@ -77,11 +77,12 @@ At compile time there is alternatively a choice of manually setting a device to 
 - RejsaRubberRearL
 - RejsaRubberRearR
 
-# Arduino
+# Compiling and uploading the code - Arduino IDE
 
-Basic info to add the Adafruit Bluefruit nRF52 board to the Arduino IDE: https://learn.adafruit.com/bluefruit-nrf52-feather-learning-guide/arduino-bsp-setup
+Read the <a href=/installArduino.md>complete step by step instruction here</a> to install the IDE and compile and upload the code. 
 
-Here is a <a href=/installArduino.md>__STEP BY STEP instruction to install, compile and upload the code__</a> 
+Here's info on the Adafruit Bluefruit nRF52 board:  
+https://learn.adafruit.com/bluefruit-nrf52-feather-learning-guide
 
 # Testing Bluetooth BLE
 
