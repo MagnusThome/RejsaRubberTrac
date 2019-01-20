@@ -43,7 +43,7 @@ https://www.arduino.cc/en/Main/Software
 
 <img hspace="50" src="images/installArduinoIDE-7b.gif">
 
-- When done you can open the "Serial Monitor" under the "Tools" menu and view the Arduino board's status and data transmitted
+- When done you can open the "Serial Monitor" under the "Tools" menu and view the Arduino board's status and data transmitted. Temperatures are in degrees celsius times ten.
 
 <img src="images/usbterminal.PNG">
 
