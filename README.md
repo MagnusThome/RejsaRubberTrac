@@ -10,7 +10,7 @@ For around 100EUR per wheel you can build your own wireless sensors to log your 
 - Support for a distance sensor is also included for tracking/logging suspension movements.
 - All data is available over Bluetooth Low Energy BLE.
 
-The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de>Harry's Laptimer</a> and <a href=http://www.racechrono.com>Racechrono</a> already have units and have both done initial tests for integrating support for it.
+The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de>Harry's Laptimer</a> and <a href=http://www.racechrono.com>Racechrono</a> already have test units and have both done initial tests for integrating support for it.
 
 <a href="http://www.youtube.com/watch?v=Yuy62oPXugs"><img src=images/earlyharrysbetayoutube.jpg></a>
 
