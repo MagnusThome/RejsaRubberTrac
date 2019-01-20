@@ -70,7 +70,7 @@ Just an enclosure for initial testing:
 
 # Device name
 
-The default Bluetooth name of each device is "RejsaRubber" + the last four bytes in the semi unique bluetooth MAC address, like this:  
+The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the semi unique bluetooth MAC address, like this:  
 - RejsaRubber6412051B - for a device with MAC address CC:C9:64:12:05:1B
 
 At compile time there is alternatively a choice of manually setting a device to one of four fixed names:  
