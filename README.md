@@ -52,7 +52,7 @@ One extra fifth (optional) wire connects to the distance sensor's XSHUT pin to g
 
 ![Display](images/connect-drawing2.jpg)
 
-The two sensorboards can easily be correctly connected together electrically and mechanically by "sandwiching" them together with a pin header as in the picture below.
+The two sensorboards can easily be connected together electrically and mechanically by "sandwiching" them together with a pin header as in the picture below.
 
 ![Display](images/sensorsandwichmount.jpg)
 
