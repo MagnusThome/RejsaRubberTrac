@@ -1,16 +1,15 @@
 # RejsaRubberTrac
 
-A CPU board with a bluetooth BLE transmitter + IR multi point temperature sensor + laser based distance sensor.
+A small cpu/bluetooth board + a 16 measure zones temperature sensor + a distance sensor.
 
-*__Intended to track/view/logg tire temperatures on race- or trackday cars.__*
+*__Intended to track/view/logg tire temperatures on race- and trackday cars.__*
 
-Temperatures are measured at sixteen different points over each tire's full width.
+For around 100EUR per wheel you can build your own and log your driving. You'll then easily see if you are overheating the shoulder on one wheel in some particular corner, if one of the rear tires stays a bit too cold or if you need to adjust camber. And many more things about both how you attack a course and how your car is setup.
 
-A distance sensor is also included for tracking/logging suspension movements.
-
-All data is available over Bluetooth Low Energy BLE.
-
-Current code is for Adafruit's Bluefruit nRF52832 board. 
+- Temperatures are measured at sixteen different points over each tire's full width.
+- A distance sensor is also included for tracking/logging suspension movements.
+- All data is available over Bluetooth Low Energy BLE.
+- Current code is for Adafruit's Bluefruit nRF52832 board. 
 
 # Parts
 <img align="right" width="231" src="images/partsizes.jpg">
