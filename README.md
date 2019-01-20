@@ -1,15 +1,18 @@
 # RejsaRubberTrac
 
-A small cpu/bluetooth board + a 16 measure zones temperature sensor + a distance sensor.
+A small cpu/bluetooth board + a 16-zones temperature sensor + a distance sensor.
 
 *__Intended to track/view/logg tire temperatures on race- and trackday cars.__*
 
-For around 100EUR per wheel you can build your own and log your driving. You'll then easily see if you are overheating the shoulder on one wheel in some particular corner, if one of the rear tires stays a bit too cold or if you need to adjust camber. And many more things about both how you attack a course and how your car is setup.
+For around 100EUR per wheel you can build your own to log your driving. You'll then easily see if you are overheating the shoulder on one wheel in some particular corner, if one of the rear tires stays a bit too cold or if you need to adjust camber. And many more things about how you attack a course and how your car is set up.
 
 - Temperatures are measured at sixteen different points over each tire's full width.
 - A distance sensor is also included for tracking/logging suspension movements.
 - All data is available over Bluetooth Low Energy BLE.
-- Current code is for Adafruit's Bluefruit nRF52832 board. 
+
+The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de>Harry's Laptimer</a> and <a href=http://www.racechrono.com>Racechrono</a> already have units and have both done initial tests for integrating support for it.
+
+<a href="http://www.youtube.com/watch?v=Yuy62oPXugs"><img src=images/earlyharrysbetayoutube.jpg></a>
 
 # Parts
 <img align="right" width="231" src="images/partsizes.jpg">
@@ -97,7 +100,6 @@ With the Arduino IDE (or other serial terminal software) you can view the printe
 <img src="images/usbterminal.PNG">
 
 # Work in progress...
-<img align="right" width="231" src="images/harrys_early_preview.jpg">
 
 The temperature part is rock stable and Bluetooth BLE seems to be running very nicely. But the distance sensor can at rare occasions hang, maybe a watchdog function needs to be added?
 
@@ -105,11 +107,9 @@ A small enclosure to 3D-print must be designed. This will include a design that 
 
 A small IR-transparent sensor protection window is on it's way to be sourced too.
 
-The two major track loggers for mobile phones www.gps-laptimer.de and www.racechrono.com already have units and have both done initial tests for integrating support for it. Picture to the right from an early preview of Harry's Laptimer.
-
 # Questions and more info
 
-The main discussion thread (in Swedish but feel absolutely free to write in english!) https://rejsa.nu/forum/viewtopic.php?t=113976
+Support forum: www.rejsa.nu/forum/viewforum.php?f=105
 
 # Credits
 
