@@ -35,8 +35,8 @@ The CPU board and the two sensor boards are all powered by connecting power to t
 
 # Positioning the sensors
 
-Please download to view a larger version!  
-![Display](images/sensorpositioning.jpg)
+Click to view a larger version!  
+![Display](https://raw.githubusercontent.com/MagnusThome/RejsaRubberTrac/master/images/sensorpositioning.jpg)
 
 # Connecting the three boards
 
