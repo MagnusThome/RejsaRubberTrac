@@ -7,7 +7,7 @@ A small cpu/bluetooth board + a 16-zones temperature sensor + a distance sensor.
 For around 100EUR per wheel you can build your own wireless sensors to log your driving. You'll then easily see if you are overheating the shoulder on one wheel in some particular corner, if one of the rear tires stays a bit too cold or if you need to adjust camber. And many more things about how you attack a course and how your car is set up.
 
 - Temperatures are measured at sixteen different points over each tire's full width.
-- A distance sensor is also included for tracking/logging suspension movements.
+- Support for a distance sensor is also included for tracking/logging suspension movements.
 - All data is available over Bluetooth Low Energy BLE.
 
 The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de>Harry's Laptimer</a> and <a href=http://www.racechrono.com>Racechrono</a> already have units and have both done initial tests for integrating support for it.
