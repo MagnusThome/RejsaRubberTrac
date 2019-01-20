@@ -41,7 +41,7 @@ https://www.arduino.cc/en/Main/Software
 
 - Open the main.ino file and choose "Upload"
 
-<img hspace="50" src="images/installArduinoIDE-7.gif">
+<img hspace="50" src="images/installArduinoIDE-7b.gif">
 
 - When done you can open the "Serial Monitor" under the "Tools" menu and view the Arduino board's status and data transmitted
 
