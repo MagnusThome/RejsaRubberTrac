@@ -45,6 +45,6 @@ https://www.arduino.cc/en/Main/Software
 
 - When done you can open the "Serial Monitor" under the "Tools" menu and view the Arduino board's status and data transmitted
 
-<img hspace="50" src="images/usbterminal.PNG">
+<img src="images/usbterminal.PNG">
 
 - Have fun!
