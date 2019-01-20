@@ -12,7 +12,7 @@ For around 100EUR per wheel you can build your own to log your driving. You'll t
 
 The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de>Harry's Laptimer</a> and <a href=http://www.racechrono.com>Racechrono</a> already have units and have both done initial tests for integrating support for it.
 
-<a href="http://www.youtube.com/watch?v=Yuy62oPXugs" target="_blank"><img src=images/earlyharrysbetayoutube.jpg></a>
+<a href="http://www.youtube.com/watch?v=Yuy62oPXugs"><img src=images/earlyharrysbetayoutube.jpg></a>
 
 # Parts
 <img align="right" width="231" src="images/partsizes.jpg">
