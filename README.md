@@ -109,7 +109,7 @@ A small IR-transparent sensor protection window is on it's way to be sourced too
 
 # Questions and more info
 
-Support forum: www.rejsa.nu/forum/viewforum.php?f=105
+Support forum: www.rejsa.nu/rejsarubbertrac
 
 # Credits
 
