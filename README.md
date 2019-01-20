@@ -1,6 +1,6 @@
-# RejsaRubberTrac
+# RejsaRubberTrac  
 
-A small cpu/bluetooth board + a 16-zones temperature sensor + a distance sensor.
+Build a cheap wireless tire temperatures and suspension movement logger from only a small cpu/bluetooth board plus a 16-zone temperature sensor and a distance sensor
 
 *__Intended to track/view/logg tire temperatures on race- and trackday cars.__*
 
