@@ -12,7 +12,8 @@ For around 100EUR per wheel you can build your own wireless sensors to log your 
 
 The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de>Harry's Laptimer</a> and <a href=http://www.racechrono.com>Racechrono</a> already have test units and have both done initial tests for integrating support for it.
 
-Watch this short video:
+Watch this short video:  
+
 <a href="http://www.youtube.com/watch?v=Yuy62oPXugs"><img src=images/earlyharrysbetayoutube.jpg></a>
 
 # Parts
