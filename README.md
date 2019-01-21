@@ -70,7 +70,7 @@ Just an enclosure for initial testing:
 
 ![Display](images/testbox.jpg)
 
-# Device name
+# Bluetooth device name
 
 The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the semi unique bluetooth MAC address, like this:  
 - RejsaRubber6412051B - for a device with MAC address CC:C9:64:12:05:1B
