@@ -8,12 +8,13 @@
 // -------------------------------------------------------------------------
 // -------------------------------------------------------------------------
 
-
-#define WHEEL_ID 0    // 0 = Automatic unique ID (taken from MAC address)
-                      // 1 = FrontL
-                      // 2 = FrontR
-                      // 3 = RearL
-                      // 4 = RearR
+#define WHEEL_ID 0    // 0 = "RejsaRubber" + four last bytes from the bluetooth MAC address
+                      // 1 = "RejsaRubberFL" + three last bytes from the bluetooth MAC address
+                      // 2 = "RejsaRubberFR" + three last bytes from the bluetooth MAC address
+                      // 3 = "RejsaRubberRL" + three last bytes from the bluetooth MAC address
+                      // 4 = "RejsaRubberRR" + three last bytes from the bluetooth MAC address
+                      // 5 = "RejsaRubberF " + three last bytes from the bluetooth MAC address
+                      // 6 = "RejsaRubberR " + three last bytes from the bluetooth MAC address
                     
 
 //#define DUMMYDATA   // UNCOMMENT TO ENABLE FAKE RANDOM DATA WITH NO SENSORS NEEDED
@@ -184,31 +185,46 @@ void setBLEname(void) {
 
   if (WHEEL_ID == 0) {
     strncpy(bleName, "RejsaRubber", 11);
-    for(uint8_t i=0; i<4; i++) {
-      uint8_t a = sizeof(bleName)-(i*2)-2;
-      uint8_t b = sizeof(bleName)-(i*2)-1;
-      bleName[a] = (macaddr[i] >> 4);  
-      if (bleName[a] > 0x9) bleName[a] += 55; else bleName[a] += 48;
-      bleName[b] = (macaddr[i] & 0xf); 
-      if (bleName[b] > 0x9) bleName[b] += 55; else bleName[b] += 48;
-    }
-    bleName[sizeof(bleName)] = '\0';
   }
   else if (WHEEL_ID == 1) {
-      strncpy(bleName, "RejsaRubberFrontL\0", 18);
+    strncpy(bleName, "RejsaRubberFL", 13);
   }
   else if (WHEEL_ID == 2) {
-      strncpy(bleName, "RejsaRubberFrontR\0", 18);
+    strncpy(bleName, "RejsaRubberFR", 13);
   }
   else if (WHEEL_ID == 3) {
-      strncpy(bleName, "RejsaRubberRearL\0", 17);
+    strncpy(bleName, "RejsaRubberRL", 13);
   }
   else if (WHEEL_ID == 4) {
-      strncpy(bleName, "RejsaRubberRearR\0", 17);
+    strncpy(bleName, "RejsaRubberRR", 13);
+  }
+  else if (WHEEL_ID == 5) {
+    strncpy(bleName, "RejsaRubberF ", 13);
+  }
+  else if (WHEEL_ID == 6) {
+    strncpy(bleName, "RejsaRubberR ", 13);
   }
   else {
-    strncpy(bleName, "RejsaRubberTrac\0", 16);
+    strncpy(bleName, "Name Error   ", 13);
   }
+
+  uint8_t numAddressBytes;
+  if (WHEEL_ID == 0 ) {
+    numAddressBytes = 4;
+  }
+  else {
+    numAddressBytes = 3;
+  }
+  for(uint8_t i=0; i<numAddressBytes; i++) {
+    uint8_t a = sizeof(bleName)-(i*2)-2;
+    uint8_t b = sizeof(bleName)-(i*2)-1;
+    bleName[a] = (macaddr[i] >> 4);  
+    if (bleName[a] > 0x9) bleName[a] += 55; else bleName[a] += 48;
+    bleName[b] = (macaddr[i] & 0xf); 
+    if (bleName[b] > 0x9) bleName[b] += 55; else bleName[b] += 48;
+  }
+  bleName[sizeof(bleName)] = '\0';
+
 }
   
 
