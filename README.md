@@ -79,7 +79,7 @@ Just an enclosure for initial testing:
 The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the semi unique bluetooth MAC address, like this example:  
 - RejsaRubber6412051B - for a device with MAC address CC:C9:64:12:05:1B
 
-At compile time there is alternatively a choice of manually setting a device to one of six tire position names but now with only the three last bytes in the MAC address. With this each sensor can be more easily positioned properly in the logger app and still retain a unique address so not to clash with your friends nearby sensors.
+At compile time there is alternatively a choice of manually setting a device to one of six tire position names but now with only the three last bytes in the MAC address tagged on at the end of the name. With this each sensor can be more easily positioned properly in the logger app and still retain a unique address so not to clash with your friends nearby sensors.
 
 - "RejsaRubber" + four adress bytes      - Default
 - "RejsaRubberFL" + three adress bytes    
