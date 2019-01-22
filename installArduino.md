@@ -43,6 +43,14 @@ https://www.arduino.cc/en/Main/Software
 
 <img hspace="50" src="images/installArduinoIDE-7b.gif">
 
+- If you get error messages when trying to upload first check that you've chosen the correct COM port number and that the board is connected properly.  
+
+- If you get error messages looking something like this below (and you are sure you are using the correct COM port) you need to update the bootloader to a newer version, follow the guide on the link below.
+`  File "nordicsemi\dfu\dfu_transport_serial.py", line 243, in send_packet
+  File "nordicsemi\dfu\dfu_transport_serial.py", line 282, in get_ack_nr
+nordicsemi.exceptions.NordicSemiException: No data received on serial port. Not able to proceed.`   
+https://learn.adafruit.com/bluefruit-nrf52-feather-learning-guide/updating-the-bootloader
+
 - When done you can open the "Serial Monitor" under the "Tools" menu and view the Arduino board's status and data transmitted. Temperatures are in degrees celsius times ten.
 
 <img src="images/usbterminal.PNG">
