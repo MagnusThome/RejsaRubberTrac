@@ -16,7 +16,7 @@ Watch this short video:
 
 <a href="http://www.youtube.com/watch?v=Yuy62oPXugs"><img src=images/earlyharrysbetayoutube.jpg></a>
 
-Racechrono are well on their way too, here below performing stress tests with four RejsaRubberTracs plus a Garmin GLO 10Hz GPS and an OBDLink MX. Antti reported these good news from the tests with a Google Pixel 2 phone and RaceChrono Pro: "The ELM327 protocol for OBD-II is quite sensitive for lag/ping time, so it was affected by all the other Bluetooth connections as I expected. The highest update rate for OBDLink MX was still good, but the update rate fluctuates quite a bit, but even at lowest it was still faster than the Bluetooth LE OBD-II reader I tested. The update rate did not fluctuate on that one too much."
+Racechrono are well on their way too, here below performing stress tests with four RejsaRubberTracs plus a Garmin GLO 10Hz GPS and an OBDLink MX. Antti reported these good news from the tests with a Google Pixel 2 phone and RaceChrono Pro: *"The ELM327 protocol for OBD-II is quite sensitive for lag/ping time, so it was affected by all the other Bluetooth connections as I expected. The highest update rate for OBDLink MX was still good, but the update rate fluctuates quite a bit, but even at lowest it was still faster than the Bluetooth LE OBD-II reader I tested. The update rate did not fluctuate on that one too much."*
 
 <img src=images/racechronostresstests.jpg>
 
