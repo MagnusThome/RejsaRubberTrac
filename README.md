@@ -20,7 +20,7 @@ Racechrono are well on their way too, here below performing stress tests with fo
 
 <img src=images/racechronostresstests.jpg>
 
-# Parts
+# The four parts you need to build it
 <img align="right" width="231" src="images/partsizes.jpg">
 
 - Temperature IR-arraysensor MLX90621 GY-906LLC-BAB (60 degrees field of view. Ends with BAA for 120 degrees FOV)  
