@@ -10,11 +10,15 @@ For around 100EUR per wheel you can build your own wireless sensors to log your 
 - Support for a distance sensor is also included for tracking/logging suspension movements.
 - All data is available over Bluetooth Low Energy BLE.
 
-The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de>Harry's Laptimer</a> and <a href=http://www.racechrono.com>Racechrono</a> already have test units and have both done initial tests for integrating support for it.
+The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de>__Harry's Laptimer__</a> and <a href=http://www.racechrono.com>__Racechrono__</a> already have test units and are well on their way adding support for RejsaRubberTrac.
 
 Watch this short video:  
 
 <a href="http://www.youtube.com/watch?v=Yuy62oPXugs"><img src=images/earlyharrysbetayoutube.jpg></a>
+
+Racechrono are well on their way too, here below performing stress tests with four RejsaRubberTracs plus a Garmin GLO 10Hz GPS and an OBDLink MX. Antti reported these good news from the tests with a Google Pixel 2 phone and RaceChrono Pro: "The ELM327 protocol for OBD-II is quite sensitive for lag/ping time, so it was affected by all the other Bluetooth connections as I expected. The highest update rate for OBDLink MX was still good, but the update rate fluctuates quite a bit, but even at lowest it was still faster than the Bluetooth LE OBD-II reader I tested. The update rate did not fluctuate on that one too much."
+
+<img src=images/racechronostresstests.jpg>
 
 # Parts
 <img align="right" width="231" src="images/partsizes.jpg">
