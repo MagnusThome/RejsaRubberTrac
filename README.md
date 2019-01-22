@@ -76,14 +76,18 @@ Just an enclosure for initial testing:
 
 # Bluetooth device name
 
-The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the semi unique bluetooth MAC address, like this:  
+The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the semi unique bluetooth MAC address, like this example:  
 - RejsaRubber6412051B - for a device with MAC address CC:C9:64:12:05:1B
 
-At compile time there is alternatively a choice of manually setting a device to one of four fixed names:  
-- RejsaRubberFrontL 
-- RejsaRubberFrontR 
-- RejsaRubberRearL
-- RejsaRubberRearR
+At compile time there is alternatively a choice of manually setting a device to one of six tire position names but now with only the three last bytes in the MAC address. With this each sensor can be more easily positioned properly in the logger app and still retain a unique address so not to clash with your friends nearby sensors.
+
+- "RejsaRubber" + four adress bytes      - Default
+- "RejsaRubberFL" + three adress bytes    
+- "RejsaRubberFR" + three adress bytes 
+- "RejsaRubberRL" + three adress bytes 
+- "RejsaRubberRR" + three adress bytes 
+- "RejsaRubberF " + three adress bytes   - For motorcycles 
+- "RejsaRubberR " + three adress bytes   - For motorcycles
 
 # Compiling and uploading the code - Arduino IDE
 
