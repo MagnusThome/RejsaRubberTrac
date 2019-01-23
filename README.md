@@ -23,7 +23,7 @@ Here below Racechrono is performing stress tests with four RejsaRubberTracs plus
 # Easy to build
 <img align="right" width="231" src="images/partsizes.jpg">
 
-To build it you need to purchase three small boards, connect a few wires between the boards and then finally upload the done and dusted code you find here to the main board using a USB cable. Detailed instructions below. Then you are up and running. You probably want to get a small enclosure for it too before you mount it to your car.
+To build it you need to purchase three small boards, connect a few wires between the boards and then finally upload the done and dusted code you find here to the main board using a USB cable. Detailed instructions further below. Then you are up and running. You probably want to get a small enclosure for it too before you mount it to your car.
 
 - Temperature IR-arraysensor MLX90621 GY-906LLC-BAB (60 degrees field of view. Ends with BAA for 120 degrees FOV)  
 Example of where to find it: https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module 
