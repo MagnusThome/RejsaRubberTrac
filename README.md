@@ -113,7 +113,7 @@ With the Arduino IDE (or other serial terminal software) you can view the printe
 
 # Work in progress...
 
-The temperature part is rock stable and Bluetooth BLE seems to be running very nicely. But the distance sensor can at rare occasions hang, maybe a watchdog function needs to be added?
+The temperature part is rock stable and Bluetooth BLE seems to be running very nicely. But the distance sensor can at rare occasions hang, maybe a watchdog function needs to be added? The whole kit has NOT yet been properly field tested, just bench tests so far.
 
 A small enclosure to 3D-print must be designed. This will include a design that protects the sensors and a snap-in holder so the whole enclosure can easily be removed and put back on the car. If printed in nylon/carbon fiber it will be very light and strong to endure the harsh environment in the wheel well.
 
