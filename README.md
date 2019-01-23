@@ -4,7 +4,7 @@ A cheap wireless tire temperatures and suspension movement logger built from a s
 
 *__Intended to track/view/logg tire temperatures on race- and trackday cars.__*
 
-For around 100EUR per wheel you can build your own wireless sensors to log your driving. You'll then easily see if you are overheating the shoulder on one wheel in some particular corner, if one of the rear tires stays a bit too cold or if you need to adjust camber. And many more things about how you attack a course and how your car is set up.
+For from around 100EUR per wheel you can build your own wireless sensors to log your driving. You'll then easily see if you are overheating the shoulder on one wheel in some particular corner, if one of the rear tires stays a bit too cold or if you need to adjust camber. And many more things about how you attack a course and how your car is set up.
 
 - Temperatures are measured at sixteen different points over each tire's full width.
 - Support for a distance sensor is also included for tracking/logging suspension movements.
