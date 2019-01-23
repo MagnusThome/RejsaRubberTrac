@@ -37,7 +37,7 @@ https://www.arduino.cc/en/Main/Software
 
 <img hspace="50" src="images/installArduinoIDE-6.gif">
 
-- Place all the downloaded src files in a directory called "main"
+- Place all the files downloaded from here https://github.com/MagnusThome/RejsaRubberTrac/tree/master/main in a directory called "main"
 
 - Open the main.ino file and choose "Upload"
 
