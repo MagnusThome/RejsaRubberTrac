@@ -100,7 +100,7 @@ https://learn.adafruit.com/bluefruit-nrf52-feather-learning-guide
 
 # Testing Bluetooth BLE
 
-Here below are links to two Android Bluetooth BLE apps that can connect and show the live data that is transmitted. They show hex values only though so the sensor values are slightly obfuscated. But good for testing that everything is up and running.
+Here are links to two Android Bluetooth BLE apps that can connect and show the live data that is transmitted. They show hex values only though so the sensor values are slightly obfuscated. But good for testing that everything is up and running.
 
 https://play.google.com/store/apps/details?id=no.nordicsemi.android.mcp  
 https://play.google.com/store/apps/details?id=com.punchthrough.lightblueexplorer
