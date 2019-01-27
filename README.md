@@ -92,6 +92,7 @@ At compile time there is alternatively a choice of manually setting a device to 
 - "RejsaRubberR " + three adress bytes   - For motorcycles
 
 Note: The left of the two positional code characters can be an F and still be either MAC or positional info. You need to check the right one of the two characters. 0-9A-F in _that_ position = MAC. Blank space, R or L = positional info. Examples for a device with MAC address CC:C9:64:12:05:1B:
+```
 - RejsaRubber6412051B - non positional
 - RejsaRubberFL12051B
 - RejsaRubberFR12051B
@@ -99,6 +100,7 @@ Note: The left of the two positional code characters can be an F and still be ei
 - RejsaRubberRR12051B
 - RejsaRubberF 12051B
 - RejsaRubberL 12051B
+```
 
 # Compiling and uploading the code - Arduino IDE
 
