@@ -43,15 +43,15 @@ The CPU board and the two sensor boards are all powered by connecting power to t
 
 # How often can I get measurements?
 
-Depends. Measuring distance takes time, same with temperatures. And on top of that, with the current library used for Bluetooth communication, depending on how much data you're transmitting some delay is added too. So if you _disconnect_ one of the sensors everything is faster. And if you limit to get only eight temperature zones instead of all sixteen it will also be faster. Compromises...
+Depends. Measuring distance takes time, same with temperatures. And on top of that, with the current library used for Bluetooth communication, depending on how much data you're transmitting some delay is added too. So, if you don't connect a distance sensor everything is faster. And if you limit to get only eight temperature zones instead of all sixteen it will also be faster. Compromises...
 
 | Average speed 	| Data                       	|
 |---------------	|----------------------------	|
 | 6Hz           	| 16 temperatures + distance 	|
+| 8Hz           	| 16 temperatures            	|
 | 10Hz          	| 8 temperatures + distance  	|
-| 10Hz          	| 16 temperatures            	|
-| 14Hz          	| 8 temperatures             	|
-| 14Hz          	| distance                   	|
+| 16Hz          	| 8 temperatures             	|
+| 16Hz          	| distance                   	|
 
 # Positioning the sensors
 
