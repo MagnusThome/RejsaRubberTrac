@@ -37,9 +37,21 @@ Example of where to find it: https://www.electrokit.com/produkt/adafruit-feather
  - Optional: Rechargable 3,7V Lipo battery 250mAh or larger with JST-PH 2.0mm connector  
 Example of where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=3.7V+lipo+JST-PH+2.0&_sop=15 
 
-# Power supply
+# Supplying power to boards
 
 The CPU board and the two sensor boards are all powered by connecting power to the CPU board's USB micro connector. The CPU board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery. The system can also be run directly from the car's power, not using any Lipo battery, but then a 12 volt to USB 5 volt converter must be added.
+
+# How often can I get measurements?
+
+Depends. Measuring distance takes time, same with temperatures. And on top of that, with the current library used for Bluetooth communication, depending on how much data you're transmitting some delay is added too. So if you _disconnect_ one of the sensors everything is faster. And if you limit to get only eight temperature zones instead of all sixteen it will also be faster. Compromises...
+
+| Average speed 	| Data                       	|
+|---------------	|----------------------------	|
+| 6Hz           	| 16 temperatures + distance 	|
+| 10Hz          	| 8 temperatures + distance  	|
+| 10Hz          	| 16 temperatures            	|
+| 16Hz          	| 8 temperatures             	|
+| 18Hz          	| distance                   	|
 
 # Positioning the sensors
 
