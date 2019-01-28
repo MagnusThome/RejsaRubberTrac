@@ -88,8 +88,8 @@ At compile time there is alternatively a choice of manually setting a device to 
 - "RejsaRubberFR" + three adress bytes 
 - "RejsaRubberRL" + three adress bytes 
 - "RejsaRubberRR" + three adress bytes 
-- "RejsaRubberF " + three adress bytes   - For motorcycles 
-- "RejsaRubberR " + three adress bytes   - For motorcycles
+- "RejsaRubberF" + one blank space + three adress bytes   - For motorcycles 
+- "RejsaRubberR" + one blank space + three adress bytes   - For motorcycles
 
 Note: The left of the two positional code characters can be an F and still be either MAC or positional info. You need to check the right one of the two characters. 0-9A-F in _that_ position = MAC. Blank space, R or L = positional info. Examples for a device with MAC address CC:C9:64:12:05:1B:
 ```
