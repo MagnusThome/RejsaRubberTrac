@@ -50,8 +50,8 @@ Depends. Measuring distance takes time, same with temperatures. And on top of th
 | 6Hz           	| 16 temperatures + distance 	|
 | 10Hz          	| 8 temperatures + distance  	|
 | 10Hz          	| 16 temperatures            	|
-| 16Hz          	| 8 temperatures             	|
-| 18Hz          	| distance                   	|
+| 14Hz          	| 8 temperatures             	|
+| 14Hz          	| distance                   	|
 
 # Positioning the sensors
 
