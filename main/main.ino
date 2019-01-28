@@ -13,8 +13,8 @@
                       // 2 = "RejsaRubberFR" + three last bytes from the bluetooth MAC address
                       // 3 = "RejsaRubberRL" + three last bytes from the bluetooth MAC address
                       // 4 = "RejsaRubberRR" + three last bytes from the bluetooth MAC address
-                      // 5 = "RejsaRubberF " + three last bytes from the bluetooth MAC address
-                      // 6 = "RejsaRubberR " + three last bytes from the bluetooth MAC address
+                      // 5 = "RejsaRubberF" + one space + three last bytes from the bluetooth MAC address
+                      // 6 = "RejsaRubberR" + one space + three last bytes from the bluetooth MAC address
                     
 
 //#define DUMMYDATA   // UNCOMMENT TO ENABLE FAKE RANDOM DATA WITH NO SENSORS NEEDED
@@ -158,8 +158,8 @@ void loop() {
   }
 
 
-  blinkOnTempChange(datapackOne.temps[4]/10);    // Use one single temp in the middle of the array
-  blinkOnDistChange(datapackOne.distance/20);   // value/nn -> Ignore smaller changes to prevent noise triggering blinks
+  blinkOnTempChange(datapackOne.temps[4]/20);    // Use one single temp in the middle of the array
+  blinkOnDistChange(datapackOne.distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
 
   printStatus();
 
@@ -261,7 +261,7 @@ void blinkOnDistChange(uint16_t distnew) {
   static uint16_t distold = 0;
   if (distold != distnew) {
     digitalWrite(LED_RED, HIGH);
-    delay(3);
+    delay(2);
     digitalWrite(LED_RED, LOW);
   }
   distold = distnew;
@@ -274,7 +274,7 @@ void blinkOnTempChange(int16_t tempnew) {
   static int16_t tempold = 0;
   if (tempold != tempnew) {
     digitalWrite(LED_BLUE, HIGH);
-    delay(3);
+    delay(2);
     digitalWrite(LED_BLUE, LOW);
   }
   tempold = tempnew;
