@@ -55,7 +55,7 @@ Depends. Measuring distance takes time, same with temperatures. And on top of th
 
 # Positioning the sensors
 
-Click to view a larger version!  
+_Click to view a larger version!_  
 ![Display](https://raw.githubusercontent.com/MagnusThome/RejsaRubberTrac/master/images/sensorpositioning.jpg)
 
 # Connecting the three boards
