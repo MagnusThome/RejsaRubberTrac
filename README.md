@@ -90,9 +90,10 @@ Just an enclosure for initial testing:
 
 # Bluetooth device name
 
-The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the semi unique bluetooth MAC address, like this example:  
-- RejsaRubber6412051B - for a device with MAC address CC:C9:64:12:05:1B
-
+The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the semi unique bluetooth MAC address, like this example: 
+```
+RejsaRubber6412051B - for a device with MAC address CC:C9:64:12:05:1B
+```
 At compile time there is alternatively a choice of manually setting a device to one of six tire position names but now with only the three last bytes in the MAC address tagged on at the end of the name. With this naming scheme each sensor can be more easily positioned properly in the logger app and still retain a unique address so not to clash with your friends nearby sensors.
 
 - "RejsaRubber" + four adress bytes      - Default
@@ -100,18 +101,18 @@ At compile time there is alternatively a choice of manually setting a device to 
 - "RejsaRubberFR" + three adress bytes 
 - "RejsaRubberRL" + three adress bytes 
 - "RejsaRubberRR" + three adress bytes 
-- "RejsaRubberF" + one blank space + three adress bytes   - For motorcycles 
-- "RejsaRubberR" + one blank space + three adress bytes   - For motorcycles
+- "RejsaRubberF" + one blank space + three adress bytes   - For motorbikes 
+- "RejsaRubberR" + one blank space + three adress bytes   - For motorbikes
 
 Note: The left of the two positional code characters can be an F and still be either MAC or positional info. You need to check the right one of the two characters. 0-9A-F in _that_ position = MAC. Blank space, R or L = positional info. Examples for a device with MAC address CC:C9:64:12:05:1B:
 ```
 RejsaRubber6412051B - non positional
-RejsaRubberFL12051B
-RejsaRubberFR12051B
-RejsaRubberRL12051B
-RejsaRubberRR12051B
-RejsaRubberF 12051B
-RejsaRubberL 12051B
+RejsaRubberFL12051B - Front Left
+RejsaRubberFR12051B - Front Right
+RejsaRubberRL12051B - Rear Left
+RejsaRubberRR12051B - Rear Right
+RejsaRubberF 12051B - Front (motorbikes)
+RejsaRubberL 12051B - Rear  (motorbikes)
 ```
 
 # Compiling and uploading the code - Arduino IDE
