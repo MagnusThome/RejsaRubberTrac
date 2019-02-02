@@ -104,10 +104,13 @@ void setup(){
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
   pinMode(GPIODISTSENSORSLEEP, OUTPUT);
-  pinMode(GPIOWHEELPOSCODE1, INPUT);
-  pinMode(GPIOWHEELPOSCODE2, INPUT);
-  pinMode(GPIOWHEELPOSCODE3, INPUT);
-  pinMode(GPIOMIRRORTIRECODE, INPUT);
+  
+  if (ENABLEHWCODING == 1) {
+    pinMode(GPIOWHEELPOSCODE1, INPUT);
+    pinMode(GPIOWHEELPOSCODE2, INPUT);
+    pinMode(GPIOWHEELPOSCODE3, INPUT);
+    pinMode(GPIOMIRRORTIRECODE, INPUT);
+  }
 
   datapackOne.distance = 0;
   datapackOne.protocol = PROTOCOL;
