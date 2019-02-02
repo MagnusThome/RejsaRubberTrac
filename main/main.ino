@@ -8,16 +8,35 @@
 // -------------------------------------------------------------------------
 // -------------------------------------------------------------------------
 
-#define WHEEL_ID 0    // 0 = "RejsaRubber" + four last bytes from the bluetooth MAC address
-                      // 1 = "RejsaRubberFL" + three last bytes from the bluetooth MAC address
-                      // 2 = "RejsaRubberFR" + three last bytes from the bluetooth MAC address
-                      // 3 = "RejsaRubberRL" + three last bytes from the bluetooth MAC address
-                      // 4 = "RejsaRubberRR" + three last bytes from the bluetooth MAC address
-                      // 5 = "RejsaRubberF" + one space + three last bytes from the bluetooth MAC address
-                      // 6 = "RejsaRubberR" + one space + three last bytes from the bluetooth MAC address
-                    
 
-//#define DUMMYDATA   // UNCOMMENT TO ENABLE FAKE RANDOM DATA WITH NO SENSORS NEEDED
+#define WHEELPOS 0        // 0 = "RejsaRubber" + four last bytes from the bluetooth MAC address
+                          // 1 = "RejsaRubberFL" + three last bytes from the bluetooth MAC address
+                          // 2 = "RejsaRubberFR" + three last bytes from the bluetooth MAC address
+                          // 3 = "RejsaRubberRL" + three last bytes from the bluetooth MAC address
+                          // 4 = "RejsaRubberRR" + three last bytes from the bluetooth MAC address
+                          // 5 = "RejsaRubberF" + one space + three last bytes from the bluetooth MAC address
+                          // 6 = "RejsaRubberR" + one space + three last bytes from the bluetooth MAC address
+                        
+                          // NOTE!!! THIS CAN BE OVERRIDDEN WITH HARDWARE CODING WITH GPIO PINS. SEE ENABLEHWCODING DEFINE.
+
+                    
+#define MIRRORTIRE 0      // 0 = default
+                          // 1 = Mirror the tire, making the outside edge temps the inside edge temps
+
+                          // NOTE!!! THIS CAN BE OVERRIDDEN WITH HARDWARE CODING WITH GPIO PINS. SEE ENABLEHWCODING DEFINE.
+
+
+#define ENABLEHWCODING 0  // FOR ENABLING HARDWARE CODING OF WHEEL POSITION AND TIRE MIRRORING WITH THE GPIO SOLDER JUMPERS (PCB TRACE CUTS). 
+                          // **ONLY** SET TO 1 IF YOU HAVE PULL UP RESISTORS AND/OR GROUNDING ON **ALL** CODING GPIO PINS. 
+                          // WHEN THIS IS SET TO 0 JUST USE THE SOFTWARE DEFINES ABOVE INSTEAD
+
+
+#define DISABLEBLINK 0    // 0 = blue LED blinks on temperature changes, red LED blinks on distance changes
+                          // 1 = no blinking
+
+
+
+//#define DUMMYDATA       // UNCOMMENT TO ENABLE FAKE RANDOM DATA WITH NO SENSORS NEEDED
 
 
 // -------------------------------------------------------------------------
@@ -25,8 +44,13 @@
 
 
 #define PROTOCOL 0x01
-#define DISTSENSORSLEEP 27   // GPIO pin number
+#define TEMPOFFSET 1.00         // Default = 1.00
 
+#define GPIODISTSENSORSLEEP 27  // GPIO pin number
+#define GPIOWHEELPOSCODE1 30    // GPIO pin number
+#define GPIOWHEELPOSCODE2 11    // GPIO pin number
+#define GPIOWHEELPOSCODE3 7     // GPIO pin number
+#define GPIOMIRRORTIRECODE 15   // GPIO pin number
 
 typedef struct {
   uint8_t  protocol;         // currently: 0x01
@@ -49,6 +73,7 @@ two_t datapackTwo;
 uint8_t distSensorPresent;
 uint8_t macaddr[6];
 char bleName[19];
+uint8_t mirrorTire = 0;
 
 
 Adafruit_VL53L0X distSensor = Adafruit_VL53L0X();
@@ -57,7 +82,8 @@ MLX90621 tempSensor;
 
 // Function declarations
 uint8_t InitDistanceSensor(void);
-void setBLEname(void);
+uint8_t getWheelPosCoding(void);
+void setBLEname(uint8_t);
 void printStatus(void);
 void blinkOnTempChange(int16_t);
 void blinkOnDistChange(uint16_t);
@@ -73,10 +99,15 @@ void blinkOnDistChange(uint16_t);
 void setup(){
   Serial.begin(115200);
   Serial.println("\nBegin startup");
-  Bluefruit.autoConnLed(false);
+  Bluefruit.autoConnLed(false);     // DISABLE USING BLUE LED AS INDICATOR FOR BLUETOOTH CONNECTION
+
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
-  pinMode(DISTSENSORSLEEP, OUTPUT);
+  pinMode(GPIODISTSENSORSLEEP, OUTPUT);
+  pinMode(GPIOWHEELPOSCODE1, INPUT);
+  pinMode(GPIOWHEELPOSCODE2, INPUT);
+  pinMode(GPIOWHEELPOSCODE3, INPUT);
+  pinMode(GPIOMIRRORTIRECODE, INPUT);
 
   datapackOne.distance = 0;
   datapackOne.protocol = PROTOCOL;
@@ -88,20 +119,40 @@ void setup(){
   Serial.println("Starting temp sensor");
   tempSensor.initialise(16);
 
+
+  // START UP BLUETOOTH
   Serial.print("Starting bluetooth with MAC address ");
   Bluefruit.begin();
   Bluefruit.Gap.getAddr(macaddr);
   Serial.printBufferReverse(macaddr, 6, ':');
   Serial.println();
-  
+
+
+  // BLUETOOTH DEVICE NAME
+  uint8_t wheelPosCode = getWheelPosCoding();
+  if (wheelPosCode > 0) {
+    setBLEname(wheelPosCode); // SET FROM GPIO SOLDER JUMPERS (PCB TRACE CUTS)
+  }
+  else {
+    setBLEname(WHEELPOS);     // SET FROM DEFINE IN CODE HEADER
+  }
   Serial.print("Device name: ");
-  setBLEname();
   Serial.println(bleName);
   Bluefruit.setName(bleName); 
 
+
+  // TIRE MIRRORED?
+  if ((ENABLEHWCODING == 1 && digitalRead(GPIOMIRRORTIRECODE) == 1) || MIRRORTIRE == 1) {
+    mirrorTire = 1;
+    Serial.println("Temperature sensor is mirrored");
+  }
+
+
+  // RUN BLUETOOTH GATT
   setupMainService();
   startAdvertising(); 
   Serial.println("Running!");
+
 
 #ifdef DUMMYDATA
   dummyloop();
@@ -119,12 +170,12 @@ void loop() {
   if (distSensorPresent) {
     VL53L0X_RangingMeasurementData_t measure;
     if (distSensor.rangingTest(&measure, false) != VL53L0X_ERROR_NONE) {
-      datapackOne.distance = 0;                                           // sensor fail
+      datapackOne.distance = 0;                                           // SENSOR FAIL
       Serial.println("Reset distance sensor");
       InitDistanceSensor();
     }
     else {
-      if (measure.RangeStatus == 4 || measure.RangeMilliMeter > 8190) {   // measure fail
+      if (measure.RangeStatus == 4 || measure.RangeMilliMeter > 8190) {   // MEASURE FAIL
         datapackOne.distance = 0;
       }
       else {
@@ -137,8 +188,12 @@ void loop() {
   // - - T E M P S - -
   tempSensor.measure(true); 
   for(uint8_t i=0;i<8;i++){
-    datapackOne.temps[i] = (int16_t) ((tempSensor.getTemperature(i*8+1)+tempSensor.getTemperature(i*8+2))*5);  // Mean value of the two middle rows of the *four* (4x16) rows total (the first and last rows are ignored)
-    datapackTwo.temps[i] = (int16_t) ((tempSensor.getTemperature(i*8+5)+tempSensor.getTemperature(i*8+6))*5);  
+    uint8_t idx = i;
+    if (mirrorTire == 1) {
+      idx = 7-i;
+    }
+    datapackOne.temps[idx] = (int16_t) TEMPOFFSET *((tempSensor.getTemperature(i*8+1)+tempSensor.getTemperature(i*8+2))*5);  // Mean value of the two middle rows of the *four* (4x16) rows total (the first and last rows are ignored)
+    datapackTwo.temps[idx] = (int16_t) TEMPOFFSET *((tempSensor.getTemperature(i*8+5)+tempSensor.getTemperature(i*8+6))*5);  
   }
 
 
@@ -158,8 +213,10 @@ void loop() {
   }
 
 
-  blinkOnTempChange(datapackOne.temps[4]/20);    // Use one single temp in the middle of the array
-  blinkOnDistChange(datapackOne.distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
+  if (DISABLEBLINK == 0) {
+    blinkOnTempChange(datapackOne.temps[4]/20);    // Use one single temp in the middle of the array
+    blinkOnDistChange(datapackOne.distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
+  }
 
   printStatus();
 
@@ -171,37 +228,47 @@ void loop() {
 // ----------------------------------------
 
 uint8_t InitDistanceSensor(void) {
-  digitalWrite(DISTSENSORSLEEP, LOW);
+  digitalWrite(GPIODISTSENSORSLEEP, LOW);
   delay(50);
-  digitalWrite(DISTSENSORSLEEP, HIGH);
+  digitalWrite(GPIODISTSENSORSLEEP, HIGH);
   delay(50);
   return distSensor.begin(VL53L0X_I2C_ADDR, false); 
 }
 
 
 // ----------------------------------------
+uint8_t getWheelPosCoding(void) {
+  if (ENABLEHWCODING == 1) {
+    return digitalRead(GPIOWHEELPOSCODE1) || digitalRead(GPIOWHEELPOSCODE2) << 1 || digitalRead(GPIOWHEELPOSCODE3) << 2;
+  }
+  else {
+    return 0;
+  }
+}
 
-void setBLEname(void) {
+// ----------------------------------------
 
-  if (WHEEL_ID == 0) {
+void setBLEname(uint8_t wheelPos) {
+
+  if (wheelPos == 0) {
     strncpy(bleName, "RejsaRubber", 11);
   }
-  else if (WHEEL_ID == 1) {
+  else if (wheelPos == 1) {
     strncpy(bleName, "RejsaRubberFL", 13);
   }
-  else if (WHEEL_ID == 2) {
+  else if (wheelPos == 2) {
     strncpy(bleName, "RejsaRubberFR", 13);
   }
-  else if (WHEEL_ID == 3) {
+  else if (wheelPos == 3) {
     strncpy(bleName, "RejsaRubberRL", 13);
   }
-  else if (WHEEL_ID == 4) {
+  else if (wheelPos == 4) {
     strncpy(bleName, "RejsaRubberRR", 13);
   }
-  else if (WHEEL_ID == 5) {
+  else if (wheelPos == 5) {
     strncpy(bleName, "RejsaRubberF ", 13);
   }
-  else if (WHEEL_ID == 6) {
+  else if (wheelPos == 6) {
     strncpy(bleName, "RejsaRubberR ", 13);
   }
   else {
@@ -209,7 +276,7 @@ void setBLEname(void) {
   }
 
   uint8_t numAddressBytes;
-  if (WHEEL_ID == 0 ) {
+  if (wheelPos == 0 ) {
     numAddressBytes = 4;
   }
   else {
@@ -234,7 +301,7 @@ void printStatus(void) {
 
   static unsigned long then;
   unsigned long now = millis();
-  Serial.print(1000/(float)(now - then),1); // Loop speed in Hz
+  Serial.print(1000/(float)(now - then),1); // Print loop speed in Hz
   Serial.print("Hz\t");
   then = now;
 
