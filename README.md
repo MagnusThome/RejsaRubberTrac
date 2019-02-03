@@ -87,18 +87,6 @@ __NOTE: You do not have to mount the sensor at exactly the necessary distance!! 
 |     385 mm 	|                                                     33 cm 	|                                                    11 cm 	|
 
 
-# How often can I get measurements?
-
-Depends. Measuring distance takes time, same with temperatures. And on top of that, with the current library used for Bluetooth communication, depending on how much data you're transmitting some delay is added too. So, if you don't connect a distance sensor everything is faster. And if the application in the other end limits to subscribe to only eight temperature zones instead of all sixteen it will also all be faster. Compromises...
-
-| Average speed 	| Data                       	|
-|---------------	|----------------------------	|
-| 6Hz           	| 16 temperatures + distance 	|
-| 8Hz           	| 16 temperatures            	|
-| 10Hz          	| 8 temperatures + distance  	|
-| 16Hz          	| 8 temperatures             	|
-| 16Hz          	| distance                   	|
-
 # Connecting the three boards
 
 Four wires in a bus configuration connects the two sensors and the cpu board.  
@@ -148,6 +136,18 @@ https://play.google.com/store/apps/details?id=com.punchthrough.lightblueexplorer
 With the Arduino IDE (or other serial terminal software) you can view the printed output from the board over USB. Temperatures are shown as degrees in celsius times ten.
 
 <img src="images/usbterminal.PNG">
+
+# How often can I get measurements?
+
+Depends. Measuring distance takes time, same with temperatures. And on top of that, with the current library used for Bluetooth communication, depending on how much data you're transmitting some delay is added too. So, if you don't connect a distance sensor everything is faster. And if the application in the other end limits to subscribe to only eight temperature zones instead of all sixteen it will also all be faster. Compromises...
+
+| Average speed 	| Data                       	|
+|---------------	|----------------------------	|
+| 6Hz           	| 16 temperatures + distance 	|
+| 8Hz           	| 16 temperatures            	|
+| 10Hz          	| 8 temperatures + distance  	|
+| 16Hz          	| 8 temperatures             	|
+| 16Hz          	| distance                   	|
 
 # Bluetooth device name
 
