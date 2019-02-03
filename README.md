@@ -25,13 +25,12 @@ Here below Racechrono is performing stress tests with four RejsaRubberTracs plus
 
 To build it you need to purchase three small boards, connect a few wires between the boards and then finally upload the done and dusted code you find here to the main board using a USB cable. Detailed instructions further below. Then you're up and running! You probably want to get a small enclosure for it though before you mount it to your car!
 
-__- Temperature IR-arraysensor MLX90621__    
+__- Temperature IR-arraysensor MLX90621 GY-906LLC-BAB__    
+(60 degrees field of view ends with BAB, 120 degrees with BAA)  
 <a href="https://www.aliexpress.com/w/wholesale-MLX90621.html?SortType=price_asc&SearchText=MLX90621">www.aliexpress.com</a> (~ $50)  
 <a href="https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module">www.eckstein-shop.de</a> (~ 55€)  
 <a href="https://www.mouser.se/ProductDetail/Melexis/MLX90621ESF-BAB-000-SP?qs=sGAEpiMZZMucenltShoSnqRDBUuVzCzKa3Zx6liDTBzqGCq1%252bjAaAA%3d%3d">www.mouser.com</a> (~ 35€ excl daugther board)  
 <a href="https://www.digikey.com/product-detail/en/melexis-technologies-nv/MLX90621ESF-BAB-000-TU/MLX90621ESF-BAB-000-TU-ND/4968086">www.digikey.com</a> (~ 36€ excl daugther board)  
-MLX90621 GY-906LLC-BAB is 60 degrees field of view  
-MLX90621 GY-906LLC-BAA is 120 degrees field of view  
 
 __- Laser distance sensor VL53L0X__  
 <a href="https://www.ebay.com/sch/i.html?_nkw=vl53l0x&_sop=15">www.ebay.com</a> (~ $5)  
