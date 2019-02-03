@@ -32,7 +32,7 @@ Example of where to find it: https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Tem
 Example of where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=VL53L0X&_sop=15  
 
  - CPU and Bluetooth board Adafruit BlueFruit nRF52  
-Example of where to find it: https://www.adafruit.com/product/3406  
+Example of where to find it: https://www.mouser.se/ProductDetail/485-3406
 
  - Optional: Rechargable 3,7V Lipo battery 250mAh or larger with JST-PH 2.0mm connector  
 Example of where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=3.7V+lipo+JST-PH+2.0&_sop=15 
