@@ -26,23 +26,16 @@ Here below Racechrono is performing stress tests with four RejsaRubberTracs plus
 To build it you need to purchase three small boards, connect a few wires between the boards and then finally upload the done and dusted code you find here to the main board using a USB cable. Detailed instructions further below. Then you're up and running! You probably want to get a small enclosure for it though before you mount it to your car!
 
 - Temperature IR-arraysensor MLX90621 GY-906LLC-BAB (60 degrees field of view. Ends with BAA for 120 degrees FOV)  
-Examples of where to find it: 
-<a href="https://www.aliexpress.com/w/wholesale-MLX90621.html?SortType=price_asc&SearchText=MLX90621">www.aliexpress.com</a> (~ $50)  
-<a href="https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module">www.eckstein-shop.de</a> (~ 55€)   
+Examples of where to find it: <a href="https://www.aliexpress.com/w/wholesale-MLX90621.html?SortType=price_asc&SearchText=MLX90621">www.aliexpress.com</a> (~ $50) or <a href="https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module">www.eckstein-shop.de</a> (~ 55€)   
 
  - Laser distance sensor VL53L0X  
-Examples of where to find it:  
-<a href="https://www.ebay.com/sch/i.html?_nkw=vl53l0x&_sop=15">www.ebay.com</a> (~ $5)  
-<a href="https://www.aliexpress.com/w/wholesale-vl53l0x.html?SortType=price_asc&SearchText=vl53l0x">www.aliexpress.com</a> (~ $2.50) 
+Examples of where to find it: <a href="https://www.ebay.com/sch/i.html?_nkw=vl53l0x&_sop=15">www.ebay.com</a> (~ $5) or <a href="https://www.aliexpress.com/w/wholesale-vl53l0x.html?SortType=price_asc&SearchText=vl53l0x">www.aliexpress.com</a> (~ $2.50) 
 
  - CPU and Bluetooth board Adafruit BlueFruit nRF52  
-Examples of where to find it:  
-<a href="https://www.mouser.se/ProductDetail/485-3406">www.mouser.com</a> (~ $25)
-<a href="https://www.adafruit.com/product/3406">www.adafruit.com</a> (~ $25)
+Examples of where to find it <a href="https://www.mouser.se/ProductDetail/485-3406">www.mouser.com</a> (~ $25) or <a href="https://www.adafruit.com/product/3406">www.adafruit.com</a> (~ $25)  
 
  - Optional: Rechargable 3,7V Lipo battery 250mAh or larger with JST-PH 2.0mm connector  
-Examples of where to find it:  
-<a href="https://www.ebay.com/sch/i.html?_nkw=3.7V+lipo+battery+JST-PH+2.0&_sop=15">www.ebay.com</a> (~ $8)  
+Examples of where to find it: <a href="https://www.ebay.com/sch/i.html?_nkw=3.7V+lipo+battery+JST-PH+2.0&_sop=15">www.ebay.com</a> (~ $8)  
 
 # Supplying power to boards
 
