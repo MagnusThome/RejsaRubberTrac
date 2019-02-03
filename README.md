@@ -29,7 +29,7 @@ To build it you need to purchase three small boards, connect a few wires between
 Example of where to find it: https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module 
 
  - Laser distance sensor VL53L0X  
-Example of where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=VL53L0X&_sop=15  
+Example of where to find it: https://www.ebay.com/sch/i.html?_nkw=vl53l0x&_sop=15  
 
  - CPU and Bluetooth board Adafruit BlueFruit nRF52  
 Example of where to find it: https://www.mouser.se/ProductDetail/485-3406
