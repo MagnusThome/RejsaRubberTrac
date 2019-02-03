@@ -28,7 +28,7 @@ To build it you need to purchase three small boards, connect a few wires between
 - Temperature IR-arraysensor MLX90621 GY-906LLC-BAB (60 degrees field of view. Ends with BAA for 120 degrees FOV)  
 Example of where to find it: https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module 
 
- - Laser distance sensor VLX53L0X  
+ - Laser distance sensor VL53L0X  
 Example of where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=VL53L0X&_sop=15  
 
  - CPU and Bluetooth board Adafruit BlueFruit nRF52  
