@@ -48,18 +48,6 @@ To build it you need to purchase three small boards, connect a few wires between
 
 The CPU board and the two sensor boards are all powered by connecting power to the CPU board's USB micro connector. The CPU board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery. The system can also be run directly from the car's power, not using any Lipo battery, but then a 12 volt to USB 5 volt converter must be added.
 
-# How often can I get measurements?
-
-Depends. Measuring distance takes time, same with temperatures. And on top of that, with the current library used for Bluetooth communication, depending on how much data you're transmitting some delay is added too. So, if you don't connect a distance sensor everything is faster. And if the application in the other end limits to subscribe to only eight temperature zones instead of all sixteen it will also all be faster. Compromises...
-
-| Average speed 	| Data                       	|
-|---------------	|----------------------------	|
-| 6Hz           	| 16 temperatures + distance 	|
-| 8Hz           	| 16 temperatures            	|
-| 10Hz          	| 8 temperatures + distance  	|
-| 16Hz          	| 8 temperatures             	|
-| 16Hz          	| distance                   	|
-
 # Positioning the sensors
 
 _Click to view a larger version!_  
@@ -99,6 +87,18 @@ __NOTE: You do not have to mount the sensor at exactly the necessary distance!! 
 |     385 mm 	|                                                     33 cm 	|                                                    11 cm 	|
 
 
+# How often can I get measurements?
+
+Depends. Measuring distance takes time, same with temperatures. And on top of that, with the current library used for Bluetooth communication, depending on how much data you're transmitting some delay is added too. So, if you don't connect a distance sensor everything is faster. And if the application in the other end limits to subscribe to only eight temperature zones instead of all sixteen it will also all be faster. Compromises...
+
+| Average speed 	| Data                       	|
+|---------------	|----------------------------	|
+| 6Hz           	| 16 temperatures + distance 	|
+| 8Hz           	| 16 temperatures            	|
+| 10Hz          	| 8 temperatures + distance  	|
+| 16Hz          	| 8 temperatures             	|
+| 16Hz          	| distance                   	|
+
 # Connecting the three boards
 
 Four wires in a bus configuration connects the two sensors and the cpu board.  
@@ -129,6 +129,26 @@ Just an enclosure for initial testing:
 
 ![Display](images/testbox.jpg)
 
+# Compiling and uploading the code - Arduino IDE
+
+Read the <a href=/installArduino.md>complete step by step instruction here</a> to install the IDE and compile and upload the code. 
+
+Here's info on the Adafruit Bluefruit nRF52 board:  
+https://learn.adafruit.com/bluefruit-nrf52-feather-learning-guide
+
+# Testing Bluetooth BLE
+
+Here are links to two Android Bluetooth BLE apps that can connect and show the live data that is transmitted. They show hex values only though so the sensor values are slightly obfuscated. But good for testing that everything is up and running.
+
+https://play.google.com/store/apps/details?id=no.nordicsemi.android.mcp  
+https://play.google.com/store/apps/details?id=com.punchthrough.lightblueexplorer
+
+# Testing over USB
+
+With the Arduino IDE (or other serial terminal software) you can view the printed output from the board over USB. Temperatures are shown as degrees in celsius times ten.
+
+<img src="images/usbterminal.PNG">
+
 # Bluetooth device name
 
 The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the semi unique bluetooth MAC address, like this example: 
@@ -155,26 +175,6 @@ Examples for a device with MAC address CC:C9:64:12:05:1B:
 "RejsaRubberF 12051B" - Front (motorbikes)
 "RejsaRubberL 12051B" - Rear  (motorbikes)
 ```
-
-# Compiling and uploading the code - Arduino IDE
-
-Read the <a href=/installArduino.md>complete step by step instruction here</a> to install the IDE and compile and upload the code. 
-
-Here's info on the Adafruit Bluefruit nRF52 board:  
-https://learn.adafruit.com/bluefruit-nrf52-feather-learning-guide
-
-# Testing Bluetooth BLE
-
-Here are links to two Android Bluetooth BLE apps that can connect and show the live data that is transmitted. They show hex values only though so the sensor values are slightly obfuscated. But good for testing that everything is up and running.
-
-https://play.google.com/store/apps/details?id=no.nordicsemi.android.mcp  
-https://play.google.com/store/apps/details?id=com.punchthrough.lightblueexplorer
-
-# Testing over USB
-
-With the Arduino IDE (or other serial terminal software) you can view the printed output from the board over USB. Temperatures are shown as degrees in celsius times ten.
-
-<img src="images/usbterminal.PNG">
 
 # Work in progress...
 
