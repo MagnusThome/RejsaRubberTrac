@@ -30,14 +30,14 @@ MLX90621 GY-906LLC-BAB is 60 degrees field of view
 MLX90621 GY-906LLC-BAA is 120 degrees field of view  
 Examples of where to find it:  
 <a href="https://www.aliexpress.com/w/wholesale-MLX90621.html?SortType=price_asc&SearchText=MLX90621">www.aliexpress.com</a> (~ $50)  
-<a href="https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module">www.eckstein-shop.de</a> (~ 55€)
+<a href="https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module">www.eckstein-shop.de</a> (~ 55€)  
 <a href="https://www.mouser.se/ProductDetail/Melexis/MLX90621ESF-BAB-000-SP?qs=sGAEpiMZZMucenltShoSnqRDBUuVzCzKa3Zx6liDTBzqGCq1%252bjAaAA%3d%3d">www.mouser.com</a> (~ 35€ excl daugther board)  
 <a href="https://www.digikey.com/product-detail/en/melexis-technologies-nv/MLX90621ESF-BAB-000-TU/MLX90621ESF-BAB-000-TU-ND/4968086">www.digikey.com</a> (~ 36€ excl daugther board)  
 
  - Laser distance sensor VL53L0X  
 Examples of where to find it:  
 <a href="https://www.ebay.com/sch/i.html?_nkw=vl53l0x&_sop=15">www.ebay.com</a> (~ $5)  
-<a href="https://www.aliexpress.com/w/wholesale-vl53l0x.html?SortType=price_asc&SearchText=vl53l0x">www.aliexpress.com</a> (~ $2.50) 
+<a href="https://www.aliexpress.com/w/wholesale-vl53l0x.html?SortType=price_asc&SearchText=vl53l0x">www.aliexpress.com</a> (~ $2.50)  
 
  - CPU and Bluetooth board Adafruit BlueFruit nRF52  
 Examples of where to find it:  
