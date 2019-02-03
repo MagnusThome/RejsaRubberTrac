@@ -65,7 +65,7 @@ Depends. Measuring distance takes time, same with temperatures. And on top of th
 _Click to view a larger version!_  
 ![Display](https://raw.githubusercontent.com/MagnusThome/RejsaRubberTrac/master/images/sensorpositioning.jpg)
 
-The wider the tire the further away you need to position the sensor to get the full tire width within the sensors field of view (FOV). There are two versions of the temperature sensor, one with 60 degrees of FOV and one wide version with 120 degrees FOV. The latter can be a better choice if you have very wide tires and need to mount the sensors pretty close. Here below is a table with the distance the sensor should be at for different tire widths.
+The wider the tire the further away you need to position the sensor to get the full tire width within the sensors field of view (FOV). There are two versions of the temperature sensor, one with 60 degrees of FOV and one wide version with 120 degrees FOV. The latter can be a better choice if you have very wide tires and need to mount the sensors pretty close. Here below is a table with mounting distances at different tire widths.
 
 __NOTE: You do not have to mount the sensor at exactly the necessary distance!! The distance is simply fine tuned by changing the angle of the sensor, se picture above!__
 
