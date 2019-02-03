@@ -29,13 +29,13 @@ To build it you need to purchase three small boards, connect a few wires between
 Example of where to find it: https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module 
 
  - Laser distance sensor VL53L0X  
-Example of where to find it: https://www.ebay.com/sch/i.html?_nkw=vl53l0x&_sop=15  
+Example of where to find it: https://www.ebay.com/sch/i.html?_nkw=vl53l0x&_sop=15 (~ $5)  
 
  - CPU and Bluetooth board Adafruit BlueFruit nRF52  
-Example of where to find it: https://www.mouser.se/ProductDetail/485-3406
+Example of where to find it: https://www.mouser.se/ProductDetail/485-3406 (~ $25)
 
  - Optional: Rechargable 3,7V Lipo battery 250mAh or larger with JST-PH 2.0mm connector  
-Example of where to find it: https://www.ebay.co.uk/sch/i.html?_nkw=3.7V+lipo+JST-PH+2.0&_sop=15 
+Example of where to find it: https://www.ebay.com/sch/i.html?_nkw=3.7V+lipo+battery+JST-PH+2.0&_sop=15 (~ $8)  
 
 # Supplying power to boards
 
