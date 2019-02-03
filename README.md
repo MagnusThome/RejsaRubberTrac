@@ -65,6 +65,40 @@ Depends. Measuring distance takes time, same with temperatures. And on top of th
 _Click to view a larger version!_  
 ![Display](https://raw.githubusercontent.com/MagnusThome/RejsaRubberTrac/master/images/sensorpositioning.jpg)
 
+The wider the tire the further away you need to position the sensor to get the full tire width within the sensors field of view (FOV). There are two versions of the temperature sensor, one with 60 degrees of FOV and one wide version with 120 degrees FOV. The latter can be a better choice if you have very wide tires and need to mount the sensors pretty close. Here below is a table with the distance the sensor should be at for different tire widths.
+
+__NOTE: You do not have to mount the sensor at exactly the necessary distance!! The distance is simply fine tuned by changing the angle of the sensor, se picture above!__
+
+| Tire width 	| Distance from tire to sensor<br>with 60 degree narrow sensor 	| Distance from tire to sensor<br>with 120 degree wide sensor 	|
+|-----------:	|----------------------------------------------------------:	|---------------------------------------------------------:	|
+|     135 mm 	|                                                     12 cm 	|                                                     4 cm 	|
+|     145 mm 	|                                                     13 cm 	|                                                     4 cm 	|
+|     155 mm 	|                                                     13 cm 	|                                                     4 cm 	|
+|     165 mm 	|                                                     14 cm 	|                                                     5 cm 	|
+|     175 mm 	|                                                     15 cm 	|                                                     5 cm 	|
+|     185 mm 	|                                                     16 cm 	|                                                     5 cm 	|
+|     195 mm 	|                                                     17 cm 	|                                                     6 cm 	|
+|     205 mm 	|                                                     18 cm 	|                                                     6 cm 	|
+|     215 mm 	|                                                     19 cm 	|                                                     6 cm 	|
+|     225 mm 	|                                                     19 cm 	|                                                     6 cm 	|
+|     235 mm 	|                                                     20 cm 	|                                                     7 cm 	|
+|     245 mm 	|                                                     21 cm 	|                                                     7 cm 	|
+|     255 mm 	|                                                     22 cm 	|                                                     7 cm 	|
+|     265 mm 	|                                                     23 cm 	|                                                     8 cm 	|
+|     275 mm 	|                                                     24 cm 	|                                                     8 cm 	|
+|     285 mm 	|                                                     25 cm 	|                                                     8 cm 	|
+|     295 mm 	|                                                     26 cm 	|                                                     9 cm 	|
+|     305 mm 	|                                                     26 cm 	|                                                     9 cm 	|
+|     315 mm 	|                                                     27 cm 	|                                                     9 cm 	|
+|     325 mm 	|                                                     28 cm 	|                                                     9 cm 	|
+|     335 mm 	|                                                     29 cm 	|                                                    10 cm 	|
+|     345 mm 	|                                                     30 cm 	|                                                    10 cm 	|
+|     355 mm 	|                                                     31 cm 	|                                                    10 cm 	|
+|     365 mm 	|                                                     32 cm 	|                                                    11 cm 	|
+|     375 mm 	|                                                     32 cm 	|                                                    11 cm 	|
+|     385 mm 	|                                                     33 cm 	|                                                    11 cm 	|
+
+
 # Connecting the three boards
 
 Four wires in a bus configuration connects the two sensors and the cpu board.  
