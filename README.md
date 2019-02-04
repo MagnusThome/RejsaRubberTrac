@@ -101,7 +101,7 @@ One extra fifth (optional) wire connects to the distance sensor's XSHUT pin to g
 | -                           	| GPIO1   	| -        	|
 | MISO                         	| XSHUT   	| -        	|
 
-![Display](images/connect-drawing3.jpg)
+![Display](images/connect-drawing.jpg)
 
 The two sensorboards can easily be connected together electrically and mechanically by "sandwiching" them together with a pin header as in the picture below.
 
