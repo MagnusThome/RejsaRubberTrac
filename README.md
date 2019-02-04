@@ -99,7 +99,7 @@ One extra fifth (optional) wire connects to the distance sensor's XSHUT pin to g
 | SCL                         	| SCL     	| SCL      	|
 | SDA                         	| SDA     	| SDA      	|
 | -                           	| GPIO1   	| -        	|
-| 14                          	| XSHUT   	| -        	|
+| MISO                         	| XSHUT   	| -        	|
 
 ![Display](images/connect-drawing3.jpg)
 
