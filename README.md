@@ -99,9 +99,9 @@ One extra fifth (optional) wire connects to the distance sensor's XSHUT pin to g
 | SCL                         	| SCL     	| SCL      	|
 | SDA                         	| SDA     	| SDA      	|
 | -                           	| GPIO1   	| -        	|
-| 27                          	| XSHUT   	| -        	|
+| 14                          	| XSHUT   	| -        	|
 
-![Display](images/connect-drawing2.jpg)
+![Display](images/connect-drawing3.jpg)
 
 The two sensorboards can easily be connected together electrically and mechanically by "sandwiching" them together with a pin header as in the picture below.
 
