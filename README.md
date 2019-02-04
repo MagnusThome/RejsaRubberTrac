@@ -113,10 +113,6 @@ This is the COMPLETE wiring needed. Currently looking at making a small pcb as a
 
 ![Display](images/connectingSandwichRear.jpg)
 
-Just an enclosure for initial testing:
-
-![Display](images/testbox.jpg)
-
 # Compiling and uploading the code - Arduino IDE
 
 Read the <a href=/installArduino.md>complete step by step instruction here</a> to install the IDE and compile and upload the code. 
