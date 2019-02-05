@@ -147,11 +147,11 @@ Depends. Measuring distance takes time, same with temperatures. And on top of th
 
 # Bluetooth device name
 
-The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the semi unique bluetooth MAC address, like this example. This will work in most situations. 
+The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the semi unique bluetooth MAC address. This automatic name will work in most situations, here's an example of how it can look:
 ```
 "RejsaRubber6412051B" - for a device with MAC address CC:C9:64:12:05:1B
 ```
-But you can set a specific code in the name for Front/Rear, Left/Right, like FL, RL and so on. You can set a device to one of six tire position names but now only with the three last bytes in the MAC address tagged on at the end of the name instead of four. With this naming scheme each sensor can be more easily positioned properly in the logger app and still retain a unique address so not to clash with your friends nearby sensors.
+But you can set a specific code in the name for Front/Rear, Left/Right, like FL, RL and so on. You can set a device to one of six tire position names. Now only the three last bytes in the MAC address are tagged on at the end of the name instead of four. With this naming scheme each sensor can be more easily positioned properly in the logger app and still retain a unique address so not to clash with your friends nearby sensors.
 
 - "RejsaRubber" + four adress bytes      - Default
 - "RejsaRubberFL" + three adress bytes    
@@ -172,15 +172,24 @@ Examples for a device with MAC address CC:C9:64:12:05:1B:
 "RejsaRubberL 12051B" - Rear  (motorbikes)
 ```
 
-# Grounding pins to set device name
+# Set device name with jumpers
 
-To set a specific device name you connect pins on the main board to ground, preferably with small jumpers that you can add and remove. There are three pins:
-- "CAR". If grounded you activate four-wheel tire names: FL, FR, RL, RR. If not gounded you can choose two-wheel motorcycle tire names, F and R only.
-- "FRONT". If grounded you get FL, FR or F. If not grounded you get RL, RR, or R.
-- "LEFT". If grounded you get FL, RL and the special cases for motorcycles, F or R using the "FRONT" pin. If not grounded you get FR or RR.
+To set a specific device name you connect pins on the main board to ground. Preferably using jumper headers so you can move the jumpers easily to set the prefered name. Lets call the three jumpers CAR, FRONT and LEFT.
 
+| CAR | FRONT | LEFT | Position |                    |
+|:---:|:-----:|:----:|:--------:|:------------------:|
+|  X  |   X   |   X  |    FL    |     Front Left     |
+|  X  |   X   |      |    FR    |     Front Right    |
+|  X  |       |   X  |    RL    |      Rear Left     |
+|  X  |       |      |    RR    |     Rear Right     |
+|     |   X   |      |     F    | Front (Motorcycle) |
+|     |       |   X  |     R    |  Rear (Motorcycle) |
+|     |       |      |    --    | Default auto names |
 
-
+CAR is the connection marked "A4" on the main board  
+FRONT is the connection marked "A5" on the main board  
+LEFT is the connection marked "SCK" on the main board  
+Connect them to the pin marked "GND".
 
 # Mirror temperature zones on tire
 
