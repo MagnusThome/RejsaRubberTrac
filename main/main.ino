@@ -9,31 +9,27 @@
 // -------------------------------------------------------------------------
 
 
-#define WHEELPOS 0        // 0 = "RejsaRubber" + four last bytes from the bluetooth MAC address
-                          // 1 = "RejsaRubberFL" + three last bytes from the bluetooth MAC address
-                          // 2 = "RejsaRubberFR" + three last bytes from the bluetooth MAC address
-                          // 3 = "RejsaRubberRL" + three last bytes from the bluetooth MAC address
-                          // 4 = "RejsaRubberRR" + three last bytes from the bluetooth MAC address
+#define WHEELPOS 7        // DEFAULT is 7
+                          // 7 = "RejsaRubber" + four last bytes from the bluetooth MAC address
+
+                          // 0 = "RejsaRubberFL" + three last bytes from the bluetooth MAC address
+                          // 1 = "RejsaRubberFR" + three last bytes from the bluetooth MAC address
+                          // 2 = "RejsaRubberRL" + three last bytes from the bluetooth MAC address
+                          // 3 = "RejsaRubberRR" + three last bytes from the bluetooth MAC address
                           // 5 = "RejsaRubberF" + one space + three last bytes from the bluetooth MAC address
                           // 6 = "RejsaRubberR" + one space + three last bytes from the bluetooth MAC address
                         
-                          // NOTE!!! THIS CAN BE OVERRIDDEN WITH HARDWARE CODING WITH GPIO PINS. SEE ENABLEHWCODING DEFINE.
+                          // NOTE!!! THIS CAN BE OVERRIDDEN WITH HARDWARE CODING WITH GPIO PINS
 
                     
 #define MIRRORTIRE 0      // 0 = default
                           // 1 = Mirror the tire, making the outside edge temps the inside edge temps
 
-                          // NOTE!!! THIS CAN BE OVERRIDDEN WITH HARDWARE CODING WITH GPIO PINS. SEE ENABLEHWCODING DEFINE.
-
-
-#define ENABLEHWCODING 0  // FOR ENABLING HARDWARE CODING OF WHEEL POSITION AND TIRE MIRRORING WITH THE GPIO SOLDER JUMPERS (PCB TRACE CUTS). 
-                          // **ONLY** SET TO 1 IF YOU HAVE PULL UP RESISTORS AND/OR GROUNDING ON **ALL** CODING GPIO PINS. 
-                          // WHEN THIS IS SET TO 0 JUST USE THE SOFTWARE DEFINES ABOVE INSTEAD
+                          // NOTE!!! THIS CAN BE OVERRIDDEN WITH HARDWARE CODING WITH A GPIO PIN
 
 
 #define DISABLEBLINK 0    // 0 = blue LED blinks on temperature changes, red LED blinks on distance changes
                           // 1 = no blinking
-
 
 
 //#define DUMMYDATA       // UNCOMMENT TO ENABLE FAKE RANDOM DATA WITH NO SENSORS NEEDED
@@ -46,11 +42,11 @@
 #define PROTOCOL 0x01
 #define TEMPOFFSET 1.00         // Default = 1.00
 
-#define GPIODISTSENSORSLEEP 27  // GPIO pin number
-#define GPIOWHEELPOSCODE1 30    // GPIO pin number
-#define GPIOWHEELPOSCODE2 11    // GPIO pin number
-#define GPIOWHEELPOSCODE3 7     // GPIO pin number
-#define GPIOMIRRORTIRECODE 15   // GPIO pin number
+#define GPIODISTSENSORSLEEP 14  // GPIO pin number
+#define GPIOLEFT   12  // GPIO pin number
+#define GPIOFRONT  29  // GPIO pin number
+#define GPIOCAR    28  // GPIO pin number
+#define GPIOMIRR   13  // GPIO pin number
 
 typedef struct {
   uint8_t  protocol;         // currently: 0x01
@@ -104,14 +100,11 @@ void setup(){
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
   pinMode(GPIODISTSENSORSLEEP, OUTPUT);
+  pinMode(GPIOLEFT, INPUT_PULLUP);
+  pinMode(GPIOFRONT, INPUT_PULLUP);
+  pinMode(GPIOCAR, INPUT_PULLUP);
+  pinMode(GPIOMIRR, INPUT_PULLUP);
   
-  if (ENABLEHWCODING == 1) {
-    pinMode(GPIOWHEELPOSCODE1, INPUT);
-    pinMode(GPIOWHEELPOSCODE2, INPUT);
-    pinMode(GPIOWHEELPOSCODE3, INPUT);
-    pinMode(GPIOMIRRORTIRECODE, INPUT);
-  }
-
   datapackOne.distance = 0;
   datapackOne.protocol = PROTOCOL;
   datapackTwo.protocol = PROTOCOL;
@@ -133,8 +126,8 @@ void setup(){
 
   // BLUETOOTH DEVICE NAME
   uint8_t wheelPosCode = getWheelPosCoding();
-  if (wheelPosCode > 0) {
-    setBLEname(wheelPosCode); // SET FROM GPIO SOLDER JUMPERS (PCB TRACE CUTS)
+  if (wheelPosCode < 7) {
+    setBLEname(wheelPosCode); // SET FROM GPIO JUMPERS
   }
   else {
     setBLEname(WHEELPOS);     // SET FROM DEFINE IN CODE HEADER
@@ -145,9 +138,9 @@ void setup(){
 
 
   // TIRE MIRRORED?
-  if ((ENABLEHWCODING == 1 && digitalRead(GPIOMIRRORTIRECODE) == 1) || MIRRORTIRE == 1) {
+  if ((MIRRORTIRE == 1 || digitalRead(GPIOMIRR) == 0)) {
     mirrorTire = 1;
-    Serial.println("Temperature sensor is mirrored");
+    Serial.println("Temperature sensor orientation is mirrored");
   }
 
 
@@ -241,12 +234,7 @@ uint8_t InitDistanceSensor(void) {
 
 // ----------------------------------------
 uint8_t getWheelPosCoding(void) {
-  if (ENABLEHWCODING == 1) {
-    return digitalRead(GPIOWHEELPOSCODE1) || digitalRead(GPIOWHEELPOSCODE2) << 1 || digitalRead(GPIOWHEELPOSCODE3) << 2;
-  }
-  else {
-    return 0;
-  }
+  return digitalRead(GPIOLEFT) + (digitalRead(GPIOFRONT) << 1) + (digitalRead(GPIOCAR) << 2);
 }
 
 // ----------------------------------------
@@ -254,19 +242,19 @@ uint8_t getWheelPosCoding(void) {
 void setBLEname(uint8_t wheelPos) {
 
   if (wheelPos == 0) {
-    strncpy(bleName, "RejsaRubber", 11);
-  }
-  else if (wheelPos == 1) {
     strncpy(bleName, "RejsaRubberFL", 13);
   }
-  else if (wheelPos == 2) {
+  else if (wheelPos == 1) {
     strncpy(bleName, "RejsaRubberFR", 13);
   }
-  else if (wheelPos == 3) {
+  else if (wheelPos == 2) {
     strncpy(bleName, "RejsaRubberRL", 13);
   }
-  else if (wheelPos == 4) {
+  else if (wheelPos == 3) {
     strncpy(bleName, "RejsaRubberRR", 13);
+  }
+  else if (wheelPos == 4) {
+    strncpy(bleName, "RejsaRubberF ", 13);
   }
   else if (wheelPos == 5) {
     strncpy(bleName, "RejsaRubberF ", 13);
@@ -274,16 +262,19 @@ void setBLEname(uint8_t wheelPos) {
   else if (wheelPos == 6) {
     strncpy(bleName, "RejsaRubberR ", 13);
   }
+  else if (wheelPos == 7) {
+    strncpy(bleName, "RejsaRubber", 11);
+  }
   else {
-    strncpy(bleName, "Name Error   ", 13);
+    strncpy(bleName, "Name Error ", 11);
   }
 
   uint8_t numAddressBytes;
-  if (wheelPos == 0 ) {
-    numAddressBytes = 4;
+  if (wheelPos < 7 ) {
+    numAddressBytes = 3;
   }
   else {
-    numAddressBytes = 3;
+    numAddressBytes = 4;
   }
   for(uint8_t i=0; i<numAddressBytes; i++) {
     uint8_t a = sizeof(bleName)-(i*2)-2;
