@@ -115,9 +115,9 @@ This is the COMPLETE wiring needed. Currently looking at making a small pcb as a
 
 # Compiling and uploading the code - Arduino IDE
 
-Read the <a href=/installArduino.md>complete step by step instruction here</a> to install the IDE and compile and upload the code. 
+Easy to do, just follow the <a href=/installArduino.md>complete step by step instruction here</a> to install the IDE and compile and upload the code. 
 
-Here's info on the Adafruit Bluefruit nRF52 board:  
+Here's info on the Adafruit Bluefruit nRF52 board if you're curious and want to dig deeper:  
 https://learn.adafruit.com/bluefruit-nrf52-feather-learning-guide
 
 # Testing Bluetooth BLE
