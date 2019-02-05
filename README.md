@@ -90,7 +90,7 @@ __NOTE: You do not have to mount the sensor at exactly the necessary distance!! 
 # Connecting the three boards
 
 Four wires in a bus configuration connects the two sensors and the cpu board.  
-One extra fifth (optional) wire connects to the distance sensor's XSHUT pin to greatly improve system stability.
+One extra fifth wire connects to the distance sensor's XSHUT pin.
 
 | Adafruit Bluefruit nRF52832 	| VL53L0X 	| MLX90621 	|
 |-----------------------------	|---------	|----------	|
