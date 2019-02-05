@@ -147,11 +147,11 @@ Depends. Measuring distance takes time, same with temperatures. And on top of th
 
 # Bluetooth device name
 
-The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the semi unique bluetooth MAC address, like this example: 
+The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the semi unique bluetooth MAC address, like this example. This will work in most situations. 
 ```
 "RejsaRubber6412051B" - for a device with MAC address CC:C9:64:12:05:1B
 ```
-At compile time there is alternatively a choice of manually setting a device to one of six tire position names but now with only the three last bytes in the MAC address tagged on at the end of the name. With this naming scheme each sensor can be more easily positioned properly in the logger app and still retain a unique address so not to clash with your friends nearby sensors.
+But you can set a specific code in the name for Front/Rear, Left/Right, like FL, RL and so on. You can set a device to one of six tire position names but now only with the three last bytes in the MAC address tagged on at the end of the name instead of four. With this naming scheme each sensor can be more easily positioned properly in the logger app and still retain a unique address so not to clash with your friends nearby sensors.
 
 - "RejsaRubber" + four adress bytes      - Default
 - "RejsaRubberFL" + three adress bytes    
@@ -171,6 +171,20 @@ Examples for a device with MAC address CC:C9:64:12:05:1B:
 "RejsaRubberF 12051B" - Front (motorbikes)
 "RejsaRubberL 12051B" - Rear  (motorbikes)
 ```
+
+# Grounding pins to set device name
+
+To set a specific device name you connect pins on the main board to ground, preferably with small jumpers that you can add and remove. There are three pins:
+- "CAR". If grounded you activate four-wheel tire names: FL, FR, RL, RR. If not gounded you can choose two-wheel motorcycle tire names, F and R only.
+- "FRONT". If grounded you get FL, FR or F. If not grounded you get RL, RR, or R.
+- "LEFT". If grounded you get FL, RL and the special cases for motorcycles, F or R using the "FRONT" pin. If not grounded you get FR or RR.
+
+
+
+
+# Mirror temperature zones on tire
+
+If you happen to get the tire's outside shoulder temperature showing as the tire's inside temperature in your app you can reverse the out- and inside. By connecting one pin on the main board to ground you mirror the tire's temperature zones. The pin to connect to ground is marked "MISO" on the main board, connect it to the pin marked "GND".
 
 # Work in progress...
 
