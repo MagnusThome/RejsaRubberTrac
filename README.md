@@ -182,7 +182,7 @@ To set a specific device name you connect pins on the main board to ground. Pref
 |  X  |   X   |      |    FR    |     Front Right    |
 |  X  |       |   X  |    RL    |      Rear Left     |
 |  X  |       |      |    RR    |     Rear Right     |
-|     |   X   |      |     F    | Front (Motorcycle) |
+|     |   X   |   X  |     F    | Front (Motorcycle) |
 |     |       |   X  |     R    |  Rear (Motorcycle) |
 |     |       |      |    --    | Default auto names |
 
