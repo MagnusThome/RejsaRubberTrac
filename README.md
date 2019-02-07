@@ -32,9 +32,9 @@ To build it you need to purchase three small boards, connect a few wires between
 <a href="https://www.mouser.se/ProductDetail/Melexis/MLX90621ESF-BAB-000-SP?qs=sGAEpiMZZMucenltShoSnqRDBUuVzCzKa3Zx6liDTBzqGCq1%252bjAaAA%3d%3d">www.mouser.com</a> (~ 35€ excl daugther board)  
 <a href="https://www.digikey.com/product-detail/en/melexis-technologies-nv/MLX90621ESF-BAB-000-TU/MLX90621ESF-BAB-000-TU-ND/4968086">www.digikey.com</a> (~ 36€ excl daugther board)  
 
-- __Laser distance sensor VL53L0X__  
-<a href="https://www.ebay.com/sch/i.html?_nkw=vl53l0x&_sop=15">www.ebay.com</a> (~ $5)  
-<a href="https://www.aliexpress.com/w/wholesale-vl53l0x.html?SortType=price_asc&SearchText=vl53l0x">www.aliexpress.com</a> (~ $2.50)  
+- __Laser distance sensor VL53L0XV2__  
+<a href="https://www.ebay.com/sch/i.html?_nkw=vl53l0xv2&_sop=15">www.ebay.com</a> (~ $5)  
+<a href="https://www.aliexpress.com/w/wholesale-vl53l0xv2.html?SortType=price_asc&SearchText=vl53l0xv2">www.aliexpress.com</a> (~ $2.50)  
 
 - __CPU and Bluetooth board Adafruit BlueFruit nRF52__  
 <a href="https://www.mouser.com/ProductDetail/485-3406">www.mouser.com</a> (~ $25)  
