@@ -184,7 +184,7 @@ To set a specific device name you connect pins on the main board to ground. Pref
 
 CAR is the connection marked "A4" on the main board  
 FRONT is the connection marked "A5" on the main board  
-LEFT is the connection marked "SCK" on the main board  
+LEFT is the connection marked "MOSI" on the main board  
 Connect them to the pin marked "GND".
 
 # Mirror temperature zones on tire
