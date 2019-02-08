@@ -153,9 +153,9 @@ The default Bluetooth name of each device is "RejsaRubber" __plus__ the last fou
 ```
 If you want there's an option to include two letters in the name for Front/Rear, Left/Right. Like FL, RL and so on. 
 
-So default is as above "RejsaRubber" + four adress bytes
-Option is "RejsaRubber" + one of "FL", "FR", "RL", "RR" + three adress bytes    
-And for motorbikes "RejsaRubber" + one of "F" or "R" + one blank space + three adress bytes
+So default is as above "RejsaRubber" + four adress bytes  
+Option is "RejsaRubber" + one of "FL", "FR", "RL", "RR" + three adress bytes      
+And for motorbikes "RejsaRubber" + one of "F" or "R" + one blank space + three adress bytes  
 
 Examples for a device with MAC address CC:C9:64:12:05:1B:
 ```
