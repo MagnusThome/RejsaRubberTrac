@@ -99,9 +99,9 @@ One extra fifth wire connects to the distance sensor's XSHUT pin.
 | SCL                         	| SCL     	| SCL      	|
 | SDA                         	| SDA     	| SDA      	|
 | -                           	| GPIO1   	| -        	|
-| MISO                         	| XSHUT   	| -        	|
+| SCK                         	| XSHUT   	| -        	|
 
-![Display](images/connect-drawing.jpg)
+![Display](images/connect-drawing2.jpg)
 
 The two sensorboards can easily be connected together electrically and mechanically by "sandwiching" them together with a pin header as in the picture below.
 
@@ -109,7 +109,7 @@ The two sensorboards can easily be connected together electrically and mechanica
 
 This is the COMPLETE wiring needed. Currently looking at making a small pcb as an interconnect for all connections. Soldered wires are not optimal in this tough environment. The main board will probably be turned over to get its reset button aiming to the enclosure's front. 
 
-![Display](images/connect-solder.jpg)
+![Display](images/connect-solder2.jpg)
 
 ![Display](images/connectingSandwichRear.jpg)
 
