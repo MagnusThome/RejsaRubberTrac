@@ -109,7 +109,7 @@ The two sensorboards can easily be connected together electrically and mechanica
 
 This is the COMPLETE wiring needed. 
 
-![Display](images/connect-solder.jpg)
+![Display](images/connect-solder2.jpg)
 
 ![Display](images/connectingSandwichRear.jpg)
 
