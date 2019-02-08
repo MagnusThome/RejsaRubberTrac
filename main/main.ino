@@ -42,11 +42,11 @@
 #define PROTOCOL 0x01
 #define TEMPOFFSET 1.00         // Default = 1.00
 
-#define GPIODISTSENSORSLEEP 14  // GPIO pin number
-#define GPIOLEFT   12  // GPIO pin number
-#define GPIOFRONT  29  // GPIO pin number
+#define GPIODISTSENSORXSHUT 12  // GPIO pin number
 #define GPIOCAR    28  // GPIO pin number
-#define GPIOMIRR   13  // GPIO pin number
+#define GPIOFRONT  29  // GPIO pin number
+#define GPIOLEFT   13  // GPIO pin number
+#define GPIOMIRR   14  // GPIO pin number
 
 typedef struct {
   uint8_t  protocol;         // currently: 0x01
@@ -99,7 +99,7 @@ void setup(){
 
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
-  pinMode(GPIODISTSENSORSLEEP, OUTPUT);
+  pinMode(GPIODISTSENSORXSHUT, OUTPUT);
   pinMode(GPIOLEFT, INPUT_PULLUP);
   pinMode(GPIOFRONT, INPUT_PULLUP);
   pinMode(GPIOCAR, INPUT_PULLUP);
@@ -224,9 +224,9 @@ void loop() {
 // ----------------------------------------
 
 uint8_t InitDistanceSensor(void) {
-  digitalWrite(GPIODISTSENSORSLEEP, LOW);
+  digitalWrite(GPIODISTSENSORXSHUT, LOW);
   delay(50);
-  digitalWrite(GPIODISTSENSORSLEEP, HIGH);
+  digitalWrite(GPIODISTSENSORXSHUT, HIGH);
   delay(50);
   return distSensor.begin(VL53L0X_I2C_ADDR, false); 
 }
