@@ -44,7 +44,7 @@ To build it you need to purchase three small boards, connect a few wires between
 250mAh or larger with JST-PH 2.0mm connector  
 <a href="https://www.ebay.com/sch/i.html?_nkw=3.7V+lipo+battery+JST-PH+2.0&_sop=15">www.ebay.com</a> (~ $8)  
 
-# Supplying power to boards
+# Power choices
 
 The CPU board and the two sensor boards are all powered by connecting power to the CPU board's USB micro connector. The CPU board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery. The system can also be run directly from the car's power, not using any Lipo battery, but then a 12 volt to USB 5 volt converter must be added.
 
@@ -151,15 +151,11 @@ The default Bluetooth name of each device is "RejsaRubber" __plus__ the last fou
 ```
 "RejsaRubber6412051B" - for a device with MAC address CC:C9:64:12:05:1B
 ```
-But you can set a specific code in the name for Front/Rear, Left/Right, like FL, RL and so on. You can set a device to one of six tire position names. Now only the three last bytes in the MAC address are tagged on at the end of the name instead of four. With this naming scheme each sensor can be more easily positioned properly in the logger app and still retain a unique address so not to clash with your friends nearby sensors.
+If you want there's an option to include two letters in the name for Front/Rear, Left/Right. Like FL, RL and so on. 
 
-- "RejsaRubber" + four adress bytes      - Default
-- "RejsaRubberFL" + three adress bytes    
-- "RejsaRubberFR" + three adress bytes 
-- "RejsaRubberRL" + three adress bytes 
-- "RejsaRubberRR" + three adress bytes 
-- "RejsaRubberF" + one blank space + three adress bytes   - For motorbikes 
-- "RejsaRubberR" + one blank space + three adress bytes   - For motorbikes
+So default is as above "RejsaRubber" + four adress bytes
+Option is "RejsaRubber" + one of "FL", "FR", "RL", "RR" + three adress bytes    
+And for motorbikes "RejsaRubber" + one of "F" or "R" + one blank space + three adress bytes
 
 Examples for a device with MAC address CC:C9:64:12:05:1B:
 ```
