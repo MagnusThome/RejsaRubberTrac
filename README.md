@@ -7,8 +7,8 @@ A cheap wireless tire temperatures and suspension movement logger built from a s
 For around $100 per wheel you can build your own wireless sensors to log your driving. You'll then easily see if you are overheating the shoulder on one wheel in some particular corner, if one of the rear tires stays a bit too cold or if you need to adjust camber. And many more things about how you attack a course and how your car is set up.
 
 - Temperatures are measured at sixteen different points over each tire's full width.
-- Support for a distance sensor is also included for tracking/logging suspension movements.
-- All data is available over Bluetooth Low Energy BLE.
+- All data is available in popular Android and iPhone race logging apps via Bluetooth Low Energy.
+- A cheap distance sensor can optionally be added to also log suspension movements.
 
 The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de>__Harry's Laptimer__</a> and <a href=http://www.racechrono.com>__Racechrono__</a> already have test units and are well on their way adding support for RejsaRubberTrac.
 
@@ -16,14 +16,14 @@ Watch this short video:
 
 <a href="http://www.youtube.com/watch?v=Yuy62oPXugs"><img src=images/earlyharrysbetayoutube.jpg></a>
 
-Here below Racechrono is performing stress tests with four RejsaRubberTracs plus a Garmin GLO 10Hz GPS and an OBDLink MX. Antti reported these good news from the tests with a Google Pixel 2 phone and RaceChrono Pro: *"The ELM327 protocol for OBD-II is quite sensitive for lag/ping time, so it was affected by all the other Bluetooth connections as I expected. The highest update rate for OBDLink MX was still good, but the update rate fluctuates quite a bit, but even at lowest it was still faster than the Bluetooth LE OBD-II reader I tested. The update rate did not fluctuate on that one too much."*
+Here below Antti at Racechrono is performing stress tests with four RejsaRubberTracs plus a Garmin GLO 10Hz GPS and an OBDLink MX. Antti reported these good news from the tests with a Google Pixel 2 phone and RaceChrono Pro: *"The ELM327 protocol for OBD-II is quite sensitive for lag/ping time, so it was affected by all the other Bluetooth connections as I expected. The highest update rate for OBDLink MX was still good, but the update rate fluctuates quite a bit, but even at lowest it was still faster than the Bluetooth LE OBD-II reader I tested. The update rate did not fluctuate on that one too much."*
 
 <img src=images/racechronostresstests.jpg>
 
 # Easy to build
 <img align="right" width="231" src="images/partsizes.jpg">
 
-To build it you need to purchase three small boards, connect a few wires between the boards and then finally upload the done and dusted code you find here to the main board using a USB cable. Detailed instructions further below. Then you're up and running! You probably want to get a small enclosure for it though before you mount it to your car!
+To build it you need to purchase two small boards (three if you also add distance measuring). Then just connect a few wires between the boards and then finally upload the done and dusted code you find here to the main board using a USB cable. Detailed step by step instructions further below. Then you're up and running! You probably want to get a small enclosure for it though before you mount it to your car!
 
 - __Temperature IR-arraysensor MLX90621 GY-906LLC-BAB__    
 (60 degrees field of view ends with BAB, 120 degrees with BAA)  
