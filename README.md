@@ -42,7 +42,7 @@ To build it you need to purchase two small boards (three if you also add distanc
 
 - __OPTIONAL: Rechargable 3,7V Lipo battery__  
 250mAh or larger with JST-PH 2.0mm connector  
-<a href="https://www.ebay.com/sch/i.html?_nkw=3.7V+lipo+battery+JST-PH+2.0&_sop=15">www.ebay.com</a> (~ $8)  
+Search <a href="https://www.ebay.com/sch/i.html?_nkw=3.7V+lipo+battery+JST-PH+2.0&_sop=15">Ebay</a> or choose <a href="https://www.ebay.com/itm/3-7V-300-mAh-JST-PH-1-0-1-25-1-5-2-0-2-54mm-Rechargeable-Li-po-battery-602030/173757927239">this example</a> (select 2.0mm connector) (~$9)  
 
 # Power choices
 
