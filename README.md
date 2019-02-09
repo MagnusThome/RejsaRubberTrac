@@ -1,14 +1,12 @@
 # RejsaRubberTrac  
 
-A cheap wireless tire temperatures and suspension movement logger built from a small cpu/bluetooth board + a 16-zone temperature sensor + an optional distance sensor.
-
 *__Intended to track/view/logg tire temperatures on race- and trackday cars.__*
 
 For around $100 per wheel you can build your own wireless sensors to log your driving. You'll then easily see if you are overheating the shoulder on one wheel in some particular corner, if one of the rear tires stays a bit too cold or if you need to adjust camber. And many more things about how you attack a course and how your car is set up.
 
 - Temperatures are measured at sixteen different points over each tire's full width.
 - All data is available in popular Android and iPhone race logging apps via Bluetooth.
-- A cheap distance sensor can optionally be added to also log suspension movements.
+- A cheap distance sensor can optionally be added to also log suspension movement.
 
 The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de>__Harry's Laptimer__</a> and <a href=http://www.racechrono.com>__Racechrono__</a> already have test units and are well on their way adding support for RejsaRubberTrac.
 
