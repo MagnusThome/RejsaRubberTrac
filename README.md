@@ -176,10 +176,9 @@ If you happen to get the tire's outside shoulder temperature showing as the tire
 
 # Testing
 
-Here are links to two Android Bluetooth BLE apps that can connect and show the live data that is transmitted. They show hex values only though so the sensor values are slightly obfuscated. But good for testing that everything is up and running.
+To check that your sensor is transmitting you can run this Bluetooth test app. It shows all the temperatures as hex values though so the values are slightly obfuscated. But good for testing that everything is up and running.
 
 https://play.google.com/store/apps/details?id=no.nordicsemi.android.mcp  
-https://play.google.com/store/apps/details?id=com.punchthrough.lightblueexplorer
 
 With the Arduino IDE (or other serial terminal software) you can view the printed output from the board over USB. Temperatures are shown as degrees in celsius times ten.
 
