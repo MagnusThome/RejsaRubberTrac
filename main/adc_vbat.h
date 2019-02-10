@@ -21,8 +21,8 @@ uint8_t lipoPercent(float mvolts) {
     if (mvolts > 3700)  { return  30 + (mvolts-3700)*20/100; }
     if (mvolts > 3600)  { return  20 + (mvolts-3600)*10/100; }
     if (mvolts > 3500)  { return  10 + (mvolts-3500)*10/100; }
-    if (mvolts > 3400)  { return   5 + (mvolts-3400)*5/100; }
-    if (mvolts > 3300)  { return   1 + (mvolts-3300)*4/100; }
+    if (mvolts > 3400)  { return   2 + (mvolts-3400)*8/100; }
+    if (mvolts > 3300)  { return   1 + (mvolts-3300)*1/100; }
     return 1;
 }
 
