@@ -132,7 +132,7 @@ Depends. Measuring distance takes time, same with temperatures. And on top of th
 
 # Bluetooth device name
 
-The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the semi unique bluetooth MAC address. This automatic name will work in most situations, here's an example of how it can look:
+The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the bluetooth mac address. __This automatic name will work in most situations__, here's an example of how it can look:
 ```
 "RejsaRubber6412051B" - for a device with MAC address CC:C9:64:12:05:1B
 ```
