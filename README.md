@@ -1,6 +1,6 @@
 # RejsaRubberTrac  
 
-*__Log and view tire temperature spots on race- and trackday cars__*
+*__Log and view tire temperature zones on race- and trackday cars__*
 
 For around $100 per wheel you can build your own wireless sensors to log your driving. You'll then easily see if you are overheating the shoulder on one wheel in some particular corner, if one of the rear tires stays a bit too cold or if you need to adjust camber. And many more things about how you attack a course and how your car is set up.
 
