@@ -118,19 +118,6 @@ Easy to do, just follow the <a href=/installArduino.md>complete step by step ins
 Here's info on the Adafruit Bluefruit nRF52 board if you're curious and want to dig deeper:  
 https://learn.adafruit.com/bluefruit-nrf52-feather-learning-guide
 
-# Testing Bluetooth BLE
-
-Here are links to two Android Bluetooth BLE apps that can connect and show the live data that is transmitted. They show hex values only though so the sensor values are slightly obfuscated. But good for testing that everything is up and running.
-
-https://play.google.com/store/apps/details?id=no.nordicsemi.android.mcp  
-https://play.google.com/store/apps/details?id=com.punchthrough.lightblueexplorer
-
-# Testing over USB
-
-With the Arduino IDE (or other serial terminal software) you can view the printed output from the board over USB. Temperatures are shown as degrees in celsius times ten.
-
-<img src="images/usbterminal.PNG">
-
 # How often can I get measurements?
 
 Depends. Measuring distance takes time, same with temperatures. And on top of that, with the current library used for Bluetooth communication, depending on how much data you're transmitting some delay is added too. So, __if you don't connect a distance sensor the temperatures are updated faster__. And if the application in the other end limits to subscribe to only eight temperature zones instead of all sixteen it will also all be faster. Compromises...
@@ -166,8 +153,6 @@ Examples for a device with MAC address CC:C9:64:12:05:1B:
 "RejsaRubberL 12051B" - Rear  (motorbikes)
 ```
 
-# Set device name with jumpers
-
 To set a specific device name you connect pins on the main board to ground. Preferably using jumper headers so you can move the jumpers easily to set the prefered name. Lets call the three jumpers CAR, FRONT and LEFT.
 
 | CAR | FRONT | LEFT | Position |                    |
@@ -185,9 +170,20 @@ FRONT is the connection marked "A5" on the main board
 LEFT is the connection marked "MOSI" on the main board  
 Connect them to the pin marked "GND".
 
-# Mirror temperature zones on tire
+# Mirror temperature zones, reverse outside and inside of tire
 
 If you happen to get the tire's outside shoulder temperature showing as the tire's inside temperature in your app you can reverse the out- and inside. By connecting one pin on the main board to ground you mirror the tire's temperature zones. The pin to connect to ground is marked "MISO" on the main board, connect it to the pin marked "GND".
+
+# Testing
+
+Here are links to two Android Bluetooth BLE apps that can connect and show the live data that is transmitted. They show hex values only though so the sensor values are slightly obfuscated. But good for testing that everything is up and running.
+
+https://play.google.com/store/apps/details?id=no.nordicsemi.android.mcp  
+https://play.google.com/store/apps/details?id=com.punchthrough.lightblueexplorer
+
+With the Arduino IDE (or other serial terminal software) you can view the printed output from the board over USB. Temperatures are shown as degrees in celsius times ten.
+
+<img src="images/usbterminal.PNG">
 
 # Work in progress...
 
