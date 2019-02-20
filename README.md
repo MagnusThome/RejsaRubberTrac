@@ -194,6 +194,10 @@ A small IR-transparent sensor protection window is on it's way to be sourced too
 
 As an alternative to soldering the few wires between the boards I've made a small circuit board that you sandwich mount the cpu board and the sensors to. This board also has places for components converting 12 volt to 5 volt so you can run it directly from your cars power. There is also a power switch if you run on battery. Jumpers to set the device name and mirror outside and inside of the tire temperatures in your app. And the possibility to mount the sensors without their daugther boards directly to this board so you can buy the temperature sensor slightly cheaper without its daughter board.  
 
+Here's work in progress on a 3D-printed sensor housing
+
+<img src="images/3Dprint-testsensor.png">
+
 # Questions and more info
 
 Support forum: www.rejsa.nu/rejsarubbertrac
