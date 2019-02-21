@@ -81,7 +81,9 @@ void dummyloop(void) {
     }
 
 
-    
+    blinkOnTempChange(datapackOne.temps[4]);    // Use one single temp in the middle of the array
+    blinkOnDistChange(datapackOne.distance);
+     
     printStatus();
     delay(80);
     
