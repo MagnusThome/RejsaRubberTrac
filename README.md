@@ -184,6 +184,13 @@ With the Arduino IDE (or other serial terminal software) you can view the printe
 
 <img src="images/usbterminal.PNG">
 
+# A main board to mount it all on
+
+Basically you don't need anything more then the five wires connecting the boards together as described above. But if you want to run it from 12 volts from the car's power, if you want an esy way to have jumpers to set wheel position, if you want a power switch or if you buy the temperature sensor separately wihtout it's daughter board. Or if you simply don't want cables and want it all pcb mounted, <a href="pcb/">here's a board you can use > >
+
+<img src="pcb/images/daughterboards/06.jpg">
+</a>
+
 # Work in progress...
 
 The software is finished and is stable. But the whole kit has NOT yet been properly field tested, just bench tests so far.
