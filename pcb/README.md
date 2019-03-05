@@ -18,7 +18,7 @@ Here's how to mount the components neccesary for running everything from 12V. Ch
 
 # Sensors on daughter boards
 
-Mount the two sensor boards togther with a six pin header.
+Mount the two sensor boards togther with a six pin header.  
 <img src="images/daughterboards/00.jpg">
 
 Put insulation on the bottom so the components there can't touch the main board.
