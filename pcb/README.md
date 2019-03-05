@@ -19,41 +19,33 @@ Here's how to mount the components neccesary for running everything from 12V. Ch
 # Sensors on daughter boards
 
 Mount the two sensor boards togther with a six pin header.
-
 <img src="images/daughterboards/00.jpg">
 
 Put insulation on the bottom so the components there can't touch the main board.
-
 <img src="images/daughterboards/01.jpg">
 
 It's a little fiddly to get it all soldered on perfectly straight. I suggest you solder only one pin first. Then try to get it straight. When perfect solder the rst of the pins.
-
 <img src="images/daughterboards/02.jpg">
 
 Yeah, straight.
-
 <img src="images/daughterboards/03.jpg">
 
 Mount the power switch. 
 
 Note: if you don't mount a switch everything will by default be switched on. No need for any jumpers to turn the board on.
-
 <img src="images/daughterboards/04.jpg">
 
 Now mount the 4x2 pin headers for the jumpers which set wheel position (left front, right rear...) and mirror outside/inside edge of the tire.
 
 Also mount the two long pin headers for the cpu/bluetooth board (in the left of the picture). Note: you don't have to solder all pins if you don't want, there are markings on the board showing what pins you have to solder.
-
 <img src="images/daughterboards/05.jpg">
 
 Solder on the cpu/bluetooth board. Again, not all pins needs to be soldered but if you're unsure, solder all.
-
 <img src="images/daughterboards/06.jpg">
 
 # Jumpers
 
 The jumpers are marked so you know which one sets what:
-
 <img src="images/jumpers.jpg">
 
 
