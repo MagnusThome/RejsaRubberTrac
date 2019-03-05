@@ -46,7 +46,7 @@ Solder on the cpu/bluetooth board. Again, not all pins needs to be soldered but 
 # Jumpers
 
 The jumpers are marked so you know which one sets what:
-<img src="images/jumpers.jpg">
+<img src="images/jumpersettings.jpg">
 
 
 # Here's info on how to order the pcb
