@@ -41,17 +41,15 @@ Note: if you don't mount a switch everything will by default be switched on. No 
 Mount the 4x2 pin headers for the jumpers which set wheel position (left front, right rear...) and mirror outside/inside edge of the tire.
 <img src="images/daughterboards/05.jpg">
 
+The jumpers are marked so you know which one sets what:
+<img src="images/jumpersettings.jpg">
+
 # Pin headers to cpu/bluetooth board
 
-Mount the two long pin headers connecting to the cpu/bluetooth board (to the left in the picture above). Note: you don't have to solder all pins if you don't want, there are markings on the board showing what pins you have to solder.
+Mount the two long pin headers connecting to the cpu/bluetooth board. Note: you don't have to solder all pins if you don't want, there are markings on the board showing what pins you have to solder.
 
 Solder on the cpu/bluetooth board. Again, not all pins needs to be soldered but if you're unsure, solder all.
 <img src="images/daughterboards/06.jpg">
-
-# Jumpers
-
-The jumpers are marked so you know which one sets what:
-<img src="images/jumpersettings.jpg">
 
 # Mounting a temperature sensor that comes __without__ a daughter board
 
