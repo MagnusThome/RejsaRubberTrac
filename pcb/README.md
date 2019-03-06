@@ -1,4 +1,4 @@
-# Board to mount everything on
+# Interconnect carrier board to mount everything on
 
 This is handy if you want to run the kit from the car's 12V. Or if you want to use jumpers to set each sensors wheel position. Or to add a power switch. Or if you buy the temperature sensor without it's daughter board, here you have a main board to mount it all on.
 
@@ -48,6 +48,9 @@ Solder on the cpu/bluetooth board. Again, not all pins needs to be soldered but 
 The jumpers are marked so you know which one sets what:
 <img src="images/jumpersettings.jpg">
 
+# Mounting a temperature sensor that comes __without__ a daughter board
+
+As you can see in the component list you can order the temperature sensor separately as a component without the daughter board or buy it mounted on a daughter board. It is usually sold on a daughter board from China. If you get the version without a daughter board there are two extra components you need to solder on the board. They are of course listed in the component list excel sheet.
 
 # Here's info on how to order the pcb
 
