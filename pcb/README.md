@@ -61,7 +61,7 @@ In addition to this you might need to mount the temperature sensor 4mm above the
 
 # Here's info on how to order the pcb
 
-You can download the gerber files here and get boards done anywhere you want. Or you can order them here too, this is where I got my made. I think I might get a small kickback if you order here but again, getthem done wherever you want :-) !
+You can download the gerber files here and get boards done anywhere you want. Or you can order them here too, this is where I got my made. I think I might get a small kickback if you order here but again, get them done wherever you want :-) !
 
 https://www.pcbway.com/project/shareproject/RejsaRubberTrac_____v1_1.html
 
