@@ -2,7 +2,7 @@
 
 This is not at all needed to build the sensor kit. The minimum way of doing it is just five wires between the boards and nothing else, as you can see on the main page. 
 
-But this board is handy if you want to run the kit from the car's 12V. Or if you want to use jumpers to set each sensors wheel position. Or to add a power switch. Or if you buy the temperature sensor without it's daughter board, here you have a main board to mount it all on.
+But this board is handy if you want to run the kit from the car's 12V. Or if you want to use jumpers to set each sensor's wheel position. Or to add a power switch. Or if you buy the temperature sensor without it's daughter board, here you have a main board to mount it all on.
 
 A list of all components needed with links to mouser can be found in an Excel sheet here:
 https://github.com/MagnusThome/RejsaRubberTrac/edit/master/pcb
