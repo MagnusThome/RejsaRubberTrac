@@ -25,7 +25,7 @@ Mount the two sensor boards togther with a six pin header.
 Put insulation on the bottom so the components there can't touch the main board.
 <img src="images/daughterboards/01.jpg">
 
-It's a little fiddly to get it all soldered on perfectly straight. I suggest you solder only one pin first. Then try to get it straight. When perfect solder the rst of the pins.
+It's a little fiddly to get it all soldered on perfectly straight. I suggest you solder only one pin first. Then try to get it straight. When perfect solder the rest of the pins.
 <img src="images/daughterboards/02.jpg">
 
 Yeah, straight.
