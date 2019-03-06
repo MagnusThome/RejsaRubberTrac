@@ -2,9 +2,8 @@
 
 This is handy if you want to run the kit from the car's 12V. Or if you want to use jumpers to set each sensors wheel position. Or to add a power switch. Or if you buy the temperature sensor without it's daughter board, here you have a main board to mount it all on.
 
-A list of all components needed with links to mouser:
-
-<a href="https://github.com/MagnusThome/RejsaRubberTrac/blob/master/pcb/Component%20list%20RejsaRubberTrac%20board%20v1.1%20(2019-02-21).xlsx">Excel file: Component list RejsaRubberTrac board v1.1 (2019-02-21).xlsx</a>
+A list of all components needed with links to mouser can be found in an Excel sheet here:
+https://github.com/MagnusThome/RejsaRubberTrac/edit/master/pcb
 
 # More info coming...
 
@@ -51,6 +50,10 @@ The jumpers are marked so you know which one sets what:
 # Mounting a temperature sensor that comes __without__ a daughter board
 
 As you can see in the component list you can order the temperature sensor separately as a component without the daughter board or buy it mounted on a daughter board. It is usually sold on a daughter board from China. If you get the version without a daughter board there are two extra components you need to solder on the board. They are of course listed in the component list excel sheet.
+
+In addition to this you might need to mount the temperature sensor 4mm above the board if you want to use any of the 3D printed cases for this board. This is to make sure the 60 degree of field of view isn't hindered by the limited size window on the case. Also make sure you turn the sensor so the right pins are inserted in the correct respective mounting holes.
+
+<img src="images/separate%20temp%20sensor.jpg">
 
 # Here's info on how to order the pcb
 
