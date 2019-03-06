@@ -29,15 +29,19 @@ It's a little fiddly to get it all soldered on perfectly straight. I suggest you
 Yeah, straight.
 <img src="images/daughterboards/03.jpg">
 
-Mount the power switch. 
+# Power switch 
 
 Note: if you don't mount a switch everything will by default be switched on. No need for any jumpers to turn the board on.
 <img src="images/daughterboards/04.jpg">
 
-Now mount the 4x2 pin headers for the jumpers which set wheel position (left front, right rear...) and mirror outside/inside edge of the tire.
+# Jumper pin headers
 
-Also mount the two long pin headers for the cpu/bluetooth board (in the left of the picture). Note: you don't have to solder all pins if you don't want, there are markings on the board showing what pins you have to solder.
+Mount the 4x2 pin headers for the jumpers which set wheel position (left front, right rear...) and mirror outside/inside edge of the tire.
 <img src="images/daughterboards/05.jpg">
+
+# Pin headers to cpu/bluetooth board
+
+Mount the two long pin headers connecting to the cpu/bluetooth board (to the left in the picture above). Note: you don't have to solder all pins if you don't want, there are markings on the board showing what pins you have to solder.
 
 Solder on the cpu/bluetooth board. Again, not all pins needs to be soldered but if you're unsure, solder all.
 <img src="images/daughterboards/06.jpg">
