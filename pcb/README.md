@@ -55,7 +55,7 @@ Solder on the cpu/bluetooth board. Again, not all pins needs to be soldered but 
 
 As you can see in the component list you can order the temperature sensor separately as a component without the daughter board or buy it mounted on a daughter board. It is usually sold on a daughter board from China. If you get the version without a daughter board there are two extra components you need to solder on to the board. They are of course listed in the component list excel sheet.
 
-In addition to this you might need to mount the temperature sensor 4mm above the board if you want to use any of the 3D printed cases for this board. This is to make sure the 60 degree of field of view isn't hindered by the limited size window on the case. Also make sure you turn the sensor so the right pins are inserted in the correct respective mounting holes. There is a marking on the board showing a circle with a potrution that should match a small tab sticking out on the sensor.
+In addition to this you might need to mount the temperature sensor 4mm above the board if you want to use any of the 3D printed cases for this board. This is to make sure the 60 degree of field of view isn't hindered by the limited size window on the case. Also make sure you turn the sensor so the right pins are inserted in the correct respective mounting holes. There is a marking on the board showing a circle with a protrusion that should match a small tab sticking out on the sensor.
 
 <img src="images/separate%20temp%20sensor.jpg">
 
