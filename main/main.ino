@@ -28,11 +28,14 @@
                           // NOTE!!! THIS CAN BE OVERRIDDEN WITH HARDWARE CODING WITH A GPIO PIN
 
 
-#define DISABLEBLINK 0    // 0 = blue LED blinks on temperature changes, red LED blinks on distance changes
-                          // 1 = no blinking
 
+#define STATUSLEDS 1      // 0 = LED lights off
+                          // 1 = blue LED blinks with NO bluetooth connection and is continously on when connected
+                          // 2 = blue LED blinks on temperature changes, red LED blinks on distance changes
+                          
+                          
 
-//#define DUMMYDATA       // UNCOMMENT TO ENABLE FAKE RANDOM DATA WITH NO SENSORS NEEDED
+#define DUMMYDATA       // UNCOMMENT TO ENABLE FAKE RANDOM DATA WITH NO SENSORS NEEDED
 
 
 // -------------------------------------------------------------------------
@@ -95,7 +98,10 @@ void blinkOnDistChange(uint16_t);
 void setup(){
   Serial.begin(115200);
   Serial.println("\nBegin startup");
-  Bluefruit.autoConnLed(false);     // DISABLE USING BLUE LED AS INDICATOR FOR BLUETOOTH CONNECTION
+
+  if (STATUSLEDS != 1) {
+    Bluefruit.autoConnLed(false);     // DISABLE USING BLUE LED AS INDICATOR FOR BLUETOOTH CONNECTION
+  }
 
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
@@ -209,10 +215,8 @@ void loop() {
   }
 
 
-  if (DISABLEBLINK == 0) {
-    blinkOnTempChange(datapackOne.temps[4]/20);    // Use one single temp in the middle of the array
-    blinkOnDistChange(datapackOne.distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
-  }
+  blinkOnTempChange(datapackOne.temps[4]/20);    // Use one single temp in the middle of the array
+  blinkOnDistChange(datapackOne.distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
 
   printStatus();
 
@@ -319,6 +323,9 @@ void printStatus(void) {
 // ----------------------------------------
 
 void blinkOnDistChange(uint16_t distnew) {
+  if (STATUSLEDS != 2) {
+    return;
+  }
   static uint16_t distold = 0;
   if (distold != distnew) {
     digitalWrite(LED_RED, HIGH);
@@ -332,6 +339,9 @@ void blinkOnDistChange(uint16_t distnew) {
 // ----------------------------------------
 
 void blinkOnTempChange(int16_t tempnew) {
+  if (STATUSLEDS != 2) {
+    return;
+  }
   static int16_t tempold = 0;
   if (tempold != tempnew) {
     digitalWrite(LED_BLUE, HIGH);
