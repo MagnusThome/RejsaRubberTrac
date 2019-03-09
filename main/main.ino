@@ -35,7 +35,7 @@
                           
                           
 
-#define DUMMYDATA       // UNCOMMENT TO ENABLE FAKE RANDOM DATA WITH NO SENSORS NEEDED
+//#define DUMMYDATA       // UNCOMMENT TO ENABLE FAKE RANDOM DATA WITH NO SENSORS NEEDED
 
 
 // -------------------------------------------------------------------------
