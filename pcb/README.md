@@ -2,7 +2,7 @@
 
 This extra board is not needed at all to build the sensor kit! The minimum way of putting the kit together is just the five wires between the boards, as you can see on the main page, and nothing else!  
 
-But this board is handy if you want to run the kit from the car's 12V. Or if you want to use jumpers to set each sensor's wheel position. Or to add a power switch. Or if you buy the temperature sensor without it's daughter board. Here you have a main board to mount it all on.
+But this board is handy if you want to run the kit from the car's 12V. Or if you want to use jumpers to set a position ID in the sensor name. Or to add a power switch. Or if you buy the temperature sensor without it's daughter board. Here you have a main board to mount it all on.
 
 A list of all components needed with links to mouser can be found in an Excel sheet here:
 https://github.com/MagnusThome/RejsaRubberTrac/edit/master/pcb
@@ -17,36 +17,42 @@ Here's how to mount the components neccesary for running everything from 12V. Ch
 
 <img src="images/12V mounting.jpg">
 
-# Sensors on daughter boards
+# Mounting sensors with daughter boards
 
-Mount the two sensor boards togther with a six pin header.  
+Mount the two sensor boards togther with a six pin header. 
+
 <img src="images/daughterboards/00.jpg">
 
-Cut of the "ears" of the distacne sensor board with a pair of pliers.
+Cut of the "ears" of the distance sensor board with a pair of pliers.  
 
-Put insulation on the bottom so the components can't touch the main board:
+Put insulation on the bottom so the components can't touch the main board:  
 
 <img src="images/daughterboards/01.jpg">
 
-It's a little fiddly to get it all soldered on perfectly straight. I suggest you solder only one pin first. Then try to get it straight. When perfect solder the rest of the pins.
+It's a little fiddly to get it all soldered on perfectly straight. I suggest you solder only one pin first. Then try to get it straight. When perfect solder the rest of the pins.  
+
 <img src="images/daughterboards/02.jpg">
 
-Yeah, straight.
+Getting it straight...  
+
 <img src="images/daughterboards/03.jpg">
 
-Remove the dark yellow protection film from the distance sensor. You can measure distances with the protection film still on the sensor, the only downside is that it will display random results when there are no objects to measure distance to in front of the sensor. 
+Remove the dark yellow protection film from the distance sensor. You can measure distances with the protection film still on the sensor, the only downside is that it will display random results when there are no objects to measure in front of the sensor. 
 
 # Power switch 
 
-Note: if you don't mount a switch everything will by default be switched on. No need for any jumpers to turn the board on.
+Note: if you don't mount a switch everything will by default be switched on. No need for any jumpers to turn the board on.  
+
 <img src="images/daughterboards/04.jpg">
 
 # Jumper pin headers
 
-Mount the 4x2 pin headers for the jumpers which set wheel position (left front, right rear...) and mirror outside/inside edge of the tire.
+Mount the 4x2 pin headers for the jumpers which set wheel position (left front, right rear...) and mirror outside/inside edge of the tire.  
+
 <img src="images/daughterboards/05.jpg">
 
-The jumpers are marked so you know which one sets what:
+The jumpers are marked so you know which one sets what:  
+
 <img src="images/jumpersettings.jpg">
 
 # Pin headers to cpu/bluetooth board
