@@ -74,7 +74,7 @@ In addition to this you need to mount the temperature sensor 3,5mm above the boa
 To help mounting the sensor as a separate component without a daugther board at the right height and also completely straight there is a small 3D printable cylinder that you can put between the sensor and the board:   
 
 <a href="../3Dprint/printables/Temperature%20Sensor%20Mounting%20Spacer%203%2C5mm.stl">Spacer for the 60 degree temperature sensor</a>  
-<a href="../3Drint/printables/Temperature%20Sensor%20Mounting%20Spacer%2010mm.stl">Spacer for the 120 degree wide temperature sensor</a>  
+<a href="../3Dprint/printables/Temperature%20Sensor%20Mounting%20Spacer%2010mm.stl">Spacer for the 120 degree wide temperature sensor</a>  
 If you don't have access to printing this spacer the best way is to first only solder one leg of the sensor. Check the height and then adjust it straight. Then solder the remaining legs.  
 
 <img src="images/separate%20temp%20sensor.jpg">
