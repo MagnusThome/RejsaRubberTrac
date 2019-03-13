@@ -42,7 +42,7 @@ To build it you need to purchase two small boards (three if you also add distanc
 250mAh or larger with JST-PH 2.0mm connector  
 Search <a href="https://www.ebay.com/sch/i.html?_nkw=3.7V+lipo+battery+JST-PH+2.0&_sop=15">Ebay</a> or choose <a href="https://www.ebay.com/itm/3-7V-300-mAh-JST-PH-1-0-1-25-1-5-2-0-2-54mm-Rechargeable-Li-po-battery-602030/173757927239">this example</a> (select 2.0mm connector) (~$9)  
 
-# Power choices
+# Power supply
 
 The CPU board and the two sensor boards are all powered by connecting power to the CPU board's USB micro connector. The CPU board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery. The system can also be run directly from the car's power, not using any Lipo battery, but then a 12 volt to USB 5 volt converter must be added.
 
@@ -132,15 +132,15 @@ Depends. Measuring distance takes time, same with temperatures. And on top of th
 
 # Bluetooth device name
 
-The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the Bluetooth address, __this automatic name will work in most situations__, here's an example of how it can look:
+The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the Bluetooth address, __this automatic name will work in most situations__, here's an example of what it can look like:
 ```
 "RejsaRubber6412051B" - for a device with MAC address CC:C9:64:12:05:1B
 ```
-If you want there's an option to include two letters in the name for Front/Rear, Left/Right. Like FL, RL and so on. 
+If you want there's an option to include two letters in the name, designating a sensor for Front/Rear and Left/Right. Like FL, RL and so on. 
 
-So default is as above "RejsaRubber" + four adress bytes  
-Option is "RejsaRubber" + one of "FL", "FR", "RL", "RR" + three adress bytes      
-And for motorbikes "RejsaRubber" + one of "F" or "R" + one blank space + three adress bytes  
+Default: "RejsaRubber" + four adress bytes  
+Optionally: "RejsaRubber" + one of "FL", "FR", "RL", "RR" + three adress bytes      
+Optionally for motorbikes: "RejsaRubber" + one of "F" or "R" + one blank space + three adress bytes  
 
 Examples for a device with MAC address CC:C9:64:12:05:1B:
 ```
@@ -172,7 +172,7 @@ Connect them to the pin marked "GND".
 
 # Mirror temperature zones, reverse outside and inside of tire
 
-If you happen to get the tire's outside shoulder temperature showing as the tire's inside temperature in your app you can reverse the out- and inside. By connecting one pin on the main board to ground you mirror the tire's temperature zones. The pin to connect to ground is marked "MISO" on the main board, connect it to the pin marked "GND".
+If you happen to get the tire's outside shoulder temperature showing as the tire's inside temperature in your app you can reverse the out- and inside. By connecting one pin on the main board to ground you reverse the tire's temperature zones. The pin to connect to ground is marked "MISO" on the main board, connect it to the pin marked "GND".
 
 # Testing
 
@@ -186,22 +186,28 @@ With the Arduino IDE (or other serial terminal software) you can view the printe
 
 # A main board to mount it all on
 
-Basically you don't need anything more then the five wires connecting the boards together as described above. But if you want to run it from 12 volts from the car's power, if you want an esy way to have jumpers to set wheel position, if you want a power switch or if you buy the temperature sensor separately wihtout it's daughter board. Or if you simply don't want cables and want it all pcb mounted, <a href="pcb/">here's a board you can use > >
+Basically you don't need anything more than the five wires connecting the boards together as described above. But if you want to run it from 12 volts from the car's power or if you want an esy way to have jumpers to set wheel position or if you want a power switch or if you buy the temperature sensor separately wihtout it's daughter board or if you simply don't want cables and want it all pcb mounted, <a href="pcb/">there's a board you can use, check  out all info about it here > >
+
+<a href="pcb/">**The PCB page >>**</a>
 
 <img src="pcb/images/daughterboards/06.jpg">
 </a>
+
+# Enclosures
+
+You can of course just create your own casing. Or you can 3D print one of the versions I've put together. There are some different options, either one box for the whole kit including battery. Or a separate smaller enclosure for the sensor components only, easier to place in the wheel well but necessitates a cable between the sensors and cpu/bluetooth unit.
+
+All 3D print designs are available for download. If you or a friend have a 3D printer you can print them all yourself, otherwise there are numerous online print shops that will print and ship you the parts pretty cheap. I haven't used them myself but I got recommended www.3dhubs.com as an example.
+
+<a href="3dprint/">**The 3D print enclosures page >>**</a>
+
+If you design your own case or make an updated variant of any of the 3D print downloads here **please** tell us, pretty sure there will be interest for your version too!
 
 # Work in progress...
 
 The software is finished and is stable. But the whole kit has NOT yet been properly field tested, just bench tests so far.
 
-You can make your own enclosure of course but a small enclosure to 3D-print is being designed. This will include a design that enables changing the mounting angle to get the sensors aiming at the right spot on the tire, protection for the sensors and a snap-in holder so the whole enclosure can easily be removed to be recharged and later put back on the car. If printed in nylon/carbon fiber it will be very light and strong to endure the harsh environment in the wheel well. Files to print this enclousre will of course be freely available.
-
 A small IR-transparent sensor protection window is on it's way to be sourced too.
-
-As an alternative to soldering the few wires between the boards I've made a small circuit board that you sandwich mount the cpu board and the sensors to. This board also has places for components converting 12 volt to 5 volt so you can run it directly from your cars power. There is also a power switch if you run on battery. Jumpers to set the device name and mirror outside and inside of the tire temperatures in your app. And the possibility to mount the sensors without their daugther boards directly to this board so you can buy the temperature sensor slightly cheaper without its daughter board.  
-
-Here's work in progress on a 3D-printed sensor housing
 
 <img src="images/3Dprint-testsensor.png">
 
