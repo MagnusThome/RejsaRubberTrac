@@ -199,7 +199,7 @@ You can of course just create your own casing. Or you can 3D print one of the ve
 
 All 3D print designs are available for download. If you or a friend have a 3D printer you can print them all yourself, otherwise there are numerous online print shops that will print and ship you the parts pretty cheap. I haven't used them myself but I got recommended www.3dhubs.com as an example.
 
-<a href="3dprint/">**The 3D print enclosures page >>**</a>
+<a href="3Dprint/">**The 3D print enclosures page >>**</a>
 
 If you design your own case or make an updated variant of any of the 3D print downloads here **please** tell us, pretty sure there will be interest for your version too!
 
