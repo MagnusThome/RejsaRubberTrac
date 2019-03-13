@@ -8,9 +8,9 @@ _This page will update with the different variants but just now there's only thi
 
 ... info coming
 
-<a href=printables/Minisensor%20Base.stl>Base</a>  
-<a href=printables/Minisensor%20Lid.stl>Lid</a>  
-<a href=printables/Minisensor%20Holder%20and%20Spacer%20Ring.stl>Holder and Spacer Ring</a>  
-<a href=printables/Minisensor%20Protection%20Window%20Holder.stl>Protection Window Holder</a>  
+- <a href=printables/Minisensor%20Base.stl>Base</a>  
+- <a href=printables/Minisensor%20Lid.stl>Lid</a>  
+- <a href=printables/Minisensor%20Holder%20and%20Spacer%20Ring.stl>Holder and Spacer Ring</a>  
+- <a href=printables/Minisensor%20Protection%20Window%20Holder.stl>Protection Window Holder</a>  
 
 <img src="images/minisensor.jpg">
