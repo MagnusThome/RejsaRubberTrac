@@ -22,7 +22,10 @@ Here's how to mount the components neccesary for running everything from 12V. Ch
 Mount the two sensor boards togther with a six pin header.  
 <img src="images/daughterboards/00.jpg">
 
-Put insulation on the bottom so the components there can't touch the main board.
+Cut of the "ears" of the distacne sensor board with a pair of pliers.
+
+Put insulation on the bottom so the components can't touch the main board:
+
 <img src="images/daughterboards/01.jpg">
 
 It's a little fiddly to get it all soldered on perfectly straight. I suggest you solder only one pin first. Then try to get it straight. When perfect solder the rest of the pins.
@@ -31,12 +34,12 @@ It's a little fiddly to get it all soldered on perfectly straight. I suggest you
 Yeah, straight.
 <img src="images/daughterboards/03.jpg">
 
-# Power switch 
+## Power switch 
 
 Note: if you don't mount a switch everything will by default be switched on. No need for any jumpers to turn the board on.
 <img src="images/daughterboards/04.jpg">
 
-# Jumper pin headers
+## Jumper pin headers
 
 Mount the 4x2 pin headers for the jumpers which set wheel position (left front, right rear...) and mirror outside/inside edge of the tire.
 <img src="images/daughterboards/05.jpg">
@@ -44,7 +47,7 @@ Mount the 4x2 pin headers for the jumpers which set wheel position (left front, 
 The jumpers are marked so you know which one sets what:
 <img src="images/jumpersettings.jpg">
 
-# Pin headers to cpu/bluetooth board
+## Pin headers to cpu/bluetooth board
 
 Mount the two long pin headers connecting to the cpu/bluetooth board. Note: you don't have to solder all pins if you don't want, there are markings on the board showing what pins you have to solder.
 
@@ -53,9 +56,14 @@ Solder on the cpu/bluetooth board. Again, not all pins needs to be soldered but 
 
 # Mounting a temperature sensor that comes __without__ a daughter board
 
-As you can see in the component list you can order the temperature sensor separately as a component without the daughter board or buy it mounted on a daughter board. It is usually sold on a daughter board from China. If you get the version without a daughter board there are two extra components you need to solder on to the board. They are of course listed in the component list excel sheet.
+As you can see in the component list you can either order the temperature sensor mounted on a daughter board or order it separately as a component without the daughter board. It is usually sold on a daughter board from China. If you get the version without a daughter board there are two extra components you need to solder on to the board. They are of course listed in the component list excel sheet.
 
-In addition to this you might need to mount the temperature sensor 4mm above the board if you want to use any of the 3D printed cases for this board. This is to make sure the 60 degree of field of view isn't hindered by the limited size window on the case. Also make sure you turn the sensor so the right pins are inserted in the correct respective mounting holes. There is a marking on the board showing a circle with a protrusion that should match a small tab sticking out on the sensor.
+In addition to this you need to mount the temperature sensor 4mm above the board if you want to use any of the 3D printed cases for this board. This is to make sure the 60 degree of field of view isn't hindered by the limited size window on the case. Also make sure you turn the sensor so the right pins are inserted in the correct respective mounting holes. There is a marking on the board showing a circle with a protrusion that should match a small tab sticking out on the sensor.
+
+To help mounting the sensor as a separate component without a daugther board at the right height and also completely straight there is a small 3D printable cylinder that you can put between the sensor and the board: 
+
+<a href="../3Dprint/printables/Temperature%20Sensor%20Mounting%20Spacer%203%2C5mm.stl">Spacer for the 60 degree temperature sensor</a>  
+<a href="../3Drint/printables/Temperature%20Sensor%20Mounting%20Spacer%2010mm.stl">Spacer for the 120 degree wide temperature sensor</a>  
 
 <img src="images/separate%20temp%20sensor.jpg">
 
