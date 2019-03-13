@@ -39,7 +39,9 @@ https://www.arduino.cc/en/Main/Software
 
 - Place all the files downloaded from here https://github.com/MagnusThome/RejsaRubberTrac/tree/master/main in a directory called "main"
 
-- Open the main.ino file and choose "Upload"
+- Open the main.ino file and choose "Upload"  
+
+Note: Make sure the board is turned on if you have a power switch mounted on the board. Yes, been there, done that...
 
 <img hspace="50" src="images/installArduinoIDE-7b.gif">
 
