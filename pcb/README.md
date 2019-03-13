@@ -34,6 +34,8 @@ It's a little fiddly to get it all soldered on perfectly straight. I suggest you
 Yeah, straight.
 <img src="images/daughterboards/03.jpg">
 
+Remove the dark yellow protection film from the distance sensor. You can measure distances with the protection film still on the sensor, the only downside is that it will display random results when there are no objects to measure distance to in front of the sensor. 
+
 ## Power switch 
 
 Note: if you don't mount a switch everything will by default be switched on. No need for any jumpers to turn the board on.
@@ -52,6 +54,9 @@ The jumpers are marked so you know which one sets what:
 Mount the two long pin headers connecting to the cpu/bluetooth board. Note: you don't have to solder all pins if you don't want, there are markings on the board showing what pins you have to solder.
 
 Solder on the cpu/bluetooth board. Again, not all pins needs to be soldered but if you're unsure, solder all.
+
+NOTE: Make sure you place the shorter of the two pin headers in its proper holes. There is an adjacent extra hole for another (normally unused) component that can be mistaken to belong to the header. There are clear markings on the board to tell you which is which.
+
 <img src="images/daughterboards/06.jpg">
 
 # Mounting a temperature sensor that comes __without__ a daughter board
@@ -64,6 +69,7 @@ To help mounting the sensor as a separate component without a daugther board at 
 
 <a href="../3Dprint/printables/Temperature%20Sensor%20Mounting%20Spacer%203%2C5mm.stl">Spacer for the 60 degree temperature sensor</a>  
 <a href="../3Drint/printables/Temperature%20Sensor%20Mounting%20Spacer%2010mm.stl">Spacer for the 120 degree wide temperature sensor</a>  
+If you don't have access to printing this spacer the best way is to first only solder one leg of the sensor. Check the height and then adjust it straight. Then solder the remaining legs.
 
 <img src="images/separate%20temp%20sensor.jpg">
 
