@@ -7,3 +7,5 @@ _This page will update with the different variants but we'll start with these fo
 # Separate sensor enclosure
 
 ... coming
+
+<img src="images/minisensor.jpg">
