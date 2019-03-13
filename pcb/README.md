@@ -1,8 +1,8 @@
 # Interconnect carrier board to mount everything on
 
-This is not at all needed to build the sensor kit. The minimum way of doing it is just five wires between the boards and nothing else, as you can see on the main page. 
+This extra board is not needed at all to build the sensor kit! The minimum way of putting the kit together is just the five wires between the boards, as you can see on the main page, and nothing else!  
 
-But this board is handy if you want to run the kit from the car's 12V. Or if you want to use jumpers to set each sensor's wheel position. Or to add a power switch. Or if you buy the temperature sensor without it's daughter board, here you have a main board to mount it all on.
+But this board is handy if you want to run the kit from the car's 12V. Or if you want to use jumpers to set each sensor's wheel position. Or to add a power switch. Or if you buy the temperature sensor without it's daughter board. Here you have a main board to mount it all on.
 
 A list of all components needed with links to mouser can be found in an Excel sheet here:
 https://github.com/MagnusThome/RejsaRubberTrac/edit/master/pcb
@@ -36,12 +36,12 @@ Yeah, straight.
 
 Remove the dark yellow protection film from the distance sensor. You can measure distances with the protection film still on the sensor, the only downside is that it will display random results when there are no objects to measure distance to in front of the sensor. 
 
-## Power switch 
+# Power switch 
 
 Note: if you don't mount a switch everything will by default be switched on. No need for any jumpers to turn the board on.
 <img src="images/daughterboards/04.jpg">
 
-## Jumper pin headers
+# Jumper pin headers
 
 Mount the 4x2 pin headers for the jumpers which set wheel position (left front, right rear...) and mirror outside/inside edge of the tire.
 <img src="images/daughterboards/05.jpg">
@@ -49,7 +49,7 @@ Mount the 4x2 pin headers for the jumpers which set wheel position (left front, 
 The jumpers are marked so you know which one sets what:
 <img src="images/jumpersettings.jpg">
 
-## Pin headers to cpu/bluetooth board
+# Pin headers to cpu/bluetooth board
 
 Mount the two long pin headers connecting to the cpu/bluetooth board. Note: you don't have to solder all pins if you don't want, there are markings on the board showing what pins you have to solder.
 
