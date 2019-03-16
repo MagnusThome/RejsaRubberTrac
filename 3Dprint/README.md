@@ -2,7 +2,10 @@
 
 There are a number of different variants. The basic version is a rectangular box housing everything including chargeable battery and the optional pcb for mounting 12V conversion and other things on.
 
-_This page will update with the different variants but just now there's only this:_
+_This page will update with the different variants but just now there's only this_
+
+Progress info: https://rejsa.nu/forum/viewtopic.php?t=114574
+
 # Complete electronics/sensors/rechargeable battery housing
 
 Info coming
