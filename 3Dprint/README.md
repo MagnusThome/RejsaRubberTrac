@@ -1,5 +1,7 @@
 # Print you own enclosures
 
+If you or a friend has a 3D-printer you just download the files and print. 
+
 There are a number of different variants. The basic version is a rectangular box housing everything including chargeable battery and the optional pcb for mounting 12V conversion and other things on.
 
 _This page will update with the different variants but just now there's only this_
