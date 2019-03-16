@@ -3,10 +3,18 @@
 There are a number of different variants. The basic version is a rectangular box housing everything including chargeable battery and the optional pcb for mounting 12V conversion and other things on.
 
 _This page will update with the different variants but just now there's only this:_
+# Complete electronics/sensors/rechargeable battery housing
+
+Info coming
+
+<img src=images/main%20housing%20early%20wip%201.jpg>
+
+<img src=images/main%20housing%20early%20wip%202.jpg>
+
 
 # Separate sensor enclosure
 
-... info coming
+More info will be added of course. Currently spending time on these housings :-)
 
 - <a href=printables/Minisensor%20Base.stl>Base</a>  
 - <a href=printables/Minisensor%20Lid.stl>Lid</a>  
