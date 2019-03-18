@@ -16,7 +16,7 @@ Progress info: https://rejsa.nu/forum/viewtopic.php?t=114574
 
 # Complete electronics/sensors/rechargeable battery housing
 
-More info coming... especially the holder part to be mounted on the car.  
+More info coming on hints on putting it all together!  
 
 Printable STL files:  
 - <a href=printables/Main%20Housing%20Base.stl>Main enclosure</a>
@@ -25,6 +25,11 @@ Printable STL files:
 - <a href=printables/Main%20Holder%20Base.stl>Holder unit</a>  
 - <a href=printables/Main%20Holder%20Hinge.stl>Holder unit Hinge</a>  
 
+As you can see in the pictures you only need a small screw, washer and nut in addition to the four 3D printed parts. 
+
+M3 x 6 screw
+M3 nut
+11mm washer
 
 <img src=images/main%20housing%20early%20wip%201.jpg>
 
