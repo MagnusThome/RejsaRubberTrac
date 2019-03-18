@@ -19,8 +19,11 @@ Progress info: https://rejsa.nu/forum/viewtopic.php?t=114574
 More info coming... especially the holder part to be mounted on the car.  
 
 Printable STL files:  
-- <a href=printables/Main%20Housing%20Base.stl>Base</a>
-- <a href=printables/Main%20Housing%20Lid.stl>Lid</a>  
+- <a href=printables/Main%20Housing%20Base.stl>Main enclosure</a>
+- <a href=printables/Main%20Housing%20Lid.stl>Main enclosure Lid</a>  
+
+- <a href=printables/Main%20Holder%20Base.stl>Holder unit</a>  
+- <a href=printables/Main%20Holder%20Hinge.stl>Holder unit Hinge</a>  
 
 
 <img src=images/main%20housing%20early%20wip%201.jpg>
