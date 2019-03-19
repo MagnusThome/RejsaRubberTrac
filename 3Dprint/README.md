@@ -4,15 +4,22 @@ You can of course create your own casing. Or you can 3D print one of the version
 
 All 3D print designs will be available for download. If you or a friend have a 3D printer you can print them all yourself, otherwise there are numerous online print shops that will print and ship you the parts pretty cheap. I haven't used them myself but I got recommended www.3dhubs.com as an example.
 
+## Print 
 
+- The STL files are in millimeters  
+- Choose 100um (0,1mm) layers  
+- Preferably print in PETG or ABS  
+- To see the LEDs telling you the that sensor is turned on or off print the housing part with white or translucent filament 
+
+## More designs
 
 If you design your own case or make an updated variant of any of the 3D print downloads here please tell us, pretty sure there will be interest for your version too!
 
+## Work in progress
 
+_This page will be updated with more info_
 
-_This page will update with the different variants but just now there's only this_
-
-Progress info: https://rejsa.nu/forum/viewtopic.php?t=114574
+Discuss here: https://rejsa.nu/forum/viewtopic.php?t=114574
 
 # Complete electronics/sensors/rechargeable battery housing
 
@@ -25,11 +32,10 @@ Printable STL files:
 - <a href=printables/Main%20Holder%20Base.stl>Holder unit</a>  
 - <a href=printables/Main%20Holder%20Hinge.stl>Holder unit Hinge</a>  
 
-As you can see in the pictures you only need a small screw, washer and nut in addition to the four 3D printed parts. 
-
-M3 x 6 screw  
-M3 nut  
-11mm washer  
+You also need this for the adjustable hinge:  
+- M3 x 7 screw  
+- M3 nut  
+- 11mm washer  
 
 <img src=images/main%20housing%20early%20wip%201.jpg>
 
