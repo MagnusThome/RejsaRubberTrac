@@ -35,7 +35,7 @@ Printable STL files:
 - <a href=printables/Main%20Holder%20Hinge.stl>Holder unit Hinge</a>  
 
 You also need this for the adjustable hinge:  
-- M3 x 7 screw  
+- M3 x 6mm screw  
 - M3 nut  
 - 11mm washer  
 
