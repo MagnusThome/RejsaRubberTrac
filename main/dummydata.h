@@ -39,7 +39,7 @@ void dummyloop(void) {
     
     
     // - - T E M P S - -
-    if (now - ttimer >= 320) {
+    if (now - ttimer >= 3200) {
       ttimer = now;
       for(uint8_t i=0;i<8;i++){
         datapackOne.temps[i] += stepchange + random(-5,6);

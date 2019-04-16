@@ -26,12 +26,6 @@
                           // 1 = Mirror the tire, making the outside edge temps the inside edge temps
 
                           // NOTE!!! THIS CAN BE OVERRIDDEN WITH HARDWARE CODING WITH A GPIO PIN
-
-
-
-#define STATUSLEDS 1      // 0 = LED lights off
-                          // 1 = blue LED blinks with NO bluetooth connection and is continously on when connected
-                          // 2 = blue LED blinks on temperature changes, red LED blinks on distance changes
                           
                           
 
@@ -43,7 +37,8 @@
 
 
 #define PROTOCOL 0x01
-#define TEMPOFFSET 1.00         // Default = 1.00
+#define TEMPSCALING 1.00  // Default = 1.00
+#define TEMPOFFSET 0      // Default = 0
 
 #define GPIODISTSENSORXSHUT 12  // GPIO pin number
 #define GPIOCAR    28  // GPIO pin number
@@ -99,10 +94,7 @@ void setup(){
   Serial.begin(115200);
   Serial.println("\nBegin startup");
 
-  if (STATUSLEDS != 1) {
-    Bluefruit.autoConnLed(false);     // DISABLE USING BLUE LED AS INDICATOR FOR BLUETOOTH CONNECTION
-  }
-
+  Bluefruit.autoConnLed(false); // DISABLE BLUE BLINK ON CONNECT STATUS
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
   pinMode(GPIODISTSENSORXSHUT, OUTPUT);
@@ -194,8 +186,8 @@ void loop() {
     if (mirrorTire == 1) {
       idx = 7-i;
     }
-    datapackOne.temps[idx] = (int16_t) TEMPOFFSET *((tempSensor.getTemperature(i*8+1)+tempSensor.getTemperature(i*8+2))*5);  // Mean value of the two middle rows of the *four* (4x16) rows total (the first and last rows are ignored)
-    datapackTwo.temps[idx] = (int16_t) TEMPOFFSET *((tempSensor.getTemperature(i*8+5)+tempSensor.getTemperature(i*8+6))*5);  
+    datapackOne.temps[idx] = (int16_t) TEMPOFFSET + TEMPSCALING *((tempSensor.getTemperature(i*8+1)+tempSensor.getTemperature(i*8+2))*5);  // Mean value of the two middle rows of the *four* (4x16) rows total (the first and last rows are ignored)
+    datapackTwo.temps[idx] = (int16_t) TEMPOFFSET + TEMPSCALING *((tempSensor.getTemperature(i*8+5)+tempSensor.getTemperature(i*8+6))*5);  
   }
 
 
@@ -214,9 +206,9 @@ void loop() {
     GATTtwo.notify(&datapackTwo, sizeof(datapackTwo));
   }
 
-
   blinkOnTempChange(datapackOne.temps[4]/20);    // Use one single temp in the middle of the array
   blinkOnDistChange(datapackOne.distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
+
 
   printStatus();
 
@@ -323,13 +315,16 @@ void printStatus(void) {
 // ----------------------------------------
 
 void blinkOnDistChange(uint16_t distnew) {
-  if (STATUSLEDS != 2) {
+  static uint16_t distold = 0;
+
+  if (!Bluefruit.connected()) {
+    digitalWrite(LED_RED, HIGH);
     return;
   }
-  static uint16_t distold = 0;
+  
   if (distold != distnew) {
     digitalWrite(LED_RED, HIGH);
-    delay(2);
+    delay(3);
     digitalWrite(LED_RED, LOW);
   }
   distold = distnew;
@@ -339,13 +334,10 @@ void blinkOnDistChange(uint16_t distnew) {
 // ----------------------------------------
 
 void blinkOnTempChange(int16_t tempnew) {
-  if (STATUSLEDS != 2) {
-    return;
-  }
   static int16_t tempold = 0;
   if (tempold != tempnew) {
     digitalWrite(LED_BLUE, HIGH);
-    delay(2);
+    delay(3);
     digitalWrite(LED_BLUE, LOW);
   }
   tempold = tempnew;
