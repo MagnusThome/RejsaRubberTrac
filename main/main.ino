@@ -38,7 +38,7 @@
 
 #define PROTOCOL 0x01
 #define TEMPSCALING 1.00  // Default = 1.00
-#define TEMPOFFSET 0      // Default = 0
+#define TEMPOFFSET 0      // Default = 0  NOTE !!!!!!!  in TENTHS of degrees Celsius  !!!!!!!! NOTE --> TEMPOFFSET 10 = 1 degree
 
 #define GPIODISTSENSORXSHUT 12  // GPIO pin number
 #define GPIOCAR    28  // GPIO pin number
