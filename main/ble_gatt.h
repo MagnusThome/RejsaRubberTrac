@@ -3,6 +3,7 @@
 BLEService  mainService   = BLEService        (0x00000001000000fd8933990d6f411ff7);
 BLECharacteristic GATTone = BLECharacteristic (0x01);
 BLECharacteristic GATTtwo = BLECharacteristic (0x02);
+BLECharacteristic GATTthr = BLECharacteristic (0x03);
 
 
 
@@ -19,6 +20,11 @@ void setupMainService(void) {
   GATTtwo.setPermission(SECMODE_OPEN, SECMODE_NO_ACCESS);
   GATTtwo.setFixedLen(20);
   GATTtwo.begin();
+
+  GATTthr.setProperties(CHR_PROPS_NOTIFY | CHR_PROPS_READ);
+  GATTthr.setPermission(SECMODE_OPEN, SECMODE_NO_ACCESS);
+  GATTthr.setFixedLen(20);
+  GATTthr.begin();
 }
 
 

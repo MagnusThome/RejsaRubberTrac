@@ -57,6 +57,7 @@ void dummyloop(void) {
           datapackTwo.temps[i] = 640;
         }
       }
+      datapackThr.temps[idx] = (int16_t) (datapackOne.temps[idx] + datapackTwo.temps[idx]) / 2;    // Mean value of even numbered and uneven numbered sensor values => all 16 temp spots averaged together in pairs of two and two into 8 temp values (degrees Celsius x 10)
     }
     if (now - ctimer >= cdelay) {
       ctimer = now;
@@ -78,6 +79,7 @@ void dummyloop(void) {
     if ( Bluefruit.connected() ) {
       GATTone.notify(&datapackOne, sizeof(datapackOne));
       GATTtwo.notify(&datapackTwo, sizeof(datapackTwo));
+      GATTthr.notify(&datapackThr, sizeof(datapackThr));
     }
 
 

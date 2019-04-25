@@ -62,8 +62,17 @@ typedef struct {
 } two_t;
 
 
+typedef struct {
+  uint8_t  protocol;         // currently: 0x01
+  uint8_t  unused;
+  uint16_t distance;         // millimeters
+  int16_t  temps[8];         // all 16 temp spots averaged together in pairs of two and two into 8 temp values (degrees Celsius x 10)
+} thr_t;
+
+
 one_t datapackOne;
 two_t datapackTwo;
+thr_t datapackThr;
 uint8_t distSensorPresent;
 uint8_t macaddr[6];
 char bleName[19];
@@ -106,6 +115,8 @@ void setup(){
   datapackOne.distance = 0;
   datapackOne.protocol = PROTOCOL;
   datapackTwo.protocol = PROTOCOL;
+  datapackThr.distance = 0;
+  datapackThr.protocol = PROTOCOL;
 
   Serial.println("Starting distance sensor");
   distSensorPresent = InitDistanceSensor();
@@ -187,7 +198,8 @@ void loop() {
       idx = 7-i;
     }
     datapackOne.temps[idx] = (int16_t) TEMPOFFSET + TEMPSCALING *((tempSensor.getTemperature(i*8+1)+tempSensor.getTemperature(i*8+2))*5);  // Mean value of the two middle rows of the *four* (4x16) rows total (the first and last rows are ignored)
-    datapackTwo.temps[idx] = (int16_t) TEMPOFFSET + TEMPSCALING *((tempSensor.getTemperature(i*8+5)+tempSensor.getTemperature(i*8+6))*5);  
+    datapackTwo.temps[idx] = (int16_t) TEMPOFFSET + TEMPSCALING *((tempSensor.getTemperature(i*8+5)+tempSensor.getTemperature(i*8+6))*5);  // Mean value of the ...
+    datapackThr.temps[idx] = (int16_t) (datapackOne.temps[idx] + datapackTwo.temps[idx]) / 2;    // Mean value of even numbered and uneven numbered sensor values => all 16 temp spots averaged together in pairs of two and two into 8 temp values (degrees Celsius x 10)
   }
 
 
@@ -204,6 +216,7 @@ void loop() {
   if (Bluefruit.connected()) {
     GATTone.notify(&datapackOne, sizeof(datapackOne));
     GATTtwo.notify(&datapackTwo, sizeof(datapackTwo));
+    GATTthr.notify(&datapackThr, sizeof(datapackThr));
   }
 
   blinkOnTempChange(datapackOne.temps[4]/20);    // Use one single temp in the middle of the array
