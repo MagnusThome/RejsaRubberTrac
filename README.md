@@ -130,6 +130,25 @@ Depends. Measuring distance takes time, same with temperatures. And on top of th
 | 16Hz          	| 8 temperatures             	|
 | 16Hz          	| distance                   	|
 
+# A main board to mount it all on
+
+Basically you don't need anything more than the five wires connecting the boards together as described above. But if you want to run it from 12 volts from the car's power or if you want an easy way to have jumpers to set wheel position or if you want a power switch or if you buy the temperature sensor separately without it's daughter board or if you simply don't want cables and want it all pcb mounted, <a href="pcb/">there's a board you can use, check  out all info about it here > >
+
+<a href="pcb/">**The PCB page >>**</a>
+
+<img src="pcb/images/daughterboards/06.jpg">
+</a>
+
+# Enclosures
+
+You can of course just create your own casing. Or you can 3D print one of the versions I've put together. There are some different options, either one box for the whole kit including battery. Or a separate smaller enclosure for the sensor components only, easier to place in the wheel well but necessitates a cable between the sensor and cpu/bluetooth units.
+
+All 3D print designs are available for download. If you or a friend have a 3D printer you can print them all yourself, otherwise there are numerous online print shops that will print and ship you the parts pretty cheap. I haven't used them myself but I got recommended www.3dhubs.com as an example.
+
+<a href="3Dprint/">**The 3D print enclosures page >>**</a>
+
+If you design your own case or make an updated variant of any of the 3D print downloads here **please** tell us, pretty sure there will be interest for your version too!
+
 # Bluetooth device name
 
 The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the Bluetooth address, __this automatic name will work in most situations__, here's an example of what it can look like:
@@ -184,30 +203,9 @@ With the Arduino IDE (or other serial terminal software) you can view the printe
 
 <img src="images/usbterminal.PNG">
 
-# A main board to mount it all on
-
-Basically you don't need anything more than the five wires connecting the boards together as described above. But if you want to run it from 12 volts from the car's power or if you want an easy way to have jumpers to set wheel position or if you want a power switch or if you buy the temperature sensor separately without it's daughter board or if you simply don't want cables and want it all pcb mounted, <a href="pcb/">there's a board you can use, check  out all info about it here > >
-
-<a href="pcb/">**The PCB page >>**</a>
-
-<img src="pcb/images/daughterboards/06.jpg">
-</a>
-
-# Enclosures
-
-You can of course just create your own casing. Or you can 3D print one of the versions I've put together. There are some different options, either one box for the whole kit including battery. Or a separate smaller enclosure for the sensor components only, easier to place in the wheel well but necessitates a cable between the sensor and cpu/bluetooth units.
-
-All 3D print designs are available for download. If you or a friend have a 3D printer you can print them all yourself, otherwise there are numerous online print shops that will print and ship you the parts pretty cheap. I haven't used them myself but I got recommended www.3dhubs.com as an example.
-
-<a href="3Dprint/">**The 3D print enclosures page >>**</a>
-
-If you design your own case or make an updated variant of any of the 3D print downloads here **please** tell us, pretty sure there will be interest for your version too!
-
 # Work in progress...
 
-The software is finished and is stable. But the whole kit has NOT yet been properly field tested, just bench tests so far.
-
-A small IR-transparent sensor protection window is on it's way to be sourced too.
+The software is finished and is stable. But keep an eye out for updates to 3D print enclosures and maybe minor changes.
 
 <img src="images/3Dprint-testsensor.png">
 
