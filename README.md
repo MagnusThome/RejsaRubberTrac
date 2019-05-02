@@ -132,7 +132,7 @@ Depends. Measuring distance takes time, same with temperatures. And on top of th
 
 # A main board to mount it all on
 
-Basically you don't need anything more than the five wires connecting the boards together as described above. But if you want to run it from 12 volts from the car's power or if you want an easy way to have jumpers to set wheel position or if you want a power switch or if you buy the temperature sensor separately without it's daughter board or if you simply don't want cables and want it all pcb mounted, <a href="pcb/">there's a board you can use, check  out all info about it here > >
+Basically you don't need anything more than the five wires connecting the boards together as described above. But if you want to run it from 12 volts from the car's power or if you want a power switch or if you buy the temperature sensor separately without it's daughter board or if you simply don't want cables and want it all pcb mounted or maybe you want jumper pin headers for easy change of the Bluetooth device name for each sensor, <a href="pcb/">there's a board you can use, check  out all info about it here > >
 
 <a href="pcb/">**The PCB page >>**</a>
 
