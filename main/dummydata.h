@@ -56,8 +56,8 @@ void dummyloop(void) {
         if (datapackTwo.temps[i] < 600) {
           datapackTwo.temps[i] = 640;
         }
+        datapackThr.temps[i] = (int16_t) (datapackOne.temps[i] + datapackTwo.temps[i]) / 2;    // Mean value of even numbered and uneven numbered sensor values => all 16 temp spots averaged together in pairs of two and two into 8 temp values (degrees Celsius x 10)
       }
-      datapackThr.temps[idx] = (int16_t) (datapackOne.temps[idx] + datapackTwo.temps[idx]) / 2;    // Mean value of even numbered and uneven numbered sensor values => all 16 temp spots averaged together in pairs of two and two into 8 temp values (degrees Celsius x 10)
     }
     if (now - ctimer >= cdelay) {
       ctimer = now;
