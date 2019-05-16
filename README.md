@@ -10,6 +10,8 @@ For around $100 per wheel you can build your own wireless sensors to log your dr
 
 The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de>__Harry's Laptimer__</a> and <a href=http://www.racechrono.com>__Racechrono__</a> already have test units and are well on their way adding support for RejsaRubberTrac.
 
+UPDATE: Harry's Laptimer v23 with support for RejsaRubberTrac is released!
+
 Watch this short video:  
 
 <a href="http://www.youtube.com/watch?v=Yuy62oPXugs"><img src=images/earlyharrysbetayoutube.jpg></a>
