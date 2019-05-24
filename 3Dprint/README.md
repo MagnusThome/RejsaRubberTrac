@@ -11,7 +11,6 @@ If you or a friend have a 3D printer you can print them all yourself, otherwise 
 - The STL files are in millimeters  
 - Choose 100um (0,1mm) layers  
 - Preferably print in PETG  
-- To see the LEDs telling you if the sensor is turned on or off preferably print the housing part with white or translucent filament 
 
 ## More designs
 
@@ -38,6 +37,7 @@ You also need this for the adjustable hinge:
 - M3 x 6mm screw  
 - M3 nut  
 - 11mm washer  
+- a few short bits of transparant filament can be used in the holes above the three LEDs to make them visible on the front panel,
 
 <img src=images/main%20housing%20early%20wip%201.jpg>
 
