@@ -10,7 +10,7 @@ If you or a friend have a 3D printer you can print them all yourself, otherwise 
 
 - The STL files are in millimeters  
 - Choose 100um (0,1mm) layers  
-- Preferably print in PETG or ABS  
+- Preferably print in PETG  
 - To see the LEDs telling you if the sensor is turned on or off preferably print the housing part with white or translucent filament 
 
 ## More designs
