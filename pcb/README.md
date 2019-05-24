@@ -37,7 +37,7 @@ Getting it straight...
 
 <img src="images/daughterboards/03.jpg">
 
-Remove the dark yellow protection film from the distance sensor. You can measure distances with the protection film still on the sensor, the only downside is that it will display random results when there are no objects to measure in front of the sensor. 
+You don't have to remove the dark yellow protection film from the distance sensor. You can measure distances with the protection film still on the sensor, the only downside is that it will display random results when there are no objects to measure in front of the sensor. 
 
 # Power switch 
 
