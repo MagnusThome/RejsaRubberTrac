@@ -1,4 +1,4 @@
-# RejsaRubberTrac - A wireless heat camera for tires  
+# RejsaRubberTrac - A wireless thermal camera for tires  
 
 *__Log and view tire temperature zones on race- and trackday cars__*
 
