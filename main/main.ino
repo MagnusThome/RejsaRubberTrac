@@ -128,7 +128,7 @@ void setup(){
   // START UP BLUETOOTH
   Serial.print("Starting bluetooth with MAC address ");
   Bluefruit.begin();
-  Bluefruit.Gap.getAddr(macaddr);
+  Bluefruit.getAddr(macaddr);
   Serial.printBufferReverse(macaddr, 6, ':');
   Serial.println();
 
