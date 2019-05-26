@@ -24,6 +24,8 @@ Discuss here: https://rejsa.nu/forum/viewtopic.php?t=114574
 
 Protection window is still not 100% solved. A quick and dirty solution (no pun intended) is thin food wrap plastic over the sensors. The distance sensor works with many clear transparant plastics and glass but only if the window is flush mounted on the sensor itself. I'm looking at other ways of doing it. The temperature sensor works well with IR-transparent film mounted on the inside of the housing front. But these plastic films are not widly available. If you find a supplier please email me (magnust@gmail.com) so I can start making a list. I bought from KUBE Electronics AG in Switzerland (0,22mm opaque 2058)
 
+<img src=images/housing.png>
+
 # Complete electronics/sensors/rechargeable battery housing
 
 More info coming on hints on putting it all together!  
