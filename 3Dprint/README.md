@@ -55,7 +55,9 @@ You also need this for the adjustable hinge:
 
 # Separate sensor enclosure
 
-The mounting rings have three threaded plus three un-threaded holes. You need three M4 screws but normally you do not need any nuts.  
+The mounting rings have three threaded plus three un-threaded holes. You need three M4 screws but normally you do not need any nuts. 
+
+The big hole in the middle of the ring is larger on one side and smaller on the other to fit the curvature of the round sensor housing.  
 
 You can stack multiple mounting rings on top of each other with longer screws to get the sensor mounted further behind or further above whatever you are mounting it on.
 
