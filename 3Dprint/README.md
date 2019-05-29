@@ -55,6 +55,8 @@ You also need this for the adjustable hinge:
 
 # Separate sensor enclosure
 
+You can stack multiple mounting rings on top of each other with longer screws to get the sensor mounted further behind or further above whatever you are mounting it on.
+
 Printable STL files:  
 - <a href=printables/Minisensor%20Base.stl>Base</a>  
 - <a href=printables/Minisensor%20Lid.stl>Lid</a>  
