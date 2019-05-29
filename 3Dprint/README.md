@@ -59,11 +59,11 @@ The mounting rings have three threaded plus three un-threaded holes. You need th
 
 The big hole in the middle of the ring is larger on one side and smaller on the other to fit the curvature of the round sensor housing.  
 
-You can stack multiple mounting rings on top of each other with longer screws to get the sensor mounted further behind or further above whatever you are mounting it on.
-
 Printable STL files:  
 - <a href=printables/Minisensor%20Base.stl>Base</a>  
 - <a href=printables/Minisensor%20Lid.stl>Lid</a>  
 - <a href=printables/Minisensor%20Holder%20Ring.stl>Holder and Spacer Ring</a>  
+
+You can stack multiple mounting rings on top of each other with longer screws to get the sensor mounted further behind or further above whatever you are mounting it on.  
 
 <img src="images/minisensor.jpg">
