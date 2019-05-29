@@ -14,18 +14,25 @@ If you or a friend have a 3D printer you can print them all yourself, otherwise 
 
 ## More designs
 
-If you design your own case or make an updated variant of any of the 3D print downloads here please tell us, pretty sure there will be interest in your version too!
+If you design your own case or make an updated variant of any of the 3D print downloads here please tell me (magnust@gmail.com), I'm sure there will be interest in your version too!
 
 ## Work in progress
 
-_This page will be updated with more info_
+_I'll update this page with more info as I come further with different mounting options and enclosures_
 
-Discuss here: https://rejsa.nu/forum/viewtopic.php?t=114574
+Discuss here: https://rejsa.nu/forum/viewforum.php?f=105
 
-Protection window is still not 100% solved. A quick and dirty solution (no pun intended) is thin food wrap plastic over the sensors. The distance sensor works with many clear transparant plastics and glass but only if the window is flush mounted on the sensor itself. I'm looking at other ways of doing it. The temperature sensor works well with IR-transparent film mounted on the inside of the housing front. But these plastic films are not widly available. If you find a supplier please email me (magnust@gmail.com) so I can start making a list. I bought from KUBE Electronics AG in Switzerland (0,22mm opaque 2058)
+## Work in progress - Protection window
 
-<img src=images/housing.png>
+The protection window is still not 100% solved. A quick and dirty solution (no pun intended) is thin food wrap plastic over the sensors.     
+The distance sensor works with many clear transparant plastics and glass but only if the window is flush mounted on the sensor itself. I'm looking at other ways of doing it.  
+  
+The temperature sensor works well with IR-transparent film mounted on the inside of the housing front. But these plastic films are not widely available. If you find a supplier please email me (magnust@gmail.com) so I can start making a list. I bought from KUBE Electronics AG in Switzerland (0,22mm opaque 2058)
+  
+<img src=images/housing.png>  
+  
 
+  
 # Complete electronics/sensors/rechargeable battery housing
 
 More info coming on hints on putting it all together!  
