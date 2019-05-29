@@ -35,8 +35,6 @@ The temperature sensor works well with IR-transparent film mounted on the inside
   
 # Complete electronics/sensors/rechargeable battery housing
 
-More info coming on hints on putting it all together!  
-
 Printable STL files:  
 - <a href=printables/Main%20Housing%20Base.stl>Main enclosure</a>
 - <a href=printables/Main%20Housing%20Lid.stl>Main enclosure Lid</a>  
