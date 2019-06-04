@@ -111,18 +111,20 @@ void setup(){
   pinMode(GPIOFRONT, INPUT_PULLUP);
   pinMode(GPIOCAR, INPUT_PULLUP);
   pinMode(GPIOMIRR, INPUT_PULLUP);
-  
-  datapackOne.distance = 0;
-  datapackOne.protocol = PROTOCOL;
-  datapackTwo.protocol = PROTOCOL;
-  datapackThr.distance = 0;
-  datapackThr.protocol = PROTOCOL;
 
   Serial.println("Starting distance sensor");
   distSensorPresent = InitDistanceSensor();
 
   Serial.println("Starting temp sensor");
   tempSensor.initialise(16);
+
+
+  // SET SOME DEFAULT VALUES IN THE DATA PACKETS
+  datapackOne.distance = 0;
+  datapackOne.protocol = PROTOCOL;
+  datapackTwo.protocol = PROTOCOL;
+  datapackThr.distance = 0;
+  datapackThr.protocol = PROTOCOL;
 
 
   // START UP BLUETOOTH
@@ -197,9 +199,9 @@ void loop() {
     if (mirrorTire == 1) {
       idx = 7-i;
     }
-    datapackOne.temps[idx] = (int16_t) TEMPOFFSET + TEMPSCALING *((tempSensor.getTemperature(i*8+1)+tempSensor.getTemperature(i*8+2))*5);  // Mean value of the two middle rows of the *four* (4x16) rows total (the first and last rows are ignored)
-    datapackTwo.temps[idx] = (int16_t) TEMPOFFSET + TEMPSCALING *((tempSensor.getTemperature(i*8+5)+tempSensor.getTemperature(i*8+6))*5);  // Mean value of the ...
-    datapackThr.temps[idx] = (int16_t) (datapackOne.temps[idx] + datapackTwo.temps[idx]) / 2;    // Mean value of even numbered and uneven numbered sensor values => all 16 temp spots averaged together in pairs of two and two into 8 temp values (degrees Celsius x 10)
+    datapackOne.temps[idx] = (int16_t) TEMPOFFSET + TEMPSCALING * 10 * max(tempSensor.getTemperature(i*8+1), tempSensor.getTemperature(i*8+2));  // Max value of the two middle rows of the *four* (4x16) rows total (the first and last rows are ignored)(degrees Celsius x 10)
+    datapackTwo.temps[idx] = (int16_t) TEMPOFFSET + TEMPSCALING * 10 * max(tempSensor.getTemperature(i*8+5), tempSensor.getTemperature(i*8+6));  // Max value of the ... (degrees Celsius x 10)
+    datapackThr.temps[idx] = (int16_t) max(datapackOne.temps[idx], datapackTwo.temps[idx]); // Max value of even numbered and uneven numbered sensor values => all 16 temp spots together in pairs of two and two into 8 temp values (degrees Celsius x 10)
   }
 
 
