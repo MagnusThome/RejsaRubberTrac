@@ -22,13 +22,14 @@ _I'll update this page with more info as I come further with different mounting 
 
 Discuss here: https://rejsa.nu/forum/viewforum.php?f=105
 
-## Work in progress - Protection window
+## Sensor Protection
 
-The protection window is still not 100% solved. A quick and dirty solution (no pun intended) is thin food wrap plastic over the sensors.  
+The temperature sensor works well with IR-transparent film mounted on the inside of the housing front. But these plastic films are not widely available. If you find a supplier please email me (magnust@gmail.com) so I can start making a list. I bought from KUBE Electronics AG in Switzerland (0,22mm opaque 2058). Otherwise a quick and dirty solution (no pun intended) is thin food wrap plastic over the sensors.  
 
-The distance sensor works with many clear transparant plastics and glass but only if the window is flush mounted on the sensor itself. I'm looking at other ways of doing it.  
+The distance sensor though works with many clear transparant plastics and glass but only if the window is flush mounted on the sensor itself or if the emitting light in other ways is prevented not to reach the sensor's light receiver right at the sensor (which obviously sort of shorst out the distance detection). In the main housing below the protection for the distance sensor is done by two holes, one for the led laser transmitter and one for the light sensor. You can either just leave the holes empty or use transparent filament but the latter lowers the maximum detection range somewhat.  
+
+As stated above to get readings it’s important to not have any light leaking directly from the transmitter to the receiver inside the housing right at the distance sensor. So in the main housing example below there’s a small “tower” that with its height needs to precisely touch the distance sensor housing. One can fine adjust the sensor position slightly by bending the mounting board connector pins. You can of course also heat the plastic slightly to make it soft and then adjust the height of the "tower".  
   
-The temperature sensor works well with IR-transparent film mounted on the inside of the housing front. But these plastic films are not widely available. If you find a supplier please email me (magnust@gmail.com) so I can start making a list. I bought from KUBE Electronics AG in Switzerland (0,22mm opaque 2058)
   
 <img src=images/mainhousing.jpg>  
   
@@ -68,3 +69,11 @@ Printable STL files:
 You can stack multiple mounting rings on top of each other with longer screws to get the sensor mounted further behind or further above whatever you are mounting it on.  
 
 <img src="images/minisensor.jpg">
+
+
+# Downloadable files for printing or edtiting
+
+Look in the download folder for more examples, housings, snap-in holders and more. There are both STL files for printing and STEP files for edtiting before printing your own versions. Please email me at magnust@gmail.com if you make special versions or completely different items for RejsaRubberTrac so I can add them here!  
+
+https://github.com/MagnusThome/RejsaRubberTrac/tree/master/3Dprint/printables  
+
