@@ -10,7 +10,7 @@ If you or a friend have a 3D printer you can print them all yourself, otherwise 
 
 - The STL files are in millimeters  
 - Choose 100um (0,1mm) layers  
-- Preferably print holders with PETG if they have some kind of flexible snap-in action. Of course you can experiment freely with other materials with other flexibilty.
+- Preferably print holders with PETG if they have some kind of flexible snap-in action. Of course you can experiment freely with other materials with other flexibility parameters.
 - Other parts can be PLA, PETG, ABS and so on depending on the maximum temperatures you will be exposing them to.    
 
 ## More designs
