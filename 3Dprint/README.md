@@ -30,7 +30,7 @@ The distance sensor works with many clear transparant plastics and glass but onl
   
 The temperature sensor works well with IR-transparent film mounted on the inside of the housing front. But these plastic films are not widely available. If you find a supplier please email me (magnust@gmail.com) so I can start making a list. I bought from KUBE Electronics AG in Switzerland (0,22mm opaque 2058)
   
-<img src=images/housing.png>  
+<img src=images/mainhousing.jpg>  
   
 
   
