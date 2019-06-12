@@ -74,7 +74,9 @@ You can stack multiple mounting rings on top of each other with longer screws to
 
 # Downloadable files for printing or edtiting
 
-Look in the download folder for more examples, housings, snap-in holders and more. There are both STL files for printing and STEP files for edtiting before printing your own versions. Please email me at magnust@gmail.com if you make special versions or completely different items for RejsaRubberTrac so I can add them here!  
+Look in the download folder for more examples, housings, snap-in holders and more. There are both STL files for printing and STEP files for edtiting before printing your own versions.  
 
 https://github.com/MagnusThome/RejsaRubberTrac/tree/master/3Dprint/printables  
+
+Please email me at magnust@gmail.com if you make special versions or completely different items for RejsaRubberTrac so I can add them here!  
 
