@@ -55,7 +55,9 @@ You also need this for the adjustable hinge:
 
 <img src=images/main%20housing%20early%20wip%202.jpg>
 
-
+<img src=images/main%20housing%20lids.jpg>  
+  
+  
 # Separate sensor enclosure
 
 The mounting rings have three threaded plus three un-threaded holes. You need three M4 screws but normally you do not need any nuts. 
