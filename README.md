@@ -8,9 +8,7 @@ For around $100 per wheel you can build your own wireless sensors to log your dr
 - All data available in popular Android and iPhone race logging apps via Bluetooth.
 - A cheap distance sensor can optionally be added to also log suspension movement.
 
-The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de>__Harry's Laptimer__</a> and <a href=http://www.racechrono.com>__Racechrono__</a> already have test units and are well on their way adding support for RejsaRubberTrac.
-
-UPDATE: Harry's Laptimer v23 with support for RejsaRubberTrac is released!
+The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de>__Harry's Laptimer__</a> and <a href=http://www.racechrono.com>__Racechrono__</a> support RejsaRubberTrac!  
 
 Racechrono:  
 
