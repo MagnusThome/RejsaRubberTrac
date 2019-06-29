@@ -12,13 +12,15 @@ The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de
 
 UPDATE: Harry's Laptimer v23 with support for RejsaRubberTrac is released!
 
-Watch this short video:  
+Racechrono:  
+
+https://youtu.be/0ZWt0y0hJ2g
+
+
+Harry's Laptimer:  
 
 <a href="http://www.youtube.com/watch?v=Yuy62oPXugs"><img src=images/earlyharrysbetayoutube.jpg></a>
 
-Here below Antti at Racechrono is performing stress tests with four RejsaRubberTracs plus a Garmin GLO 10Hz GPS and an OBDLink MX, he reported from these tests with a Google Pixel 2 phone and RaceChrono Pro: *"The ELM327 protocol for OBD-II is quite sensitive for lag/ping time, so it was affected by all the other Bluetooth connections as I expected. The highest update rate for OBDLink MX was still good, but the update rate fluctuates quite a bit, but even at lowest it was still faster than the Bluetooth LE OBD-II reader I tested. The update rate did not fluctuate on that one too much."*
-
-<img src=images/racechronostresstests.jpg>
 
 # Easy to build
 <img align="right" width="231" src="images/partsizes.jpg">
