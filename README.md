@@ -20,7 +20,7 @@ Harry's Laptimer:
 <a href="http://www.youtube.com/watch?v=Yuy62oPXugs"><img src=images/earlyharrysbetayoutube.jpg></a>
   
   
-Racechrono:  
+Racechrono temps in video and suspension movement logg graph:  
   
 <img src=images/Racechrono%20wheel%20distance%20log.png>
   
