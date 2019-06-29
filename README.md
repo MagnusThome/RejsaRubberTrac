@@ -14,7 +14,7 @@ UPDATE: Harry's Laptimer v23 with support for RejsaRubberTrac is released!
 
 Racechrono:  
 
-https://youtu.be/0ZWt0y0hJ2g
+<a href=https://youtu.be/0ZWt0y0hJ2g><img src=images/Racechrono%20beta%20video.png></a>
 
 
 Harry's Laptimer:  
