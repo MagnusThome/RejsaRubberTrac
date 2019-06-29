@@ -18,8 +18,13 @@ Racechrono:
 Harry's Laptimer:  
 
 <a href="http://www.youtube.com/watch?v=Yuy62oPXugs"><img src=images/earlyharrysbetayoutube.jpg></a>
-
-
+  
+  
+Racechrono:  
+  
+<img src=images/Racechrono%20wheel%20distance%20log.png>
+  
+  
 # Easy to build
 <img align="right" width="231" src="images/partsizes.jpg">
 
