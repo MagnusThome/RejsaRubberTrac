@@ -27,35 +27,40 @@
 
                           // NOTE!!! THIS CAN BE OVERRIDDEN WITH HARDWARE CODING WITH A GPIO PIN
                           
+
+
+#define DISTANCEOFFSET 0  // Write distance to tire in mm here to get logged distance data value centered around zero
+                          // If you leave this value here at 0 the distance value in the logs will always be positive numbers
+
                           
 
-//#define DUMMYDATA       // UNCOMMENT TO ENABLE FAKE RANDOM DATA WITH NO SENSORS NEEDED
+//#define DUMMYDATA       // Uncomment to enable transmission of fake random data for testing with no sensors needed
 
 
 // -------------------------------------------------------------------------
 // -------------------------------------------------------------------------
 
 
-#define PROTOCOL 0x01
-#define TEMPSCALING 1.00  // Default = 1.00
-#define TEMPOFFSET 0      // Default = 0  NOTE !!!!!!!  in TENTHS of degrees Celsius  !!!!!!!! NOTE --> TEMPOFFSET 10 = 1 degree
+#define PROTOCOL 0x02
+#define TEMPSCALING 1.00    // Default = 1.00
+#define TEMPOFFSET 0        // Default = 0      NOTE: in TENTHS of degrees Celsius --> TEMPOFFSET 10 --> 1 degree
 
 #define GPIODISTSENSORXSHUT 12  // GPIO pin number
-#define GPIOCAR    28  // GPIO pin number
-#define GPIOFRONT  29  // GPIO pin number
-#define GPIOLEFT   13  // GPIO pin number
-#define GPIOMIRR   14  // GPIO pin number
+#define GPIOCAR    28           // GPIO pin number
+#define GPIOFRONT  29           // GPIO pin number
+#define GPIOLEFT   13           // GPIO pin number
+#define GPIOMIRR   14           // GPIO pin number
 
 typedef struct {
-  uint8_t  protocol;         // currently: 0x01
+  uint8_t  protocol;         // version of protocol used
   uint8_t  unused;
-  uint16_t distance;         // millimeters
+  int16_t  distance;         // millimeters
   int16_t  temps[8];         // all even numbered temp spots (degrees Celsius x 10)
 } one_t;
 
 
 typedef struct {
-  uint8_t  protocol;         // currently: 0x01
+  uint8_t  protocol;         // version of protocol used
   uint8_t  charge;           // percent: 0-100
   uint16_t voltage;          // millivolts (normally circa 3500-4200)
   int16_t  temps[8];         // all uneven numbered temp spots (degrees Celsius x 10)
@@ -63,9 +68,9 @@ typedef struct {
 
 
 typedef struct {
-  uint8_t  protocol;         // currently: 0x01
+  uint8_t  protocol;         // version of protocol used
   uint8_t  unused;
-  uint16_t distance;         // millimeters
+  int16_t distance;          // millimeters
   int16_t  temps[8];         // all 16 temp spots averaged together in pairs of two and two into 8 temp values (degrees Celsius x 10)
 } thr_t;
 
@@ -73,6 +78,7 @@ typedef struct {
 one_t datapackOne;
 two_t datapackTwo;
 thr_t datapackThr;
+
 uint8_t distSensorPresent;
 uint8_t macaddr[6];
 char bleName[19];
@@ -85,6 +91,7 @@ MLX90621 tempSensor;
 
 // Function declarations
 uint8_t InitDistanceSensor(void);
+int16_t distanceFilter(int16_t);
 uint8_t getWheelPosCoding(void);
 void setBLEname(uint8_t);
 void printStatus(void);
@@ -182,11 +189,12 @@ void loop() {
       InitDistanceSensor();
     }
     else {
-      if (measure.RangeStatus == 4 || measure.RangeMilliMeter > 8190) {   // MEASURE FAIL
+      int16_t distance = measure.RangeMilliMeter;
+      if (measure.RangeStatus == 4 || distance > 8190) {   // MEASURE FAIL
         datapackOne.distance = 0;
       }
       else {
-        datapackOne.distance = measure.RangeMilliMeter;
+        datapackOne.distance = distanceFilter(distance) - DISTANCEOFFSET;
       }
     }
   }
@@ -243,10 +251,29 @@ uint8_t InitDistanceSensor(void) {
 }
 
 
+
 // ----------------------------------------
+
+int16_t distanceFilter(int16_t distanceIn) {
+  const uint8_t filterSz = 2;
+  static int16_t filterArr[filterSz];
+  int16_t distanceOut = 0;
+  for (int8_t i=0; i<(filterSz-1); i++) {
+    filterArr[i] = filterArr[i+1];
+    distanceOut += filterArr[i+1];
+  }
+  filterArr[filterSz-1] = distanceIn;
+  distanceOut += distanceIn;
+  return (int16_t) distanceOut/filterSz;
+}
+
+
+// ----------------------------------------
+
 uint8_t getWheelPosCoding(void) {
   return digitalRead(GPIOLEFT) + (digitalRead(GPIOFRONT) << 1) + (digitalRead(GPIOCAR) << 2);
 }
+
 
 // ----------------------------------------
 
