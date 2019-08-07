@@ -75,6 +75,7 @@ To help mounting the sensor as a separate component without a daugther board at 
 
 <a href="../3Dprint/printables/Temperature%20Sensor%20Mounting%20Spacer%203%2C5mm.stl">Spacer for the 60 degree temperature sensor</a>  
 <a href="../3Dprint/printables/Temperature%20Sensor%20Mounting%20Spacer%2010mm.stl">Spacer for the 120 degree wide temperature sensor</a>  
+
 If you don't have access to printing this spacer the best way is to first only solder one leg of the sensor. Check the height and then adjust it straight. Then solder the remaining legs.  
 
 <img src="images/separate%20temp%20sensor.jpg">
@@ -84,5 +85,18 @@ If you don't have access to printing this spacer the best way is to first only s
 You can download the gerber files here and get boards done anywhere you want. Or you can order them here too, this is where I got my made. I think I might get a small kickback if you order here but again, get them done wherever you want :-) !
 
 https://www.pcbway.com/project/shareproject/RejsaRubberTrac_____v1_1.html
+
+# Make a temperature sensor daughter board
+
+If you buy the temperature sensor separate, without it's daughter board, you can cut down a mainboard to create one. Cut very carefully exactly as in the pictures below.  
+
+Don't forget to mount C4 (1uF) and D3 (1N4007), for photo on mounting check picture further up on this page.
+
+If you use very long cables between the cpu board and this daughter board and have problems getting readings you might need to mount two pull up resistors on the I2C bus on the daughter board. But this would probably only be needed in extreme cases.
+
+<img src="images/cut-out-to-make-temp-sensor-daughter-board-1.jpg">
+  
+<img src="images/cut-out-to-make-temp-sensor-daughter-board-2.jpg">
+
 
 # Again, more info coming but this is a start
