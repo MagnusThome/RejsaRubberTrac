@@ -88,9 +88,9 @@ https://www.pcbway.com/project/shareproject/RejsaRubberTrac_____v1_1.html
 
 # Make a temperature sensor daughter board
 
-If you buy the temperature sensor separate, without it's daughter board, you can cut down a mainboard to create one. Cut very carefully exactly as in the pictures below.  
+If you buy the temperature sensor separate, without it's daughter board, you can cut down a mainboard to create the missing daughter board. Cut very carefully exactly as in the pictures below.  
 
-Don't forget to mount C4 (1uF) and D3 (1N4007), for photo on mounting check picture further up on this page.
+Don't forget to mount C4 (1uF) and D3 (1N4007). For a photo on how to mount htem check the picture further up on this page.
 
 If you use very long cables between the cpu board and this daughter board and have problems getting readings you might need to mount two pull up resistors on the I2C bus on the daughter board. But this would probably only be needed in extreme cases.
 
