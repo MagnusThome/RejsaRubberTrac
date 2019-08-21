@@ -39,12 +39,8 @@ As stated above to get readings it’s important to not have any light leaking d
   
 # Complete electronics/sensors/rechargeable battery housing
 
-Printable STL files:  
-- <a href=printables/Main%20Housing%20Base.stl>Main enclosure</a>
-- <a href=printables/Main%20Housing%20Lid.stl>Main enclosure Lid</a>  
-
-- <a href=printables/Main%20Holder%20Base.stl>Holder unit</a>  
-- <a href=printables/Main%20Holder%20Hinge.stl>Holder unit Hinge</a>  
+Printable STL files in the printables sub directory:  
+https://github.com/MagnusThome/RejsaRubberTrac/tree/master/3Dprint/printables  
 
 You also need this for the adjustable hinge:  
 - M3 x 6mm screw  
