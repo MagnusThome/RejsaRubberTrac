@@ -34,8 +34,6 @@ As stated above to get readings it’s important to not have any light leaking d
   
 <img src=images/mainhousing.jpg>  
   
-<img src=images/Windows%20and%20LED%20filaments.jpg>
-  
   
 # Complete electronics/sensors/rechargeable battery housing
 
@@ -54,6 +52,11 @@ You also need this for the adjustable hinge:
 
 <img src=images/main%20housing%20lids.jpg>  
   
+Protection windows:   
+  
+<img src=images/Windows%20and%20LED%20filaments.jpg>
+  
+
 Rubber hat over power switch:  
   
 <img src=images/switch%20rubber%20hat%20(cut%20down).jpg>  
