@@ -54,7 +54,7 @@ You also need this for the adjustable hinge:
   
 ## Protection windows:   
   
-<img src=images/Windows%20and%20LED%20filaments.jpg>
+<img src=images/Windows%20and%20LED-filaments.jpg>
   
 
 Rubber hat over power switch:  
