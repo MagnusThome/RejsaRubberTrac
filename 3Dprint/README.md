@@ -52,7 +52,7 @@ You also need this for the adjustable hinge:
 
 <img src=images/main%20housing%20lids.jpg>  
   
-Protection windows:   
+# Protection windows:   
   
 <img src=images/Windows%20and%20LED%20filaments.jpg>
   
