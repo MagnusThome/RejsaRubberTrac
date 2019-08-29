@@ -79,8 +79,17 @@ Printable STL files:
 You can stack multiple mounting rings on top of each other with longer screws to get the sensor mounted further behind or further above whatever you are mounting it on.  
 
 <img src="images/minisensor.jpg">
+  
+  
+# Carrying case  
+  
+To prevent accidentally turning on a sensor and unnecessarily depleting the battery you can print this little box to store two sensors in.
 
-
+- <a href=printables/Carrying%20Case.stl>Carrying Case</a>  
+  
+<img src="images/carryingcase.jpg">  
+    
+  
 # Downloadable files for printing or edtiting
 
 Look in the download folder for more examples, housings, snap-in holders and more. There are both STL files for printing and STEP files for edtiting before printing your own versions.  
