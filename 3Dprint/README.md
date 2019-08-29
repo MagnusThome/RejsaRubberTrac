@@ -46,8 +46,6 @@ You also need this for the adjustable hinge:
 - 11mm washer  
 - a few short bits of transparant filament can be used in the holes above the three LEDs to make them visible on the front panel,
 
-<img src=images/main%20housing%20early%20wip%201.jpg>
-
 <img src=images/main%20housing%20early%20wip%202.jpg>
 
 <img src=images/main%20housing%20lids.jpg>  
