@@ -57,9 +57,7 @@ You also need this for the adjustable hinge:
 
 Rubber hat over power switch:  
   
-<img src=images/switch%20rubber%20hat%20(cut%20down).jpg>  
-  
-<img src=images/switch%20rubber%20hat%20(pull%20through).jpg>  
+<img src=images/switch%20rubber%20hat%20(cut%20down).jpg>  <img src=images/switch%20rubber%20hat%20(pull%20through).jpg>  
   
 
 
