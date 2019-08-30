@@ -63,7 +63,7 @@ The jumpers are marked so you know which one sets what:
 
 Mount the two long pin headers connecting to the cpu/bluetooth board. Note: you don't have to solder all pins if you don't want, there are markings on the board showing what pins you have to solder.
 
-Solder on the cpu/bluetooth board. Again, not all pins needs to be soldered but if you're unsure, solder all.
+Solder on the cpu/bluetooth board. Again, not all pins need to be soldered but if you're unsure, solder all.
 
 NOTE: Make sure you place the shorter of the two pin headers in its proper holes. There is an adjacent extra hole for another (normally unused) component that can be mistaken to belong to the header. There are clear markings on the board to tell you which is which.
 
@@ -73,7 +73,7 @@ NOTE: Make sure you place the shorter of the two pin headers in its proper holes
 
 As you can see in the component list you can either order the temperature sensor mounted on a daughter board or order it separately as a component without the daughter board. It is usually sold on a daughter board from China. If you get the version without a daughter board there are two extra components you need to solder on to the board. They are of course listed in the component list excel sheet.
 
-In addition to this you need to mount the temperature sensor 3,5mm above the board if you want to use any of the 3D printed cases for this board. This is to make sure the 60 degree of field of view isn't hindered by the limited size window on the case. Also make sure you turn the sensor so the right pins are inserted in the correct respective mounting holes. There is a marking on the board showing a circle with a protrusion that should match a small tab sticking out on the sensor.
+In addition to this you need to mount the temperature sensor 3,5mm above the board if you want to use any of the 3D printed cases available here for this board. This is to make sure the 60 degree of field of view isn't hindered by the limited size window on the case. Also make sure you turn the sensor so the right pins are inserted in the correct respective mounting holes. There is a marking on the board showing a circle with a protrusion that should match a small tab sticking out on the sensor.
 
 To help mounting the sensor as a separate component without a daugther board at the right height and also completely straight there is a small 3D printable cylinder that you can put between the sensor and the board:   
 
@@ -84,9 +84,9 @@ If you don't have access to printing this spacer the best way is to first only s
 
 <img src="images/separate%20temp%20sensor.jpg">
 
-# Make a temperature sensor daughter board
+# Make a temperature sensor daughter board to use in separate enclosure
 
-If you buy the temperature sensor separate, without it's daughter board, you can cut down a mainboard to create the missing daughter board. Cut very carefully exactly as in the pictures below. 
+If you buy the temperature sensor separate, without it's daughter board, you can cut down a mainboard to create the missing daughter board. Cut very carefully exactly as in the pictures below. This is NOT to be used when mounting on a complete daughter board, only if you need the daughter board to mount the sensor separately in an external housing with cables to the main board.  
 
 Don't forget to mount C4 (1uF) and D3 (1N4007). For a photo on how to mount them check the picture further up on this page.
 
