@@ -88,7 +88,7 @@ https://www.pcbway.com/project/shareproject/RejsaRubberTrac_____v1_1.html
 
 # Make a temperature sensor daughter board
 
-If you buy the temperature sensor separate, without it's daughter board, you can cut down a mainboard to create the missing daughter board. Cut very carefully exactly as in the pictures below. If necessary you can also cut off the side where the jumper pins are on the board, making the board even more narrow.  
+If you buy the temperature sensor separate, without it's daughter board, you can cut down a mainboard to create the missing daughter board. Cut very carefully exactly as in the pictures below. 
 
 Don't forget to mount C4 (1uF) and D3 (1N4007). For a photo on how to mount them check the picture further up on this page.
 
