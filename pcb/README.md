@@ -99,4 +99,4 @@ If you use very long cables between the cpu board and this daughter board and ha
 <img src="images/cut-out-to-make-temp-sensor-daughter-board-2.jpg">
 
 
-# Again, more info coming but this is a start
+
