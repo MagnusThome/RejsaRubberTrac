@@ -6,10 +6,14 @@ But this board is handy if you want to run the kit from the car's 12V. Or if you
 
 A list of all components needed with links to mouser can be found in an Excel sheet here:
 https://github.com/MagnusThome/RejsaRubberTrac/edit/master/pcb
+  
+  
+# Here's info on how to order the pcb
 
-# More info coming...
+You can download the gerber files here and get boards done anywhere you want. Or you can order them here too, this is where I got my made. I get a small kickback if you order here but again, get them done wherever you want :-)
 
-But for now:
+https://www.pcbway.com/project/shareproject/RejsaRubberTrac_____v1_1.html
+  
 
 # Running from 12 volts
 
@@ -79,12 +83,6 @@ To help mounting the sensor as a separate component without a daugther board at 
 If you don't have access to printing this spacer the best way is to first only solder one leg of the sensor. Check the height and then adjust it straight. Then solder the remaining legs.  
 
 <img src="images/separate%20temp%20sensor.jpg">
-
-# Here's info on how to order the pcb
-
-You can download the gerber files here and get boards done anywhere you want. Or you can order them here too, this is where I got my made. I think I might get a small kickback if you order here but again, get them done wherever you want :-) !
-
-https://www.pcbway.com/project/shareproject/RejsaRubberTrac_____v1_1.html
 
 # Make a temperature sensor daughter board
 
