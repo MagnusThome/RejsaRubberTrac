@@ -62,7 +62,7 @@ Rubber hat over power switch:
 
 # Snap in holder BMW M2  
   
-I made these snap in holders for my own car. I can reach the plastic inner fenders from within the engine bay so I made a small hole through them just for the sensors to look through and glued these snap in holders on top of the plastic inner fenders so the sensors view exactly the top of the front tires.  
+I made this snap in holder for my own car. I can reach the plastic inner fenders from within the engine bay so I made a small hole through them just for the sensors to look through and glued these snap in holders on top of the plastic inner fenders so the sensors view exactly the top of the front tires.  
   
 <img src=images/bmw-inner-fender-snap-in-holder.jpg> 
   
