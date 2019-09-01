@@ -60,7 +60,13 @@ Rubber hat over power switch:
 <img src=images/switch%20rubber%20hat%20(cut%20down).jpg>  <img src=images/switch%20rubber%20hat%20(pull%20through).jpg>  
   
 
-
+# Snap in holder BMW M2  
+  
+I made these snap in holders for my own car. I can reach the plastic inner fenders from within the engine bay so I made a small hole through them just for the sensors to look through and glued these snap in holders on top of the plastic inner fenders so the sensors view exactly the top of the front tires.  
+  
+<img src=images/bmw-inner-fender-snap-in-holder.jpg> 
+  
+  
 # Separate sensor enclosure
 
 The mounting rings have three threaded plus three un-threaded holes. You need three M4 screws but normally you do not need any nuts. 
