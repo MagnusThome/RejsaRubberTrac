@@ -56,7 +56,7 @@ The CPU board and the two sensor boards are all powered by connecting power to t
 # Positioning the sensors
 
 _Click to view a larger version!_  
-![Display](https://raw.githubusercontent.com/MagnusThome/RejsaRubberTrac/master/images/sensorpositioning.jpg)
+![Display](https://raw.githubusercontent.com/MagnusThome/RejsaRubberTrac/master/images/sensor-positioning.jpg)
 
 The wider the tire the further away you need to position the sensor to get the full tire width within the sensors field of view (FOV). There are two versions of the temperature sensor, one with 60 degrees of FOV and one wide version with 120 degrees FOV. The latter can be a better choice if you have very wide tires and need to mount the sensors pretty close. Here below is a table with mounting distances at different tire widths.
 
@@ -139,7 +139,7 @@ Depends. Measuring distance takes time, same with temperatures. And on top of th
 
 # A main board to mount it all on
 
-Basically you don't need anything more than the five wires connecting the boards together as described above. But if you want to run it from 12 volts from the car's power or if you want a power switch or if you buy the temperature sensor separately without it's daughter board or if you simply don't want cables and want it all pcb mounted or maybe you want jumper pin headers for easy change of the Bluetooth device name for each sensor, <a href="pcb/">there's a board you can use, check  out all info about it here > >
+Basically you don't need anything more than the five wires connecting the boards together as described above. But if you want to run it from 12 volts from the car's power or if you want a power switch or if you buy the temperature sensor separately without it's daughter board or maybe you want jumper pin headers for easy change of the Bluetooth device name for each sensor or if you simply don't want cables and want it all pcb mounted, <a href="pcb/">there's a board you can use, check  out all info about it here > >
 
 <a href="pcb/">**The PCB page >>**</a>
 
