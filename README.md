@@ -154,7 +154,7 @@ All 3D print designs are available for download. If you or a friend have a 3D pr
 
 <a href="3Dprint/">**The 3D print enclosures page >>**</a>
 
-If you design your own case or make an updated variant of any of the 3D print downloads here **please** tell us, pretty sure there will be interest for your version too!
+If you design your own case or make an updated variant of any of the 3D print downloads here **please** tell me! Mail me at magnust@gmail.com! Pretty sure there will be interest for your version too!
 
 # Bluetooth device name
 
