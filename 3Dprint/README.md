@@ -9,9 +9,7 @@ If you or a friend have a 3D printer you can print them all yourself, otherwise 
 ## Print 
 
 - The STL files are in millimeters  
-- Choose 100um (0,1mm) layers  
-- Preferably print holders with PETG if they have some kind of flexible snap-in action. Of course you can experiment freely with other materials with other flexibility parameters.
-- Other parts can be PLA, PETG, ABS and so on depending on the maximum temperatures you will be exposing them to.    
+- Choose 100um (0,1mm) layers   
 
 ## More designs
 
@@ -21,7 +19,7 @@ If you design your own case or make an updated variant of any of the 3D print do
 
 _I'll update this page with more info as I come further with different mounting options and enclosures_
 
-Discuss here: https://rejsa.nu/forum/viewforum.php?f=105
+Discuss here: https://rejsa.nu/rejsarubbertrac
 
 ## Sensor Protection
 
@@ -34,27 +32,22 @@ In the current main housing there’s a small “plastic tower window holder” 
 # Complete electronics/sensors/rechargeable battery housing
 
 Printable STL files are here in the <a href=printables/>printables sub directory</a>  
-
-You also need this for the adjustable hinge:  
-- M3 x 6mm screw  
-- M3 nut  
-- 11mm washer  
-- a few short bits of transparant filament can be used in the holes above the three LEDs to make them visible on the front panel,
-
-<img src=images/main%20housing%20early%20wip%202.jpg>
-
+  
 <img src=images/main%20housing%20lids.jpg>  
   
-## Protection windows:   
-  
 <img src=images/Windows%20and%20LED-filaments.jpg>
-  
 
 Rubber hat over power switch:  
   
 <img src=images/switch%20rubber%20hat%20(cut%20down).jpg>  <img src=images/switch%20rubber%20hat%20(pull%20through).jpg>  
   
+<img src=images/main%20housing%20early%20wip%202.jpg>
 
+For the adjustable hinge snap-in holder above you also need:  
+- M3 x 6mm screw  
+- M3 nut  
+- 11mm washer  
+  
 # Snap in holder BMW M2  
   
 I made this snap in holder for my own car. I can reach the plastic inner fenders from within the engine bay so I made a small hole through them just for the sensors to look through and glued these snap in holders on top of the plastic inner fenders so the sensors view exactly the top of the front tires.  
