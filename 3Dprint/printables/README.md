@@ -11,8 +11,7 @@ This and the "ELEVATED" version are almost identcial. The only difference is how
 ## Main Housing (ELEVATED dist. sensor)
 The second variant ("ELEVATED dist. sensor") has two small holes as windows where the distance sensor is placed further up away from the main board (just use longer connection pins). Still squeezing the protection window between the sensor and housing but now much closer to the front side of the housing, further away from the main board. Which you choose of these two is a matter of taste :-)
   
-## Snap in holder BMW M2  
-  
+## Snap-in holder (Inner fender for BMW M2)    
 I made this snap in holder for my own car. I can reach the plastic inner fenders from within the engine bay so I made a small hole through them just for the sensors to look through and glued these snap in holders on top of the plastic inner fenders so the sensors view exactly the top of the front tires.  
 
   
