@@ -17,7 +17,7 @@ I made this snap in holder for my own car. I can reach the plastic inner fenders
   
 <a href=printables/>BMW M2 snap in holder</a>
   
-<img src=images/bmw-inner-fender-snap-in-holder.jpg> 
+<img src=../images/bmw-inner-fender-snap-in-holder.jpg> 
   
   
     
