@@ -48,15 +48,6 @@ For the adjustable hinge snap-in holder above you also need:
 - M3 nut  
 - 11mm washer  
   
-# Snap in holder BMW M2  
-  
-I made this snap in holder for my own car. I can reach the plastic inner fenders from within the engine bay so I made a small hole through them just for the sensors to look through and glued these snap in holders on top of the plastic inner fenders so the sensors view exactly the top of the front tires.  
-  
-<a href=printables/>BMW M2 snap in holder</a>
-  
-<img src=images/bmw-inner-fender-snap-in-holder.jpg> 
-  
-  
 # Separate sensor enclosure
 
 The mounting rings have three threaded plus three un-threaded holes. You need three M4 screws but normally you do not need any nuts. 
