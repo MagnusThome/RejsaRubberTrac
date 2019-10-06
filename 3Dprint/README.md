@@ -29,35 +29,42 @@ Rubber hat over power switch:
   
 <img src=images/switch%20rubber%20hat%20(cut%20down).jpg>  <img src=images/switch%20rubber%20hat%20(pull%20through).jpg>  
   
+<img src=images/main%20housing%20lids.jpg> 
+  
 # Complete all-in-one housings and snap-in holders
 
-## Main Housing - (ALT. temp sensor mounting)
-This can sit just in front of the rear tire for example under the car. Temp sensor pointing backwards towards the tire and the distance sensor pointing down towards the ground. Short tube for wide angle temperature sensor, long tube for narrow angle sensor. This housing has a matching snap-in holder to mount under the car.
-
-<img src=images/under_car_0.jpg>  
-<img src=images/under_car_1.jpg>  
-<img src=images/under_car_2.jpg>  
-
 ## Main Housing - (CONE for dist. sens.)
-This and the "ELEVATED" version are almost identcial. The only difference is how the protection window for the distance sensor is placed. This one ("CONE") has a deep cone as a hole down to the distance sensor where you mount the protection window squeezed between the sensor and the housing. The sensor is mounted as described on the first page, quite close to the main board.
-
-## Main Housing (ELEVATED dist. sensor)
-The second variant ("ELEVATED dist. sensor") has two small holes as windows where the distance sensor is placed further up away from the main board (just use longer connection pins). Still squeezing the protection window between the sensor and housing but now much closer to the front side of the housing, further away from the main board. Which you choose of these two is a matter of taste :-)
   
-## Snap-in holder (Inner fender for BMW M2)    
-I made this snap in holder for my own car. I can reach the plastic inner fenders from within the engine bay so I made a small hole through them just for the sensors to look through and glued these snap in holders on top of the plastic inner fenders so the sensors view exactly the top of the front tires.  
-
+Temperature sensor and distance sensor both aiming straight out from the front panel of the housing. To be mounted in the wheel well for example.
   
-<img src=images/main%20housing%20lids.jpg>  
-  
-  
-<img src=images/main%20housing%20early%20wip%202.jpg>
+<img src=images/cone_and_snapin_0.jpg>  
+<img src=images/cone_and_snapin_1.jpg>  
+<img src=images/cone_and_snapin_2.jpg>  
 
 For the adjustable hinge snap-in holder above you also need:  
 - M3 x 6mm screw  
 - M3 nut  
 - 11mm washer  
+
+The "CONE" version and the "ELEVATED" version further below on this page are almost identcial. The only difference is how the protection window for the distance sensor is placed. This one ("CONE") has a deep cone as a hole down to the distance sensor where you mount the protection window squeezed between the sensor and the housing. The sensor is mounted as described on the first page, quite close to the main board.
+
+## Main Housing - (ELEVATED dist. sensor)
   
+The second variant ("ELEVATED dist. sensor") has two small holes as windows where the distance sensor is placed further up away from the main board (just use longer connection pins). Still squeezing the protection window between the sensor and housing but now much closer to the front side of the housing, further away from the main board. Which you choose of these two is a matter of taste :-)
+  
+## Main Housing - (ALT. temp sensor mounting)
+  
+Temperature sensor is moved in this version pointing out of the end panel of the hosuing. This can sit just in front of the rear tire for example under the car. Temp sensor pointing backwards towards the tire and the distance sensor pointing down towards the ground.  
+
+Short holder tube for the wide angle temperature sensor, long tube for narrow angle sensor. 
+
+<img src=images/under_car_0.jpg>  
+<img src=images/under_car_1.jpg>  
+<img src=images/under_car_2.jpg>  
+
+## Snap-in holder (Inner fender for BMW M2)    
+I made this snap in holder for my own car. I can reach the plastic inner fenders from within the engine bay so I made a small hole through them just for the sensors to look through and glued these snap in holders on top of the plastic inner fenders so the sensors view exactly the top of the front tires.  
+ 
 # Separate sensor enclosure
 
 The mounting rings have three threaded plus three un-threaded holes. You need three M4 screws but normally you do not need any nuts. 
