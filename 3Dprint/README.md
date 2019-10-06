@@ -2,24 +2,18 @@
 
 You can of course create your own casing. Or you can 3D print one of the versions I've put together. There are some different options, either one box for the whole kit including rechargeable battery. Or a separate smaller enclosure for the sensor components only, easier to place in the wheel well but it obviosuly necessitates a cable between the sensor and cpu/bluetooth unit.
 
-Download STL or STEP files here if you want to 3D print or scrutinize the designs. 
+All printable and editable files are in the <a href=printables/>printables sub directory</a>  
 
 If you or a friend have a 3D printer you can print them all yourself, otherwise there are numerous online print shops that will print and ship you the parts pretty cheap. I haven't used them myself but I got recommended www.3dhubs.com as an example.
 
 ## Print 
 
 - The STL files are in millimeters  
-- Choose 100um (0,1mm) layers   
+- Choose 100um (0,1mm) layers if possible  
 
 ## More designs
 
 If you design your own case or make an updated variant of any of the 3D print downloads here please tell me (magnust@gmail.com), I'm sure there will be interest in your version too!
-
-## Work in progress
-
-_I'll update this page with more info as I come further with different mounting options and enclosures_
-
-Discuss here: https://rejsa.nu/rejsarubbertrac
 
 ## Sensor Protection
 
@@ -29,17 +23,29 @@ The distance sensor though works with many clear transparant plastics and glass 
 
 In the current main housing there’s a small “plastic tower window holder” that with its height makes the transparent protection glass (or plastic) window to come right up to and touch the distance sensor housing. Make sure you solder the distance sensor at the exact right height so it actually touches the protection window! You can of course also heat the plastic slightly to make it soft and then adjust the height of the "tower".  
     
-# Complete electronics/sensors/rechargeable battery housing
-
-Printable STL files are here in the <a href=printables/>printables sub directory</a>  
-  
-<img src=images/main%20housing%20lids.jpg>  
-  
 <img src=images/Windows%20and%20LED-filaments.jpg>
 
 Rubber hat over power switch:  
   
 <img src=images/switch%20rubber%20hat%20(cut%20down).jpg>  <img src=images/switch%20rubber%20hat%20(pull%20through).jpg>  
+  
+# Complete all-in-one housing and snap-in holders
+
+## Main Housing (ALT. temp sensor mounting)
+This can sit just in front of the rear tire for example under the car. Temp sensor pointing backwards towards the tire and the distance sensor pointing down towards the ground. Short tube for wide angle temperature sensor, long tube for narrow angle sensor. This housing has a matching snap-in holder to mount under the car.
+
+## Main Housing (CONE for dist. sens.)
+This and the "ELEVATED" version are almost identcial. The only difference is how the protection window for the distance sensor is placed. This one ("CONE") has a deep cone as a hole down to the distance sensor where you mount the protection window squeezed between the sensor and the housing. The sensor is mounted as described on the first page, quite close to the main board.
+
+## Main Housing (ELEVATED dist. sensor)
+The second variant ("ELEVATED dist. sensor") has two small holes as windows where the distance sensor is placed further up away from the main board (just use longer connection pins). Still squeezing the protection window between the sensor and housing but now much closer to the front side of the housing, further away from the main board. Which you choose of these two is a matter of taste :-)
+  
+## Snap-in holder (Inner fender for BMW M2)    
+I made this snap in holder for my own car. I can reach the plastic inner fenders from within the engine bay so I made a small hole through them just for the sensors to look through and glued these snap in holders on top of the plastic inner fenders so the sensors view exactly the top of the front tires.  
+
+  
+<img src=images/main%20housing%20lids.jpg>  
+  
   
 <img src=images/main%20housing%20early%20wip%202.jpg>
 
