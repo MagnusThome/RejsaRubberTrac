@@ -29,12 +29,16 @@ Rubber hat over power switch:
   
 <img src=images/switch%20rubber%20hat%20(cut%20down).jpg>  <img src=images/switch%20rubber%20hat%20(pull%20through).jpg>  
   
-# Complete all-in-one housing and snap-in holders
+# Complete all-in-one housings and snap-in holders
 
-## Main Housing (ALT. temp sensor mounting)
+## Main Housing - (ALT. temp sensor mounting)
 This can sit just in front of the rear tire for example under the car. Temp sensor pointing backwards towards the tire and the distance sensor pointing down towards the ground. Short tube for wide angle temperature sensor, long tube for narrow angle sensor. This housing has a matching snap-in holder to mount under the car.
 
-## Main Housing (CONE for dist. sens.)
+<img src=images/under_car_0.jpg>  
+<img src=images/under_car_1.jpg>  
+<img src=images/under_car_2.jpg>  
+
+## Main Housing - (CONE for dist. sens.)
 This and the "ELEVATED" version are almost identcial. The only difference is how the protection window for the distance sensor is placed. This one ("CONE") has a deep cone as a hole down to the distance sensor where you mount the protection window squeezed between the sensor and the housing. The sensor is mounted as described on the first page, quite close to the main board.
 
 ## Main Housing (ELEVATED dist. sensor)
