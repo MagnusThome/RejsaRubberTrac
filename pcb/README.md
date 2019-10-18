@@ -5,7 +5,7 @@ This extra board is not needed at all to build the sensor kit! The minimum way o
 But this board is handy if you want to run the kit from the car's 12V. Or if you want to use jumpers to set a position ID in the sensor name. Or to add a power switch. Or if you buy the temperature sensor without it's daughter board. Here you have a main board to mount it all on.
 
 A list of all components needed with links to mouser can be found in an Excel sheet here:
-https://github.com/MagnusThome/RejsaRubberTrac/edit/master/pcb
+https://github.com/MagnusThome/RejsaRubberTrac/tree/master/pcb
   
   
 # Here's info on how to order the pcb
