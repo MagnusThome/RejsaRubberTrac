@@ -40,13 +40,13 @@ Rubber hat over power switch:
   
 Temperature sensor and distance sensor are both aiming straight out from the front panel of the housing. To be mounted in the wheel well for example.
   
+The "CONE" version and the "ELEVATED" version are almost identcial. The only difference is how the protection window for the distance sensor is placed. "CONE" has a deep cone as a hole down to the distance sensor where you mount the protection window squeezed between the sensor and the housing. The sensor on it's daughter board is mounted as described on the first page, quite close to the main board. The second variant ("ELEVATED dist. sensor") has two small holes as windows where the distance sensor is placed further up away from the main board (just use longer pin headers) still squeezing the protection window between the sensor and housing but now much closer to the front side of the housing, further away from the main board. Which you choose of these two is a matter of taste.
+
 <img src=images/cone_and_snapin_0.jpg>  
 <img src=images/cone_and_snapin_1.jpg>  
 <img src=images/cone_and_snapin_2.jpg>  
 
 For the adjustable hinge snap-in holder above you also need: M3 x 6mm screw, M3 nut, 11mm washer  
-
-The "CONE" version and the "ELEVATED" version are almost identcial. The only difference is how the protection window for the distance sensor is placed. "CONE" has a deep cone as a hole down to the distance sensor where you mount the protection window squeezed between the sensor and the housing. The sensor on it's daughter board is mounted as described on the first page, quite close to the main board. The second variant ("ELEVATED dist. sensor") has two small holes as windows where the distance sensor is placed further up away from the main board (just use longer pin headers) still squeezing the protection window between the sensor and housing but now much closer to the front side of the housing, further away from the main board. Which you choose of these two is a matter of taste.
   
 ## Main Housing 
   
