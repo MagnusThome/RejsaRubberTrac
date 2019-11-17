@@ -45,7 +45,10 @@ You don't have to remove the dark yellow protection film from the distance senso
 
 # Power switch 
 
-Note: if you don't mount a switch everything will by default be switched on. No need for any jumpers to turn the board on.  
+Note: The power switch is connected to a "power disable" pin on the cpu/bluetooth board which means:
+- if you don't mount a switch everything will be turned on by default. No need for any jumpers to turn the board on.  
+- the switch will turn power on and off regardless of your power source, being it 12 volts, USB or wherever a battery is connected.
+- the power switch does NOT disable charging, it only turns of all the rest of the electronics. 
 
 <img src="images/daughterboards/04.jpg">
 
@@ -83,7 +86,15 @@ To help mounting the sensor as a separate component without a daugther board at 
 If you don't have access to printing this spacer the best way is to first only solder one leg of the sensor. Check the height and then adjust it straight. Then solder the remaining legs.  
 
 <img src="images/separate%20temp%20sensor.jpg">
-
+  
+# Connect a battery  
+  
+You can run everything without a battery, either feed power to the USB micro connector on the cpu/bluetooth board with a normal USB cable or connect the RejsaRubberTrac board to 12 volts.  
+  
+If you want to run on battery you can connect it to either the cpu/bluetooth board's battery connector, or if your battery doesn't have the correct connector type for that you can connect the battery to the RejsaRubberTrac board using any of the positions on the board marked +BAT and GND. There are two places where you can mount pin headers, they have different pin spacing so you should be able to match whatever your battery has as as connector pin spacing.  
+  
+<img src="images/empty-board.jpg">
+  
 # Make a temperature sensor daughter board to use in separate enclosure
 
 If you buy the temperature sensor separate, without it's daughter board, you can cut down a mainboard to create the missing daughter board. Cut very carefully exactly as in the pictures below. This is NOT to be used when mounting on a complete daughter board, only if you need the daughter board to mount the sensor separately in an external housing with cables to the main board.  
