@@ -17,7 +17,7 @@ https://www.pcbway.com/project/shareproject/RejsaRubberTrac_____v1_1.html
 
 # Running from 12 volts
 
-Here's how to mount the components neccesary for running everything from 12V. Check the excel file component list above on what components to get!
+Here's how to mount the components neccesary for running everything from 12V. Check the excel file component list above on what components to get! If you never intend to connect to 12V you can omit these components.
 
 <img src="images/12V mounting.jpg">
 
@@ -89,7 +89,7 @@ If you don't have access to printing this spacer the best way is to first only s
   
 # Connect a battery  
   
-You can run everything without a battery, either feed power to the USB micro connector on the cpu/bluetooth board with a normal USB cable or connect the RejsaRubberTrac board to 12 volts.  
+You can run everything without a battery, either feed power to the USB micro connector on the cpu/bluetooth board with a normal USB cable or connect the RejsaRubberTrac board to 12V.  
   
 If you want to run on battery you can connect it to either the cpu/bluetooth board's battery connector, or if your battery doesn't have the correct connector type for that you can connect the battery to the RejsaRubberTrac board using any of the positions on the board marked +BAT and GND. There are two places where you can mount pin headers, they have different pin spacing so you should be able to match whatever your battery has as as connector pin spacing.  
   
