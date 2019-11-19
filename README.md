@@ -28,26 +28,16 @@ Racechrono temps in video and suspension movement logg graph:
 # Easy to build
 <img align="right" width="231" src="images/partsizes.jpg">
 
-To build it you need to purchase two small boards (three if you also add distance measuring). Then just connect a few wires between the boards and then finally upload the done and dusted code you find here to the main board using a USB cable. Detailed step by step instructions further below. Then you're up and running! You probably want to get a small enclosure for it though before you mount it to your car!
-
-- __Temperature IR-arraysensor MLX90621 GY-906LLC-BAB__    
-(60 degrees field of view ends with BAB, 120 degrees with BAA)  
-<a href="https://www.aliexpress.com/w/wholesale-MLX90621.html?SortType=price_asc&SearchText=MLX90621">www.aliexpress.com</a> (~ $47 incl daugther board)  
-<a href="https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module">www.eckstein-shop.de</a> (~ 55€ incl daugther board)  
-<a href="https://www.mouser.se/ProductDetail/Melexis/MLX90621ESF-BAB-000-SP?qs=sGAEpiMZZMucenltShoSnqRDBUuVzCzKa3Zx6liDTBzqGCq1%252bjAaAA%3d%3d">www.mouser.com</a> (~ 35€ excl daugther board)  
-<a href="https://www.digikey.com/product-detail/en/melexis-technologies-nv/MLX90621ESF-BAB-000-TU/MLX90621ESF-BAB-000-TU-ND/4968086">www.digikey.com</a> (~ 36€ excl daugther board)  
-
-- __CPU and Bluetooth board Adafruit BlueFruit nRF52__  
-<a href="https://www.mouser.com/ProductDetail/485-3406">www.mouser.com</a> (~ $25)  
-<a href="https://www.adafruit.com/product/3406">www.adafruit.com</a> (~ $25)  
-
-- __OPTIONAL: Laser distance sensor VL53L0XV2__  
-<a href="https://www.ebay.com/sch/i.html?_nkw=vl53l0xv2&_sop=15">www.ebay.com</a> (~ $5)  
-<a href="https://www.aliexpress.com/w/wholesale-vl53l0xv2.html?SortType=price_asc&SearchText=vl53l0xv2">www.aliexpress.com</a> (~ $2.50)  
-
-- __OPTIONAL: Rechargable 3,7V Lipo battery__  
-250mAh or larger with JST-PH 2.0mm connector  
-Search <a href="https://www.ebay.com/sch/i.html?_nkw=3.7V+lipo+battery+JST-PH+2.0&_sop=15">Ebay</a> or choose <a href="https://www.ebay.com/itm/3-7V-300-mAh-JST-PH-1-0-1-25-1-5-2-0-2-54mm-Rechargeable-Li-po-battery-602030/173757927239">this example</a> (select 2.0mm connector) (~$9)  
+To build it you need to purchase two small boards (three if you also add distance measuring). Then just connect a few wires between the boards and then finally upload the done and dusted code you find here to the main board using a USB cable. Detailed step by step instructions further below. Then you're up and running! You probably want to get a small enclosure for it though before you mount it to your car!  
+  
+# What you need for a basic working kit
+  
+- Temperature IR-arraysensor: MLX90621($35-$55)  
+- Cpu/bluetooth board: Adafruit BlueFruit nRF52 ($25)  
+- OPTIONAL: Laser distance sensor: VL53L0XV2 ($2,50)  
+- OPTIONAL: Rechargable 3,7V Lipo battery ($8-$10)  
+  
+Tips on where to order is further down on this page, keep reading :-)
 
 # Power supply
 
@@ -56,7 +46,7 @@ The CPU board and the two sensor boards are all powered by connecting power to t
 # Positioning the sensors
 
 _Click to view a larger version!_  
-![Display](https://raw.githubusercontent.com/MagnusThome/RejsaRubberTrac/master/images/sensor-positioning.jpg)
+![Display](images/sensor-positioning.jpg)
 
 The wider the tire the further away you need to position the sensor to get the full tire width within the sensors field of view (FOV). There are two versions of the temperature sensor, one with 60 degrees of FOV and one wide version with 120 degrees FOV. The latter can be a better choice if you have very wide tires and need to mount the sensors pretty close. Here below is a table with mounting distances at different tire widths.
 
