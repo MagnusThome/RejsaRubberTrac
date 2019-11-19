@@ -129,13 +129,40 @@ Depends. Measuring distance takes time, same with temperatures. And on top of th
 
 # A main board to mount it all on
 
-Basically you don't need anything more than the five wires connecting the boards together as described above. But if you want to run it from 12 volts from the car's power or if you want a power switch or if you buy the temperature sensor separately without it's daughter board or maybe you want jumper pin headers for easy change of the Bluetooth device name for each sensor or if you simply don't want cables and want it all pcb mounted, <a href="pcb/">there's a board you can use, check  out all info about it here > >
-
-<a href="pcb/">**The PCB page >>**</a>
+Basically you don't need anything more than the five wires connecting the boards together as described above. But if you want to run it from 12 volts from the car's power or if you want a power switch or if you buy the temperature sensor separately without it's daughter board or maybe you want jumper pin headers for easy change of the Bluetooth device name for each sensor or if you simply don't want cables and want it all pcb mounted, there's a board you can use, check out all info about it here:  
+  
+<a href="pcb/">**The PCB web page**
 
 <img src="pcb/images/daughterboards/06.jpg">
 </a>
+  
+# If you only want the bare minimum  
+  
+Without the extras using the main board above, here are some tips on where to buy the basic pieces: 
+  
+- __Temperature IR-arraysensor MLX90621 GY-906LLC-BAB or GY-906LLC-BAA__    
+60 degrees field of view ends with __BAB__, 120 degrees with __BAA__
+Avaliable
+<a href="https://www.aliexpress.com/w/wholesale-MLX90621.html?SortType=price_asc&SearchText=MLX90621">www.aliexpress.com</a> (~ $47 incl daugther board)  
+<a href="https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module">www.eckstein-shop.de</a> (~ 55€ incl daugther board)  
+<a href="https://www.mouser.se/ProductDetail/Melexis/MLX90621ESF-BAB-000-SP?qs=sGAEpiMZZMucenltShoSnqRDBUuVzCzKa3Zx6liDTBzqGCq1%252bjAaAA%3d%3d">www.mouser.com</a> (~ 35€ excl daugther board)  
+<a href="https://www.digikey.com/product-detail/en/melexis-technologies-nv/MLX90621ESF-BAB-000-TU/MLX90621ESF-BAB-000-TU-ND/4968086">www.digikey.com</a> (~ 36€ excl daugther board)  
 
+- __CPU and Bluetooth board Adafruit BlueFruit nRF52__  
+<a href="https://www.mouser.com/ProductDetail/485-3406">www.mouser.com</a> (~ $25)  
+<a href="https://www.adafruit.com/product/3406">www.adafruit.com</a> (~ $25)  
+
+- __OPTIONAL: Laser distance sensor VL53L0XV2__  
+<a href="https://www.ebay.com/sch/i.html?_nkw=vl53l0xv2&_sop=15">www.ebay.com</a> (~ $5)  
+<a href="https://www.aliexpress.com/w/wholesale-vl53l0xv2.html?SortType=price_asc&SearchText=vl53l0xv2">www.aliexpress.com</a> (~ $2.50)  
+Beware: There is now a version of this board that looks exactly the same but has changed what is connected to the different board pins. The order of pins (look carefully at the product picture on the page where you order) must be: VIN - GND - SCL - SDA - GPIO - XSHUT
+  
+- __OPTIONAL: Rechargable 3,7V Lipo battery__  
+250mAh or larger with JST-PH 2.0mm connector  
+Search <a href="https://www.ebay.com/sch/i.html?_nkw=3.7V+lipo+battery+JST-PH+2.0&_sop=15">Ebay</a> or choose <a href="https://www.ebay.com/itm/3-7V-300-mAh-JST-PH-1-0-1-25-1-5-2-0-2-54mm-Rechargeable-Li-po-battery-602030/173757927239">this example</a> (select 2.0mm connector) (~$9)  
+
+
+  
 # Enclosures
 
 You can of course just create your own casing. Or you can 3D print one of the versions I've put together. There are some different options, either one box for the whole kit including battery. Or a separate smaller enclosure for the sensor components only, easier to place in the wheel well but necessitates a cable between the sensor and cpu/bluetooth units. There are also some different snap-in holders so it's easy to detach the sensor from the car to recharge it.
