@@ -41,7 +41,7 @@ Tips on where to order is further down on this page, keep reading :-)
 
 # Power supply
 
-The CPU board and the two sensor boards are all powered by connecting power to the CPU board's USB micro connector. The CPU board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery. The system can also be run directly from the car's power, not using any Lipo battery, but then a 12 volt to USB 5 volt converter must be added.
+The CPU board and the two sensor boards are all powered by connecting power to the CPU board's USB micro connector. The CPU board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery. The system can also be run directly from the car's power, not using any Lipo battery, but then a 12V to USB 5V converter must be added.
 
 # Positioning the sensors
 
@@ -142,19 +142,19 @@ Without the extras using the main board above, here are some tips on where to bu
   
 - __Temperature IR-arraysensor MLX90621 GY-906LLC-BAB or GY-906LLC-BAA__    
 60 degrees field of view ends with __BAB__, 120 degrees with __BAA__  
-Avaliable
 <a href="https://www.aliexpress.com/w/wholesale-MLX90621.html?SortType=price_asc&SearchText=MLX90621">www.aliexpress.com</a> (~ $47 incl daugther board)  
 <a href="https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module">www.eckstein-shop.de</a> (~ 55€ incl daugther board)  
 <a href="https://www.mouser.se/ProductDetail/Melexis/MLX90621ESF-BAB-000-SP?qs=sGAEpiMZZMucenltShoSnqRDBUuVzCzKa3Zx6liDTBzqGCq1%252bjAaAA%3d%3d">www.mouser.com</a> (~ 35€ excl daugther board)  
 <a href="https://www.digikey.com/product-detail/en/melexis-technologies-nv/MLX90621ESF-BAB-000-TU/MLX90621ESF-BAB-000-TU-ND/4968086">www.digikey.com</a> (~ 36€ excl daugther board)  
-
+  
 - __CPU and Bluetooth board Adafruit BlueFruit nRF52__  
 <a href="https://www.mouser.com/ProductDetail/485-3406">www.mouser.com</a> (~ $25)  
 <a href="https://www.adafruit.com/product/3406">www.adafruit.com</a> (~ $25)  
-
+  
 - __OPTIONAL: Laser distance sensor VL53L0XV2__  
 <a href="https://www.ebay.com/sch/i.html?_nkw=vl53l0xv2&_sop=15">www.ebay.com</a> (~ $5)  
-<a href="https://www.aliexpress.com/w/wholesale-vl53l0xv2.html?SortType=price_asc&SearchText=vl53l0xv2">www.aliexpress.com</a> (~ $2.50)   
+<a href="https://www.aliexpress.com/w/wholesale-vl53l0xv2.html?SortType=price_asc&SearchText=vl53l0xv2">www.aliexpress.com</a> (~ $2.50)  
+  
 Beware: There is now a version of this board that looks exactly the same but has changed what is connected to the different board pins. The order of pins (look carefully at the product picture on the page where you order) must be: VIN - GND - SCL - SDA - GPIO - XSHUT
   
 - __OPTIONAL: Rechargable 3,7V Lipo battery__  
