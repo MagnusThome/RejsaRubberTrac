@@ -155,7 +155,7 @@ Without the extras using the main board above, here are some tips on where to bu
 <a href="https://www.ebay.com/sch/i.html?_nkw=vl53l0xv2&_sop=15">www.ebay.com</a> (~ $5)  
 <a href="https://www.aliexpress.com/w/wholesale-vl53l0xv2.html?SortType=price_asc&SearchText=vl53l0xv2">www.aliexpress.com</a> (~ $2.50)  
   
-Beware: There is now a version of this board that looks exactly the same but has changed what is connected to the different board pins. The order of pins (look carefully at the product picture on the page where you order) must be: VIN - GND - SCL - SDA - GPIO - XSHUT
+Beware: There is now a version of the VL53L0XV2 board that looks exactly the same but has changed what is connected to the different board pins. The order of pins (look carefully at the product picture on the page where you order) must be: VIN - GND - SCL - SDA - GPIO - XSHUT
   
 - __OPTIONAL: Rechargable 3,7V Lipo battery__  
 250mAh or larger with JST-PH 2.0mm connector  
