@@ -5,7 +5,7 @@
 void MLX90640::initialise(int refrate, TwoWire *thisI2c) {
 //  Wire.begin for initializing I2C needs to be called before MLX initialization
   i2c = thisI2c;
-  i2c->setClock(400000);
+//  i2c->setClock(400000);
   
   byte Hz;
   switch (refrate) {
@@ -35,7 +35,8 @@ void MLX90640::initialise(int refrate, TwoWire *thisI2c) {
   if (status != 0) Serial.println("Parameter extraction failed");
   MLX90640_SetRefreshRate(MLX90640_address, Hz, i2c);
 
-  MLX90640_I2CFreqSet(800, i2c); //Changing gears, ensure that I2C clock speed set to 1MHz
+//  MLX90640_I2CFreqSet(800, i2c); //Changing gears, ensure that I2C clock speed set to 1MHz
+  MLX90640_I2CFreqSet(1000, i2c); //Changing gears, ensure that I2C clock speed set to 1MHz
   Serial.println("MLX90640 initialised correctly.");
 }
 
