@@ -8,10 +8,13 @@
  *  	Adapted for use with Arduino UNO
  */
 #include "MLX90621.h"
+#include "Configuration.h"
+#include <Wire.h>
 
-void MLX90621::initialise(int refrate) {
+void MLX90621::initialise(int refrate, TwoWire *thisI2c) {
 	refreshRate = refrate;
-	Wire.begin();
+//  Wire.begin for initializing I2C needs to be called before MLX initialization
+  i2c = thisI2c;
 	delay(5);
 	readEEPROM();
 	writeTrimmingValue();
@@ -75,13 +78,13 @@ void MLX90621::setConfiguration() {
 		Hz_LSB = 0b00111110;
 	}
 	byte defaultConfig_H = 0b01000110;  //kmoto: See data sheet p.11 and 25
-	Wire.beginTransmission(0x60);
-	Wire.write(0x03);
-	Wire.write((byte) Hz_LSB - 0x55);
-	Wire.write(Hz_LSB);
-	Wire.write(defaultConfig_H - 0x55);
-	Wire.write(defaultConfig_H);
-	Wire.endTransmission();
+	i2c->beginTransmission(0x60);
+	i2c->write(0x03);
+	i2c->write((byte) Hz_LSB - 0x55);
+	i2c->write(Hz_LSB);
+	i2c->write(defaultConfig_H - 0x55);
+	i2c->write(defaultConfig_H);
+	i2c->endTransmission();
 
 	//Read the resolution from the config register
 	resolution = (readConfig() & 0x30) >> 4;
@@ -89,24 +92,24 @@ void MLX90621::setConfiguration() {
 
 void MLX90621::readEEPROM() { // Read in blocks of 32 bytes to accomodate Wire library
   for(int j=0;j<256;j+=32) {
-    Wire.beginTransmission(0x50);
-    Wire.write(j);
-    byte rc = Wire.endTransmission(false);
-    Wire.requestFrom(0x50, 32);
+    i2c->beginTransmission(0x50);
+    i2c->write(j);
+    byte rc = i2c->endTransmission(false);
+    i2c->requestFrom(0x50, 32);
     for (int i = 0; i < 32; i++) {
-      eepromData[j+i] = (uint8_t) Wire.read();
+      eepromData[j+i] = (uint8_t) i2c->read();
     }
   }
 }
 
 void MLX90621::writeTrimmingValue() {
-	Wire.beginTransmission(0x60);
-	Wire.write(0x04);
-	Wire.write((byte) eepromData[OSC_TRIM_VALUE] - 0xAA);
-	Wire.write(eepromData[OSC_TRIM_VALUE]);
-	Wire.write(0x56);
-	Wire.write((byte)0x00);
-	Wire.endTransmission();
+	i2c->beginTransmission(0x60);
+	i2c->write(0x04);
+	i2c->write((byte) eepromData[OSC_TRIM_VALUE] - 0xAA);
+	i2c->write(eepromData[OSC_TRIM_VALUE]);
+	i2c->write(0x56);
+	i2c->write((byte)0x00);
+	i2c->endTransmission();
 }
 
 void MLX90621::calculateTA(void) {
@@ -177,45 +180,45 @@ float MLX90621::getMaxTemp() {
 
 void MLX90621::readIR() {
 	for (int j = 0; j < 64; j += 16) { // Read in blocks of 32 bytes to overcome Wire buffer limit
-		Wire.beginTransmission(0x60);
-		Wire.write(0x02);
-		Wire.write(j);
-		Wire.write(0x01);
-		Wire.write(0x20);
-		Wire.endTransmission(false);
-		Wire.requestFrom(0x60, 32);
+		i2c->beginTransmission(0x60);
+		i2c->write(0x02);
+		i2c->write(j);
+		i2c->write(0x01);
+		i2c->write(0x20);
+		i2c->endTransmission(false);
+		i2c->requestFrom(0x60, 32);
 		for (int i = 0; i < 16; i++) {
-			uint8_t pixelDataLow = (uint8_t) Wire.read();
-			uint8_t pixelDataHigh = (uint8_t) Wire.read();
+			uint8_t pixelDataLow = (uint8_t) i2c->read();
+			uint8_t pixelDataHigh = (uint8_t) i2c->read();
 			irData[j + i] = twos_16(pixelDataHigh, pixelDataLow);
 		}
 	}
 }
 
 void MLX90621::readPTAT() {
-	Wire.beginTransmission(0x60);
-	Wire.write(0x02);
-	Wire.write(0x40);
-	Wire.write((byte)0x00);
-	Wire.write(0x01);
-	Wire.endTransmission(false);
-	Wire.requestFrom(0x60, 2);
-	byte ptatLow = Wire.read();
-	byte ptatHigh = Wire.read();
+	i2c->beginTransmission(0x60);
+	i2c->write(0x02);
+	i2c->write(0x40);
+	i2c->write((byte)0x00);
+	i2c->write(0x01);
+	i2c->endTransmission(false);
+	i2c->requestFrom(0x60, 2);
+	byte ptatLow = i2c->read();
+	byte ptatHigh = i2c->read();
 	ptat = (ptatHigh * 256) + ptatLow;
 
 }
 
 void MLX90621::readCPIX() {
-	Wire.beginTransmission(0x60);
-	Wire.write(0x02);
-	Wire.write(0x41);
-	Wire.write((byte)0x00);
-	Wire.write(0x01);
-	Wire.endTransmission(false);
-	Wire.requestFrom(0x60, 2);
-	byte cpixLow = Wire.read();
-	byte cpixHigh = Wire.read();
+	i2c->beginTransmission(0x60);
+	i2c->write(0x02);
+	i2c->write(0x41);
+	i2c->write((byte)0x00);
+	i2c->write(0x01);
+	i2c->endTransmission(false);
+	i2c->requestFrom(0x60, 2);
+	byte cpixLow = i2c->read();
+	byte cpixHigh = i2c->read();
 	cpix = twos_16(cpixHigh, cpixLow);
 }
 
@@ -237,15 +240,15 @@ uint16_t MLX90621::unsigned_16(uint8_t highByte, uint8_t lowByte){
 }
 
 uint16_t MLX90621::readConfig() {
-	Wire.beginTransmission(0x60);
-	Wire.write(0x02);
-	Wire.write(0x92);
-	Wire.write((byte)0x00);
-	Wire.write(0x01);
-	Wire.endTransmission(false);
-	Wire.requestFrom(0x60, 2);
-	byte configLow = Wire.read();
-	byte configHigh = Wire.read();
+	i2c->beginTransmission(0x60);
+	i2c->write(0x02);
+	i2c->write(0x92);
+	i2c->write((byte)0x00);
+	i2c->write(0x01);
+	i2c->endTransmission(false);
+	i2c->requestFrom(0x60, 2);
+	byte configLow = i2c->read();
+	byte configHigh = i2c->read();
 	uint16_t config = ((uint16_t) (configHigh << 8) | configLow);
 	return config;
 }

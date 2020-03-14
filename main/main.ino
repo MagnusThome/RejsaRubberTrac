@@ -1,389 +1,370 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include "MLX90621.h"
-#include "Adafruit_VL53L0X.h"
-#include "ble_gatt.h"
-#include "adc_vbat.h"
-
-// -------------------------------------------------------------------------
-// -------------------------------------------------------------------------
-
-
-#define WHEELPOS 7        // DEFAULT is 7
-                          // 7 = "RejsaRubber" + four last bytes from the bluetooth MAC address
-
-                          // 0 = "RejsaRubberFL" + three last bytes from the bluetooth MAC address
-                          // 1 = "RejsaRubberFR" + three last bytes from the bluetooth MAC address
-                          // 2 = "RejsaRubberRL" + three last bytes from the bluetooth MAC address
-                          // 3 = "RejsaRubberRR" + three last bytes from the bluetooth MAC address
-                          // 5 = "RejsaRubberF" + one space + three last bytes from the bluetooth MAC address
-                          // 6 = "RejsaRubberR" + one space + three last bytes from the bluetooth MAC address
-                        
-                          // NOTE!!! THIS CAN BE OVERRIDDEN WITH HARDWARE CODING WITH GPIO PINS
-
-                    
-#define MIRRORTIRE 0      // 0 = default
-                          // 1 = Mirror the tire, making the outside edge temps the inside edge temps
-
-                          // NOTE!!! THIS CAN BE OVERRIDDEN WITH HARDWARE CODING WITH A GPIO PIN
-                          
-
-
-#define DISTANCEOFFSET 0  // Write distance to tire in mm here to get logged distance data value centered around zero
-                          // If you leave this value here at 0 the distance value in the logs will always be positive numbers
-
-                          
-
-//#define DUMMYDATA       // Uncomment to enable transmission of fake random data for testing with no sensors needed
-
-
-// -------------------------------------------------------------------------
-// -------------------------------------------------------------------------
-
-
-#define PROTOCOL 0x02
-#define TEMPSCALING 1.00    // Default = 1.00
-#define TEMPOFFSET 0        // Default = 0      NOTE: in TENTHS of degrees Celsius --> TEMPOFFSET 10 --> 1 degree
-
-#define GPIODISTSENSORXSHUT 12  // GPIO pin number
-#define GPIOCAR    28           // GPIO pin number
-#define GPIOFRONT  29           // GPIO pin number
-#define GPIOLEFT   13           // GPIO pin number
-#define GPIOMIRR   14           // GPIO pin number
-
-typedef struct {
-  uint8_t  protocol;         // version of protocol used
-  uint8_t  unused;
-  int16_t  distance;         // millimeters
-  int16_t  temps[8];         // all even numbered temp spots (degrees Celsius x 10)
-} one_t;
-
-
-typedef struct {
-  uint8_t  protocol;         // version of protocol used
-  uint8_t  charge;           // percent: 0-100
-  uint16_t voltage;          // millivolts (normally circa 3500-4200)
-  int16_t  temps[8];         // all uneven numbered temp spots (degrees Celsius x 10)
-} two_t;
-
-
-typedef struct {
-  uint8_t  protocol;         // version of protocol used
-  uint8_t  unused;
-  int16_t distance;          // millimeters
-  int16_t  temps[8];         // all 16 temp spots averaged together in pairs of two and two into 8 temp values (degrees Celsius x 10)
-} thr_t;
-
-
-one_t datapackOne;
-two_t datapackTwo;
-thr_t datapackThr;
-
-uint8_t distSensorPresent;
-uint8_t macaddr[6];
-char bleName[19];
+#include <Tasker.h>
+#include "Configuration.h"
+#include "temp_sensor.h"
+#include "dist_sensor.h"
+#include "display.h"
+#include "ble.h"
+#include "algo.h"
+  
+TempSensor tempSensor;
+DistSensor distSensor;
 uint8_t mirrorTire = 0;
+char wheelPos[] = "  ";  // Wheel position for Tire A
+char deviceNameSuffix[] = "  ";
 
+#if BOARD == BOARD_ESP32
+  #if FIS_SENSOR2_PRESENT == 1
+    TempSensor tempSensor2;
+    uint8_t mirrorTire2 = 0;
+    char wheelPos2[] = "  ";  // Wheel position for Tire B
+  #endif
+  #if DIST_SENSOR2 != DIST_NONE
+    DistSensor distSensor2;
+  #endif
+#endif
 
-Adafruit_VL53L0X distSensor = Adafruit_VL53L0X();
-MLX90621 tempSensor; 
+BLDevice bleDevice;
+Display display;
+Tasker tasker;
 
+int vBattery = 0;          // Current battery voltage in mV
+int lipoPercentage = 0;    // Current battery percentage
+float updateRate = 0.0;    // Reflects the actual update rate
+int measurementCycles = 0; // Counts how many measurement cycles were completed. printStatus() uses it to roughly calculate refresh rate.
 
 // Function declarations
-uint8_t InitDistanceSensor(void);
-int16_t distanceFilter(int16_t);
-uint8_t getWheelPosCoding(void);
-void setBLEname(uint8_t);
+void updateWheelPos(void);
 void printStatus(void);
 void blinkOnTempChange(int16_t);
 void blinkOnDistChange(uint16_t);
-
+int getVbat(void);
+void updateBattery(void);
+void updateRefreshRate(void);
 
 #ifdef DUMMYDATA
   #include "dummydata.h"
-#endif  
+#endif
 
 
 // ----------------------------------------
 
 void setup(){
   Serial.begin(115200);
-  Serial.println("\nBegin startup");
+  while (!Serial); // Wait for Serial
+  Serial.printf("\nBegin startup. Arduino version: %d\n",ARDUINO);
 
-  Bluefruit.autoConnLed(false); // DISABLE BLUE BLINK ON CONNECT STATUS
-  pinMode(LED_RED, OUTPUT);
-  pinMode(LED_BLUE, OUTPUT);
+#ifdef DUMMYDATA
+  debug("=======  DUMMYDATA  ========\n");
+#endif
+
+
+#if BOARD == BOARD_ESP32 || BOARD == BOARD_LOLIND32
+  analogReadResolution(12); //12 bits
+  analogSetAttenuation(ADC_11db);  //For all pins
+#endif
+
+  if (GPIOLEDDIST > 0) pinMode(GPIOLEDDIST, OUTPUT);
+  if (GPIOLEDTEMP > 0) pinMode(GPIOLEDTEMP, OUTPUT);
   pinMode(GPIODISTSENSORXSHUT, OUTPUT);
   pinMode(GPIOLEFT, INPUT_PULLUP);
   pinMode(GPIOFRONT, INPUT_PULLUP);
   pinMode(GPIOCAR, INPUT_PULLUP);
   pinMode(GPIOMIRR, INPUT_PULLUP);
+#if BOARD == BOARD_LOLIND32
+  pinMode(GPIOMIRR2, INPUT_PULLUP);
+  pinMode(GPIOUNUSEDA2, INPUT);
+  pinMode(GPIOUNUSEDA2, INPUT);
+#endif
 
-  Serial.println("Starting distance sensor");
-  distSensorPresent = InitDistanceSensor();
-
-  Serial.println("Starting temp sensor");
-  tempSensor.initialise(16);
-
-
-  // SET SOME DEFAULT VALUES IN THE DATA PACKETS
-  datapackOne.distance = 0;
-  datapackOne.protocol = PROTOCOL;
-  datapackTwo.protocol = PROTOCOL;
-  datapackThr.distance = 0;
-  datapackThr.protocol = PROTOCOL;
+  updateBattery();
+  updateWheelPos();
+  char bleName[32] = "RejsaRubber";
+  sprintf(bleName, "%s%s\0",bleName, deviceNameSuffix); // Extend bleName[] with the suffix
 
 
-  // START UP BLUETOOTH
-  Serial.print("Starting bluetooth with MAC address ");
-  Bluefruit.begin();
-  Bluefruit.getAddr(macaddr);
-  Serial.printBufferReverse(macaddr, 6, ':');
-  Serial.println();
-
-
-  // BLUETOOTH DEVICE NAME
-  uint8_t wheelPosCode = getWheelPosCoding();
-  if (wheelPosCode < 7) {
-    setBLEname(wheelPosCode); // SET FROM GPIO JUMPERS
-  }
-  else {
-    setBLEname(WHEELPOS);     // SET FROM DEFINE IN CODE HEADER
-  }
-  Serial.print("Device name: ");
-  Serial.println(bleName);
-  Bluefruit.setName(bleName); 
-
-
-  // TIRE MIRRORED?
+// TIRE 1 MIRRORED?
   if ((MIRRORTIRE == 1 || digitalRead(GPIOMIRR) == 0)) {
     mirrorTire = 1;
-    Serial.println("Temperature sensor orientation is mirrored");
+    debug("Temperature sensor orientation for %s is mirrored.\n", wheelPos);
   }
 
+// I2C channel 1
+  Wire.begin(GPIOSDA,GPIOSCL); // initialize I2C w/ I2C pins from config
 
-  // RUN BLUETOOTH GATT
-  setupMainService();
-  startAdvertising(); 
-  Serial.println("Running!");
-
-
-#ifdef DUMMYDATA
-  dummyloop();
-#endif  
-
-}
-
-
-// ----------------------------------------
-
-void loop() {  
-  
-
-  // - - D I S T A N C E - -
-  if (distSensorPresent) {
-    VL53L0X_RangingMeasurementData_t measure;
-    if (distSensor.rangingTest(&measure, false) != VL53L0X_ERROR_NONE) {
-      datapackOne.distance = 0;                                           // SENSOR FAIL
-      Serial.println("Reset distance sensor");
-      InitDistanceSensor();
+  #if DIST_SENSOR != DIST_NONE
+    debug("Starting distance sensor for %s...\n", wheelPos);
+    if (distSensor.initialise(&Wire, wheelPos)) {
+      debug("Distance sensor for %s present.\n", wheelPos);
     }
     else {
-      int16_t distance = measure.RangeMilliMeter;
-      if (measure.RangeStatus == 4 || distance > 8190) {   // MEASURE FAIL
-        datapackOne.distance = 0;
+      debug("ERROR: Distance sensor for %s not present.\n", wheelPos);
+    }
+  #endif
+
+  debug("Starting temperature sensor for %s...\n", wheelPos);
+  tempSensor.initialise(FIS_REFRESHRATE, &Wire);
+
+#if BOARD == BOARD_ESP32
+  // I2C channel 2
+  #if FIS_SENSOR2_PRESENT == 1
+  
+    // TIRE 2 MIRRORED?
+    if ((MIRRORTIRE2 == 1 || digitalRead(GPIOMIRR2) == 0)) {
+      mirrorTire2 = 1;
+      debug("Temperature sensor 2 orientation for %s is mirrored.\n", wheelPos2);
+    }
+
+    Wire1.begin(GPIOSDA2,GPIOSCL2); // initialize I2C w/ I2C pins from config
+  
+    #if DIST_SENSOR2 != DIST_NONE
+      debug("Starting distance sensor 2 for %s...\n", wheelPos2);
+      if (distSensor2.initialise(&Wire1, wheelPos2)) {
+        debug("Distance sensor 2 for %s present.\n", wheelPos2);
       }
       else {
-        datapackOne.distance = distanceFilter(distance) - DISTANCEOFFSET;
+        debug("ERROR: Distance sensor 2 for %s not present.\n", wheelPos2);
       }
+    #endif
+  
+    debug("Starting temperature sensor 2 for %s...\n", wheelPos2);
+    tempSensor2.initialise(FIS_REFRESHRATE, &Wire1);
+  #else
+    // set unused I2C pins to input mode (just to be sure)
+    pinMode(GPIOSDA2, INPUT);
+    pinMode(GPIOSCL2, INPUT);
+  #endif
+#endif
+
+// display
+#if DISP_DEVICE != DISP_NONE
+  display.setup();
+  tasker.setInterval(updateDisplay,200);
+#endif
+
+// BLE
+  debug("Starting BLE device: %s\n", bleName);
+  bleDevice.setupDevice(bleName);
+
+  debug("Running!\n");
+
+// Set up periodic functions
+#ifdef _DEBUG
+  tasker.setInterval(printStatus, SERIAL_UPDATERATE*1000); // Print status every second
+#endif
+  tasker.setInterval(updateBattery, BATTERY_UPDATERATE*1000); // Update battery status every minute
+  tasker.setInterval(updateRefreshRate, 2000);
+
+#ifdef DUMMYDATA
+  // 2do: make DUMMYDATA compatible with 2x I2C
+  dummyloop();
+#endif
+}
+
+void loop() {
+// I2C channel 1
+  #if DIST_SENSOR != DIST_NONE
+    distSensor.measure();
+  #endif
+  tempSensor.measure();
+
+// I2C channel 2
+#if FIS_SENSOR2_PRESENT == 1
+  #if DIST_SENSOR2 != DIST_NONE
+    distSensor2.measure();
+  #endif
+  tempSensor2.measure();
+#endif
+
+  if (bleDevice.isConnected()) {
+    bleDevice.transmit(tempSensor.measurement_16, mirrorTire, distSensor.distance, vBattery, lipoPercentage);
+  }
+  
+  #if DISP_DEVICE == DISP_NONE // Only use the LEDs w/o display
+    blinkOnTempChange(tempSensor.measurement_16[8]/20);    // Use one single temp in the middle of the array
+    blinkOnDistChange(distSensor.distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
+  #endif
+
+// 2do: integrate tempSensor2 & distSensor2 into BLE transmission
+// 2do: integrate Wheelpost into BLE transmission
+
+  measurementCycles++;
+
+  tasker.loop();
+}
+
+void updateDisplay(void) {
+  display.refreshDisplay(tempSensor.measurement, tempSensor.leftEdgePosition, tempSensor.rightEdgePosition, tempSensor.validAutorangeFrame, updateRate, distSensor.distance, lipoPercentage, bleDevice.isConnected());
+
+// 2do: integrate tempSensor2 & distSensor2 for display
+}
+
+// Figure out wheel position coding
+void updateWheelPos(void) {
+#if FIS_SENSOR2_PRESENT == 1
+  if (digitalRead(GPIOLEFT)) {
+    // GPIOLEFT  = 0 => axis: both sensors are mounted on the front or rear axle
+    wheelPos[1]  = 'L';
+    wheelPos2[1] = 'R';
+
+    if (digitalRead(GPIOFRONT)) {
+      // GPIOFRONT = 0 => axis 1 (front)
+      wheelPos[0]  = 'F';
+      wheelPos2[0] = 'F';
+      deviceNameSuffix[0] = 'F';
+    } else {
+      // GPIOFRONT = 1 => axis 2 (rear)
+      wheelPos[0]  = 'R';
+      wheelPos2[0] = 'R';
+      deviceNameSuffix[0] = 'R';
+    }
+  }
+  else {
+    // GPIOLEFT  = 1 => axis: axis: both sensors are mounted on the left or right vehicle side
+    wheelPos[0]  = 'F';
+    wheelPos2[0] = 'R';
+
+    if (digitalRead(GPIOFRONT)) {
+      // GPIOFRONT = 0 => axis 1 (left)
+      wheelPos[1]  = 'L';
+      wheelPos2[1] = 'L';
+      deviceNameSuffix[0] = 'L';
+    } else {
+      // GPIOFRONT = 1 => axis 2 (right)
+      wheelPos[1]  = 'R';
+      wheelPos2[1] = 'R';
+      deviceNameSuffix[0] = 'R';
     }
   }
 
+  // overwrite left/right if we happen to be a motorcycle
+  if (!digitalRead(GPIOCAR))  wheelPos[1]  = ' ';
+  if (!digitalRead(GPIOCAR))  wheelPos2[1] = ' ';
+
+#else
+  uint8_t wheelPosCode = digitalRead(GPIOLEFT) + (digitalRead(GPIOFRONT) << 1) + (digitalRead(GPIOCAR) << 2);
+  if (wheelPosCode >= 7) wheelPosCode = DEVICENAMECODE; // set from configuration
   
-  // - - T E M P S - -
-  tempSensor.measure(true); 
-  for(uint8_t i=0;i<8;i++){
-    uint8_t idx = i;
-    if (mirrorTire == 1) {
-      idx = 7-i;
-    }
-    datapackOne.temps[idx] = (int16_t) TEMPOFFSET + TEMPSCALING * 10 * max(tempSensor.getTemperature(i*8+1), tempSensor.getTemperature(i*8+2));  // Max value of the two middle rows of the *four* (4x16) rows total (the first and last rows are ignored)(degrees Celsius x 10)
-    datapackTwo.temps[idx] = (int16_t) TEMPOFFSET + TEMPSCALING * 10 * max(tempSensor.getTemperature(i*8+5), tempSensor.getTemperature(i*8+6));  // Max value of the ... (degrees Celsius x 10)
-    datapackThr.temps[idx] = (int16_t) max(datapackOne.temps[idx], datapackTwo.temps[idx]); // Max value of even numbered and uneven numbered sensor values => all 16 temp spots together in pairs of two and two into 8 temp values (degrees Celsius x 10)
+  switch (wheelPosCode) {
+    case 0: sprintf(wheelPos, "FL"); break;
+    case 1: sprintf(wheelPos, "FR"); break;
+    case 2: sprintf(wheelPos, "RL"); break;
+    case 3: sprintf(wheelPos, "RR"); break;
+    case 4: sprintf(wheelPos, "F "); break;
+    case 5: sprintf(wheelPos, "F "); break;
+    case 6: sprintf(wheelPos, "R "); break;
+    case 7: sprintf(wheelPos, "  "); break;
+    default: sprintf(wheelPos, "??"); break;
   }
-
-
-  // - - B A T T E R Y - -
-  unsigned long now = millis();
-  static unsigned long timer = 60000;  // check every 60 seconds
-  if (now - timer >= 60000) {
-    timer = now;
-    datapackTwo.voltage = getVbat();
-    datapackTwo.charge = lipoPercent(datapackTwo.voltage);
-  }
-
-  
-  if (Bluefruit.connected()) {
-    GATTone.notify(&datapackOne, sizeof(datapackOne));
-    GATTtwo.notify(&datapackTwo, sizeof(datapackTwo));
-    GATTthr.notify(&datapackThr, sizeof(datapackThr));
-  }
-
-  blinkOnTempChange(datapackOne.temps[4]/20);    // Use one single temp in the middle of the array
-  blinkOnDistChange(datapackOne.distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
-
-
-  printStatus();
-
+  strncpy(deviceNameSuffix, wheelPos, 3);
+#endif
 }
-
-
-
-
-// ----------------------------------------
-
-uint8_t InitDistanceSensor(void) {
-  digitalWrite(GPIODISTSENSORXSHUT, LOW);
-  delay(50);
-  digitalWrite(GPIODISTSENSORXSHUT, HIGH);
-  delay(50);
-  return distSensor.begin(VL53L0X_I2C_ADDR, false); 
-}
-
-
-
-// ----------------------------------------
-
-int16_t distanceFilter(int16_t distanceIn) {
-  const uint8_t filterSz = 2;
-  static int16_t filterArr[filterSz];
-  int16_t distanceOut = 0;
-  for (int8_t i=0; i<(filterSz-1); i++) {
-    filterArr[i] = filterArr[i+1];
-    distanceOut += filterArr[i+1];
-  }
-  filterArr[filterSz-1] = distanceIn;
-  distanceOut += distanceIn;
-  return (int16_t) distanceOut/filterSz;
-}
-
-
-// ----------------------------------------
-
-uint8_t getWheelPosCoding(void) {
-  return digitalRead(GPIOLEFT) + (digitalRead(GPIOFRONT) << 1) + (digitalRead(GPIOCAR) << 2);
-}
-
-
-// ----------------------------------------
-
-void setBLEname(uint8_t wheelPos) {
-
-  if (wheelPos == 0) {
-    strncpy(bleName, "RejsaRubberFL", 13);
-  }
-  else if (wheelPos == 1) {
-    strncpy(bleName, "RejsaRubberFR", 13);
-  }
-  else if (wheelPos == 2) {
-    strncpy(bleName, "RejsaRubberRL", 13);
-  }
-  else if (wheelPos == 3) {
-    strncpy(bleName, "RejsaRubberRR", 13);
-  }
-  else if (wheelPos == 4) {
-    strncpy(bleName, "RejsaRubberF ", 13);
-  }
-  else if (wheelPos == 5) {
-    strncpy(bleName, "RejsaRubberF ", 13);
-  }
-  else if (wheelPos == 6) {
-    strncpy(bleName, "RejsaRubberR ", 13);
-  }
-  else if (wheelPos == 7) {
-    strncpy(bleName, "RejsaRubber", 11);
-  }
-  else {
-    strncpy(bleName, "Name Error ", 11);
-  }
-
-  uint8_t numAddressBytes;
-  if (wheelPos < 7 ) {
-    numAddressBytes = 3;
-  }
-  else {
-    numAddressBytes = 4;
-  }
-  for(uint8_t i=0; i<numAddressBytes; i++) {
-    uint8_t a = sizeof(bleName)-(i*2)-2;
-    uint8_t b = sizeof(bleName)-(i*2)-1;
-    bleName[a] = (macaddr[i] >> 4);  
-    if (bleName[a] > 0x9) bleName[a] += 55; else bleName[a] += 48;
-    bleName[b] = (macaddr[i] & 0xf); 
-    if (bleName[b] > 0x9) bleName[b] += 55; else bleName[b] += 48;
-  }
-  bleName[sizeof(bleName)] = '\0';
-
-}
-  
-
-// ----------------------------------------
 
 void printStatus(void) {
+#if DIST_SENSOR != DIST_NONE
+  String distSensor_str = String(distSensor.distance) + "mm ";
+#else
+  String distSensor_str = "N/A  ";
+#endif
+#if DIST_SENSOR2 != DIST_NONE
+  String distSensor2_str = String(distSensor2.distance) + "mm ";
+#else
+  String distSensor2_str = "N/A  ";
+#endif
 
-  static unsigned long then;
-  unsigned long now = millis();
-  Serial.print(1000/(float)(now - then),1); // Print loop speed in Hz
-  Serial.print("Hz\t");
-  then = now;
-
-  Serial.print(datapackTwo.voltage);
-  Serial.print("mV\t");
-  Serial.print(datapackTwo.charge);
-  Serial.print("%\t");
-  Serial.print(datapackOne.distance);
-  Serial.print("mm\t");
-  for (uint8_t i=0; i<8; i++) {
-    Serial.print(datapackOne.temps[i]);
-    Serial.print("\t");
-    Serial.print(datapackTwo.temps[i]);
-    Serial.print("\t");
+  debug("Rate: %.1fHz\tV: %dmV (%d%%) \tWheel: %s\tD: %s\tT: ", (float)updateRate, vBattery, lipoPercentage, wheelPos, distSensor_str);
+  for (uint8_t i=0; i<FIS_X; i++) {
+    debug("%.1f\t",(float)tempSensor.measurement[i]/10);
   }
-
-  Serial.println();
+  debug("\n");
+#if FIS_SENSOR2_PRESENT == 1
+  debug("\t\t\t\t\tWheel: %s\tD: %s\tT: ", wheelPos2, distSensor2_str);
+  for (uint8_t i=0; i<FIS_X; i++) {
+    debug("%.1f\t",(float)tempSensor2.measurement[i]/10);
+  }
+  debug("\n");
+#endif
 }
 
+void updateRefreshRate(void) {
+  static long lastUpdate = 0;
+  updateRate = (float)measurementCycles / (millis()-lastUpdate) * 1000;
+  lastUpdate = millis();
+  measurementCycles = 0;
+}
 
-// ----------------------------------------
-
+#if DISP_DEVICE == DISP_NONE
 void blinkOnDistChange(uint16_t distnew) {
-  static uint16_t distold = 0;
+  if (GPIOLEDDIST > 0) {
+    static uint16_t distold = 0;
 
-  if (!Bluefruit.connected()) {
-    digitalWrite(LED_RED, HIGH);
-    return;
+/* DEPRECATED?
+    if (!Bluefruit.connected()) {
+      digitalWrite(ledDist, HIGH);
+      return;
+    }
+*/
+    
+    if (distold != distnew) {
+      digitalWrite(GPIOLEDDIST, HIGH);
+      delay(3);
+      digitalWrite(GPIOLEDDIST, LOW);
+    }
+    distold = distnew;
   }
-  
-  if (distold != distnew) {
-    digitalWrite(LED_RED, HIGH);
-    delay(3);
-    digitalWrite(LED_RED, LOW);
-  }
-  distold = distnew;
 }
-
-
-// ----------------------------------------
 
 void blinkOnTempChange(int16_t tempnew) {
-  static int16_t tempold = 0;
-  if (tempold != tempnew) {
-    digitalWrite(LED_BLUE, HIGH);
-    delay(3);
-    digitalWrite(LED_BLUE, LOW);
+  if (GPIOLEDTEMP > 0) {
+    static int16_t tempold = 0;
+    if (tempold != tempnew) {
+      digitalWrite(GPIOLEDTEMP, HIGH);
+      delay(3);
+      digitalWrite(GPIOLEDTEMP, LOW);
+    }
+    tempold = tempnew;
   }
-  tempold = tempnew;
+}
+#endif
+
+int getVbat(void) {
+  double adcRead=0;
+#if BOARD == BOARD_ESP32 // Compensation for ESP32's crappy ADC -> https://bitbucket.org/Blackneron/esp32_adc/src/master/
+  const double f1 = 1.7111361460487501e+001;
+  const double f2 = 4.2319467860421662e+000;
+  const double f3 = -1.9077375643188468e-002;
+  const double f4 = 5.4338055402459246e-005;
+  const double f5 = -8.7712931081088873e-008;
+  const double f6 = 8.7526709101221588e-011;
+  const double f7 = -5.6536248553232152e-014;
+  const double f8 = 2.4073049082147032e-017;
+  const double f9 = -6.7106284580950781e-021;
+  const double f10 = 1.1781963823253708e-024;
+  const double f11 = -1.1818752813719799e-028;
+  const double f12 = 5.1642864552256602e-033;
+
+  const int loops = 5;
+  const int loopDelay = 1;
+
+  int counter = 1;
+  int inputValue = 0;
+  double totalInputValue = 0;
+  double averageInputValue = 0;
+  for (counter = 1; counter <= loops; counter++) {
+    inputValue = analogRead(VBAT_PIN);
+    totalInputValue += inputValue;
+    delay(loopDelay);
+  }
+  averageInputValue = totalInputValue / loops;
+  adcRead = f1 + f2 * pow(averageInputValue, 1) + f3 * pow(averageInputValue, 2) + f4 * pow(averageInputValue, 3) + f5 * pow(averageInputValue, 4) + f6 * pow(averageInputValue, 5) + f7 * pow(averageInputValue, 6) + f8 * pow(averageInputValue, 7) + f9 * pow(averageInputValue, 8) + f10 * pow(averageInputValue, 9) + f11 * pow(averageInputValue, 10) + f12 * pow(averageInputValue, 11);
+#elif BOARD == BOARD_NRF52
+  adcRead = analogRead(VBAT_PIN);
+#endif
+  return adcRead * MILLIVOLTFULLSCALE * BATRESISTORCOMP / STEPSFULLSCALE;
 }
 
-
-// ----------------------------------------
+void updateBattery(void) {
+  vBattery = getVbat();
+  lipoPercentage = lipoPercent(vBattery);
+}
