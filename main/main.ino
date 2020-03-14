@@ -195,7 +195,7 @@ void loop() {
 }
 
 void updateDisplay(void) {
-  display.refreshDisplay(tempSensor.measurement, tempSensor.leftEdgePosition, tempSensor.rightEdgePosition, tempSensor.validAutorangeFrame, updateRate, distSensor.distance, lipoPercentage, bleDevice.isConnected());
+  display.refreshDisplay(tempSensor.measurement, tempSensor.outerTireEdgePositionSmoothed, tempSensor.innerTireEdgePositionSmoothed, tempSensor.validAutorangeFrame, updateRate, distSensor.distance, lipoPercentage, bleDevice.isConnected());
 
 // 2do: integrate tempSensor2 & distSensor2 for display
 }

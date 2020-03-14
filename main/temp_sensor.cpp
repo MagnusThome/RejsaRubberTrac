@@ -6,10 +6,10 @@
 #include "spline.h"
 
 void TempSensor::initialise(int refrate, TwoWire *I2Cpipe) {
-  rawMinSlopePosition= FIS_X;
-  rawMaxSlopePosition= 0;
-  leftEdgePosition = 0.0;
-  rightEdgePosition = (float)FIS_X;
+  innerTireEdgePositionDetectedViaSlopeMin= FIS_X;
+  outerTireEdgePositionDetectedViaSlopeMax= 0;
+  outerTireEdgePositionSmoothed = 0.0;
+  innerTireEdgePositionSmoothed = (float)FIS_X;
   thisWire = I2Cpipe;
   FISDevice.initialise(refrate, thisWire);
 };
@@ -28,19 +28,19 @@ void TempSensor::measure() {
   getMinMaxSlopePosition();
   validAutorangeFrame = checkAutorangeValidity();
   if (validAutorangeFrame) {
-    float leftStepSize = abs((rawMaxSlopePosition-leftEdgePosition)/4);
-    float rightStepSize = abs((rawMinSlopePosition-rightEdgePosition)/4);
-    if (leftEdgePosition < rawMaxSlopePosition) leftEdgePosition += leftStepSize;
-    else leftEdgePosition -= leftStepSize;
-    if (rightEdgePosition < rawMinSlopePosition) rightEdgePosition += rightStepSize;
-    else rightEdgePosition -= rightStepSize;
-    if (rightEdgePosition < 0) leftEdgePosition = 0;
-    if (leftEdgePosition < 0) rightEdgePosition = 0;
-    if (leftEdgePosition > FIS_X) leftEdgePosition = 32;
-    if (rightEdgePosition > FIS_X) rightEdgePosition = 32;
+    float leftStepSize = abs((outerTireEdgePositionDetectedViaSlopeMax-outerTireEdgePositionSmoothed)/4);
+    float rightStepSize = abs((innerTireEdgePositionDetectedViaSlopeMin-innerTireEdgePositionSmoothed)/4);
+    if (outerTireEdgePositionSmoothed < outerTireEdgePositionDetectedViaSlopeMax) outerTireEdgePositionSmoothed += leftStepSize;
+    else outerTireEdgePositionSmoothed -= leftStepSize;
+    if (innerTireEdgePositionSmoothed < innerTireEdgePositionDetectedViaSlopeMin) innerTireEdgePositionSmoothed += rightStepSize;
+    else innerTireEdgePositionSmoothed -= rightStepSize;
+    if (innerTireEdgePositionSmoothed < 0) outerTireEdgePositionSmoothed = 0;
+    if (outerTireEdgePositionSmoothed < 0) innerTireEdgePositionSmoothed = 0;
+    if (outerTireEdgePositionSmoothed > FIS_X) outerTireEdgePositionSmoothed = 32;
+    if (innerTireEdgePositionSmoothed > FIS_X) innerTireEdgePositionSmoothed = 32;
   }
 #endif
-  interpolate((int)leftEdgePosition, (int)rightEdgePosition, measurement_16);
+  interpolate((int)outerTireEdgePositionSmoothed, (int)innerTireEdgePositionSmoothed, measurement_16);
 }
 
 float TempSensor::getPixelTemperature(uint8_t x, uint8_t y) {
@@ -77,11 +77,11 @@ void TempSensor::getMinMaxSlopePosition() {
   for (uint8_t i=0;i<FIS_X-1;i++) {
     if (measurement_slope[i] > maxSlopeValue ) {
       maxSlopeValue = measurement_slope[i];
-      rawMaxSlopePosition = i;
+      outerTireEdgePositionDetectedViaSlopeMax = i;
     }
     if (measurement_slope[i] < minSlopeValue ) {
       minSlopeValue = measurement_slope[i];
-      rawMinSlopePosition = i;
+      innerTireEdgePositionDetectedViaSlopeMin = i;
     }
   }
 }
@@ -89,16 +89,16 @@ void TempSensor::getMinMaxSlopePosition() {
 boolean TempSensor::checkAutorangeValidity() {
   float avgTireTemp=0;
   float avgAmbientTemp=0;
-  if (measurement_slope[rawMinSlopePosition] > -7) return false;
-  if (measurement_slope[rawMaxSlopePosition] < 7) return false;
-  if (rawMinSlopePosition < rawMaxSlopePosition) return false; // Inner or outer edge of tire out of camera view
-  if ((rawMinSlopePosition-rawMaxSlopePosition) < AUTORANGING_MINIMUM_TIRE_WIDTH) return false; // Too thin tire
+  if (measurement_slope[innerTireEdgePositionDetectedViaSlopeMin] > -7) return false;
+  if (measurement_slope[outerTireEdgePositionDetectedViaSlopeMax] < 7) return false;
+  if (innerTireEdgePositionDetectedViaSlopeMin < outerTireEdgePositionDetectedViaSlopeMax) return false; // Inner or outer edge of tire out of camera view
+  if ((innerTireEdgePositionDetectedViaSlopeMin-outerTireEdgePositionDetectedViaSlopeMax) < AUTORANGING_MINIMUM_TIRE_WIDTH) return false; // Too thin tire
   for (uint8_t i=0;i<FIS_X;i++) {
-    if (i < rawMaxSlopePosition || i > rawMinSlopePosition ) avgAmbientTemp += measurement[i];
+    if (i < outerTireEdgePositionDetectedViaSlopeMax || i > innerTireEdgePositionDetectedViaSlopeMin ) avgAmbientTemp += measurement[i];
     else avgTireTemp += measurement[i];
   }
-  avgTireTemp = avgTireTemp / (rawMinSlopePosition-rawMaxSlopePosition);
-  avgAmbientTemp = avgAmbientTemp / (rawMaxSlopePosition + (FIS_X-rawMinSlopePosition));
+  avgTireTemp = avgTireTemp / (innerTireEdgePositionDetectedViaSlopeMin-outerTireEdgePositionDetectedViaSlopeMax);
+  avgAmbientTemp = avgAmbientTemp / (outerTireEdgePositionDetectedViaSlopeMax + (FIS_X-innerTireEdgePositionDetectedViaSlopeMin));
   if (avgTireTemp - avgAmbientTemp < 5.0) return false; // Tire is not significantly hotter than ambient
   return true;
 }

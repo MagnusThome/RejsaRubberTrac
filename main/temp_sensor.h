@@ -23,10 +23,11 @@ public:
   float measurement_slope[FIS_X];
   boolean validAutorangeFrame;
   int16_t measurement_16[16];
-  uint8_t rawMinSlopePosition;
-  uint8_t rawMaxSlopePosition;
-  float leftEdgePosition;
-  float rightEdgePosition;
+  uint8_t innerTireEdgePositionDetectedViaSlopeMin; // corresponds to Min value in the Slope
+  uint8_t outerTireEdgePositionDetectedViaSlopeMax; // corresponds to Max value in the Slope
+  float outerTireEdgePositionSmoothed; // outer = left = array index 0
+  float innerTireEdgePositionSmoothed; // inner = right = array index FIS_X
+  
 	void initialise(int refrate, TwoWire *I2Cpipe = &Wire);
 	void measure();
 };
