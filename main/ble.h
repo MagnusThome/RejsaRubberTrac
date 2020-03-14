@@ -1,7 +1,7 @@
 #include "Configuration.h"
 #if BOARD == BOARD_NRF52
   #include <bluefruit.h>
-#elif BOARD == BOARD_ESP32
+#elif BOARD == BOARD_ESP32 || BOARD_LOLIND32
   #include <BLEDevice.h>
   #include <BLEServer.h>
   #include <BLEUtils.h>
@@ -17,7 +17,7 @@ private:
   BLECharacteristic  GATTone;
   BLECharacteristic  GATTtwo;
   BLECharacteristic  GATTthr;
-#elif BOARD == BOARD_ESP32
+#elif BOARD == BOARD_ESP32 || BOARD_LOLIND32
   BLEService*        mainService;
   BLEServer*         mainServer;
   BLEAdvertising*    mainAdvertising;

@@ -26,7 +26,7 @@ void BLDevice::setupDevice(char bleName[]) {
   Serial.print("Starting bluetooth with MAC address ");
 //  Serial.printBufferReverse(macaddr, 6, ':');
   Serial.println();
-#elif BOARD == BOARD_ESP32
+#elif BOARD == BOARD_ESP32 || BOARD_LOLIND32
   BLEDevice::init(bleName);
   mainServer = BLEDevice::createServer();
 #endif
@@ -54,7 +54,7 @@ void BLDevice::setupMainService(void) {
   GATTthr.setPermission(SECMODE_OPEN, SECMODE_NO_ACCESS);
   GATTthr.setFixedLen(20);
   GATTthr.begin();
-#elif BOARD == BOARD_ESP32
+#elif BOARD == BOARD_ESP32 || BOARD_LOLIND32
   mainService = mainServer->createService(BLEUUID((uint16_t)0x1FF7));
   GATTone = mainService->createCharacteristic(BLEUUID((uint16_t)0x0001), BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY );
   GATTtwo = mainService->createCharacteristic(BLEUUID((uint16_t)0x0002), BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY );
@@ -78,7 +78,7 @@ void BLDevice::startAdvertising(void) {
   Bluefruit.Advertising.setInterval(32, 244); // in unit of 0.625 ms
   Bluefruit.Advertising.setFastTimeout(30);
   Bluefruit.Advertising.start(0); 
-#elif BOARD == BOARD_ESP32
+#elif BOARD == BOARD_ESP32 || BOARD_LOLIND32
   mainAdvertising = BLEDevice::getAdvertising();
   mainAdvertising->addServiceUUID(BLEUUID((uint16_t)0x1FF7));
   mainAdvertising->setScanResponse(false);
@@ -112,7 +112,7 @@ void BLDevice::transmit(int16_t tempMeasurements[], uint8_t mirrorTire, int16_t 
   GATTone.notify(&datapackOne, sizeof(datapackOne));
   GATTtwo.notify(&datapackTwo, sizeof(datapackTwo));
   GATTthr.notify(&datapackThr, sizeof(datapackThr));
-#elif BOARD == BOARD_ESP32
+#elif BOARD == BOARD_ESP32 || BOARD_LOLIND32
   GATTone->setValue((uint8_t*)&datapackOne, sizeof(datapackOne));
   GATTtwo->setValue((uint8_t*)&datapackTwo, sizeof(datapackTwo));
   GATTthr->setValue((uint8_t*)&datapackThr, sizeof(datapackThr));
@@ -125,7 +125,7 @@ void BLDevice::transmit(int16_t tempMeasurements[], uint8_t mirrorTire, int16_t 
 boolean BLDevice::isConnected() {
 #if BOARD == BOARD_NRF52
   return Bluefruit.connected();
-#elif BOARD == BOARD_ESP32
+#elif BOARD == BOARD_ESP32 || BOARD_LOLIND32
   int32_t connectedCount;
   connectedCount = mainServer->getConnectedCount();
   return (connectedCount > 0);
