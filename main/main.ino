@@ -14,7 +14,7 @@ uint8_t mirrorTire = 0;
 char wheelPos[] = "  ";  // Wheel position for Tire A
 char deviceNameSuffix[] = "  ";
 
-#if BOARD == BOARD_ESP32
+#if BOARD == BOARD_LOLIND32
   #if FIS_SENSOR2_PRESENT == 1
     TempSensor tempSensor2;
     uint8_t mirrorTire2 = 0;
@@ -55,14 +55,14 @@ void setup(){
   while (!Serial); // Wait for Serial
   Serial.printf("\nBegin startup. Arduino version: %d\n",ARDUINO);
 
-#ifdef DUMMYDATA
-  debug("=======  DUMMYDATA  ========\n");
-#endif
-
-
 #if BOARD == BOARD_ESP32 || BOARD == BOARD_LOLIND32
+  Serial.printf("ESP32 IDF version: %s\n", esp_get_idf_version());
   analogReadResolution(12); //12 bits
   analogSetAttenuation(ADC_11db);  //For all pins
+#endif
+
+#ifdef DUMMYDATA
+  debug("=======  DUMMYDATA  ========\n");
 #endif
 
   if (GPIOLEDDIST > 0) pinMode(GPIOLEDDIST, OUTPUT);
@@ -106,7 +106,7 @@ void setup(){
   debug("Starting temperature sensor for %s...\n", wheelPos);
   tempSensor.initialise(FIS_REFRESHRATE, &Wire);
 
-#if BOARD == BOARD_ESP32
+#if BOARD == BOARD_LOLIND32
   // I2C channel 2
   #if FIS_SENSOR2_PRESENT == 1
   
@@ -330,7 +330,7 @@ void blinkOnTempChange(int16_t tempnew) {
 
 int getVbat(void) {
   double adcRead=0;
-#if BOARD == BOARD_ESP32 // Compensation for ESP32's crappy ADC -> https://bitbucket.org/Blackneron/esp32_adc/src/master/
+#if BOARD == BOARD_ESP32 || BOARD_LOLIND32 // Compensation for ESP32's crappy ADC -> https://bitbucket.org/Blackneron/esp32_adc/src/master/
   const double f1 = 1.7111361460487501e+001;
   const double f2 = 4.2319467860421662e+000;
   const double f3 = -1.9077375643188468e-002;

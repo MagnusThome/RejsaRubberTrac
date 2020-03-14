@@ -1,41 +1,6 @@
 #include "algo.h"
 #include <Arduino.h>
 
-uint16_t get_maximum(uint16_t arr[], int size) {
-  uint16_t max_value = arr[0];
-  for (uint8_t i=0; i < size; i++) {
-    if (arr[i] > max_value) max_value = arr[i];
-  }
-  return max_value;
-}
-
-uint16_t get_minimum(uint16_t arr[], int size) {
-  uint16_t min_value = arr[0];
-  for (uint8_t i=0; i < size; i++) {
-    if (arr[i] < min_value) min_value = arr[i];
-  }
-  return min_value;
-}
-
-uint16_t get_average(uint16_t arr[], int size) {
-  uint16_t sum_value = 0;
-  for (uint16_t i=0; i < size; i++) sum_value += arr[i];
-  return (uint16_t)sum_value/size;
-}
-
-int16_t distanceFilter(int16_t distanceIn) {
-  const uint8_t filterSz = 8;
-  static int16_t filterArr[filterSz];
-  int16_t distanceOut = 0;
-  for (int8_t i=0; i<(filterSz-1); i++) {
-    filterArr[i] = filterArr[i+1];
-    distanceOut += filterArr[i+1];
-  }
-  filterArr[filterSz-1] = distanceIn;
-  distanceOut += distanceIn;
-  return (int16_t) distanceOut/filterSz;
-}
-
 uint8_t lipoPercent(float mvolts) {
     if (mvolts >= 4200) { return 100; }
     if (mvolts > 4100)  { return  90 + (mvolts-4100)*10/100; }
