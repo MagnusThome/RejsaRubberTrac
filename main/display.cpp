@@ -10,10 +10,10 @@ void Display::setup() {
   displayDevice.clearDisplay();
 }
 
-void Display::refreshDisplay(float tempMeasurement[], float leftEdge, float rightEdge, boolean validFrame, float updateRate, uint32_t distance, uint8_t percentage, boolean bleConnected) {
+void Display::refreshDisplay(int16_t tempMeasurement[], float leftEdge, float rightEdge, boolean validFrame, float updateRate, uint32_t distance, uint8_t percentage, boolean bleConnected) {
   displayDevice.clearDisplay();
-  drawBarChart(tempMeasurement,44,0,2,28, leftEdge, rightEdge);
-  displayDevice.setCursor(0,8);
+  drawBarChart(tempMeasurement, 44, 0, 2, 28, leftEdge, rightEdge);
+  displayDevice.setCursor(0, 8);
   displayDevice.printf("%d%%\n%dmm\n%.0fHz", percentage, distance, updateRate);
   if (validFrame) displayDevice.fillCircle(3, 3, 3, WHITE);
   else displayDevice.drawCircle(3, 3, 3, WHITE);
@@ -22,9 +22,9 @@ void Display::refreshDisplay(float tempMeasurement[], float leftEdge, float righ
   displayDevice.display();
 }
 
-void Display::drawBarChart(float tempMeasurement[], int x, int y, int barWidth, int h, float leftEdge, float rightEdge) {
-  float minTemp = tempMeasurement[0];
-  float maxTemp = tempMeasurement[0];
+void Display::drawBarChart(int16_t tempMeasurement[], int x, int y, int barWidth, int h, float leftEdge, float rightEdge) {
+  float minTemp = (float)tempMeasurement[0];
+  float maxTemp = (float)tempMeasurement[0];
   for (uint8_t i=0;i<FIS_X;i++) {
     if (tempMeasurement[i] > maxTemp) maxTemp = tempMeasurement[i];
     if (tempMeasurement[i] < minTemp) minTemp = tempMeasurement[i];

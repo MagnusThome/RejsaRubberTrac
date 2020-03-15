@@ -6,27 +6,27 @@ Spline::Spline(void) {
   _prev_point = 0;
 }
 
-Spline::Spline( float x[], float y[], int numPoints, int degree )
+Spline::Spline( int16_t x[], int16_t y[], int numPoints, int degree )
 {
   setPoints(x,y,numPoints);
   setDegree(degree);
   _prev_point = 0;
 }
 
-Spline::Spline( float x[], float y[], float m[], int numPoints )
+Spline::Spline( int16_t x[], int16_t y[], int16_t m[], int numPoints )
 {
   setPoints(x,y,m,numPoints);
   setDegree(Hermite);
   _prev_point = 0;
 }
 
-void Spline::setPoints( float x[], float y[], int numPoints ) {
+void Spline::setPoints( int16_t x[], int16_t y[], int numPoints ) {
   _x = x;
   _y = y;
   _length = numPoints;
 }
 
-void Spline::setPoints( float x[], float y[], float m[], int numPoints ) {
+void Spline::setPoints( int16_t x[], int16_t y[], int16_t m[], int numPoints ) {
   _x = x;
   _y = y;
   _m = m;
@@ -37,7 +37,7 @@ void Spline::setDegree( int degree ){
   _degree = degree;
 }
 
-float Spline::value( float x )
+int16_t Spline::value( int16_t x )
 {
   if( _x[0] > x ) { 
     return _y[0]; 
@@ -61,7 +61,7 @@ float Spline::value( float x )
   }
 }
 
-float Spline::calc( float x, int i )
+int16_t Spline::calc( int16_t x, int i )
 {
   switch( _degree ) {
     case 0:
@@ -91,15 +91,15 @@ float Spline::calc( float x, int i )
   }
 }
 
-float Spline::hermite( float t, float p0, float p1, float m0, float m1, float x0, float x1 ) {
+int16_t Spline::hermite( int16_t t, int16_t p0, int16_t p1, int16_t m0, int16_t m1, int16_t x0, int16_t x1 ) {
   return (hermite_00(t)*p0) + (hermite_10(t)*(x1-x0)*m0) + (hermite_01(t)*p1) + (hermite_11(t)*(x1-x0)*m1);
 }
-float Spline::hermite_00( float t ) { return (2*pow(t,3)) - (3*pow(t,2)) + 1;}
-float Spline::hermite_10( float t ) { return pow(t,3) - (2*pow(t,2)) + t; }
-float Spline::hermite_01( float t ) { return (3*pow(t,2)) - (2*pow(t,3)); }
-float Spline::hermite_11( float t ) { return pow(t,3) - pow(t,2); }
+int16_t Spline::hermite_00( int16_t t ) { return (2*pow(t,3)) - (3*pow(t,2)) + 1;}
+int16_t Spline::hermite_10( int16_t t ) { return pow(t,3) - (2*pow(t,2)) + t; }
+int16_t Spline::hermite_01( int16_t t ) { return (3*pow(t,2)) - (2*pow(t,3)); }
+int16_t Spline::hermite_11( int16_t t ) { return pow(t,3) - pow(t,2); }
 
-float Spline::catmull_tangent( int i ) 
+int16_t Spline::catmull_tangent( int i ) 
 { 
   if( _x[i+1] == _x[i-1] ) {
     // Avoids division by 0
