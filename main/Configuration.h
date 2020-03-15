@@ -29,7 +29,7 @@
 #define IGNORE_TOP_ROWS    10     // Ignore this many rows from the top of the sensor
 #define IGNORE_BOTTOM_ROWS 10     // Ignore this many rows from the bottom of the sensor
 
-#define COLUMN_AGGREGATE   COLUMN_AGGREGATE_MAX // Set column aggregation algorhytm, see Constants.h
+#define COLUMN_AGGREGATE   COLUMN_AGGREGATE_AVG_MINUS_OUTLIERS // Set column aggregation algorhytm, see Constants.h
 
 #define FIS_AUTORANGING          // Comment to disable autoranging
 #define AUTORANGING_MINIMUM_TIRE_WIDTH 16 // Minimum tire width for autoranging

@@ -19,6 +19,7 @@
 // Column aggregation algo identifiers
 #define COLUMN_AGGREGATE_MAX 0
 #define COLUMN_AGGREGATE_AVG 1
+#define COLUMN_AGGREGATE_AVG_MINUS_OUTLIERS 2
 
 // Voltage Measurement related items
 
