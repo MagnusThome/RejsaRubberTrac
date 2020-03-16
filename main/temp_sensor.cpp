@@ -16,6 +16,8 @@ void TempSensor::initialise(int refrate, TwoWire *I2Cpipe) {
 
 void TempSensor::measure() {
   int16_t column_content[EFFECTIVE_ROWS];
+  float avgMins = 0.0;
+  float avgMaxs = 0.0;
 
   totalFrameCount++;
   totalOutliersThisFrame = 0;
@@ -26,10 +28,14 @@ void TempSensor::measure() {
       column_content[y] = getPixelTemperature(x, y);
     }
     measurement[x] = calculateColumnTemperature(column_content, EFFECTIVE_ROWS);
+    avgMins = ((float)getMinimum(column_content, EFFECTIVE_ROWS) - avgMins) / (x+1);
+    avgMaxs = ((float)getMaximum(column_content, EFFECTIVE_ROWS) - avgMaxs) / (x+1);
   }
 
   // reset average temperatures
   avgsThisFrame.avgFrameTemp = 0.0;
+  avgsThisFrame.avgMinFrameTemp = avgMins;
+  avgsThisFrame.avgMaxFrameTemp = avgMaxs;
   avgsThisFrame.avgTireTemp = 0.0;
   avgsThisFrame.avgOuterTireTemp = 0.0;
   avgsThisFrame.avgMiddleTireTemp = 0.0;
@@ -37,11 +43,11 @@ void TempSensor::measure() {
   avgsThisFrame.avgOuterAmbientTemp = 0.0;
   avgsThisFrame.avgInnerAmbientTemp = 0.0;
 
-#ifdef FIS_AUTORANGING
+#ifdef FIS_AUTOZOOM
   calculateSlope(measurement_slope);
   getMinMaxSlopePosition();
-  validAutorangeFrame = checkAutorangeValidityAndSetAvgTemps();
-  if (validAutorangeFrame) {
+  validAutozoomFrame = checkAutozoomValidityAndSetAvgTemps();
+  if (validAutozoomFrame) {
     float leftStepSize = abs((outerTireEdgePositionThisFrameViaSlopeMax-outerTireEdgePositionSmoothed)/4);
     float rightStepSize = abs((innerTireEdgePositionThisFrameViaSlopeMin-innerTireEdgePositionSmoothed)/4);
     if (outerTireEdgePositionSmoothed < outerTireEdgePositionThisFrameViaSlopeMax) outerTireEdgePositionSmoothed += leftStepSize;
@@ -58,11 +64,14 @@ void TempSensor::measure() {
 #endif
 
   // update running averages
-  runningAvgOutlierRatePerFrame += (((float)totalOutliersThisFrame / ((float)FIS_X * (float)EFFECTIVE_ROWS)) - runningAvgOutlierRatePerFrame) / totalFrameCount;
-  runningAvgZoomedFramesToTotalFramesViaSlope += ((validAutorangeFrame ? 1 : 0) - runningAvgZoomedFramesToTotalFramesViaSlope) / totalFrameCount;
+  runningAvgOutlierRate += (((float)totalOutliersThisFrame / ((float)FIS_X * (float)EFFECTIVE_ROWS)) - runningAvgOutlierRate) / totalFrameCount;
+  runningAvgZoomedFramesRate += ((validAutozoomFrame ? 1 : 0) - runningAvgZoomedFramesRate) / totalFrameCount;
   movingAvgFrameTmp = (0.2 * avgsThisFrame.avgFrameTemp) + (0.8 * movingAvgFrameTmp); // exponential moving average
-  movingAvgStdDevFrameTmp = (0.2 * (avgsThisFrame.stdDevFrameTemp < 250.0 ? 250.0 : avgsThisFrame.stdDevFrameTemp)) + (0.8 * movingAvgStdDevFrameTmp); // exponential moving average retaining a minimum standard deviation of 20 degrees Celsius
-  //Serial.printf("totalOutliersThisFrame: %u\ttotalFrameCount: %f\trunningAvgOutlierRatePerFrame: %f\tzwischenschritt: %f\tvalidAutorangeFrame: %i\n", totalOutliersThisFrame, totalFrameCount, runningAvgOutlierRatePerFrame, ((float)totalOutliersThisFrame / ((float)FIS_X * (float)EFFECTIVE_ROWS)), (validAutorangeFrame ? 1 : 0));
+  movingAvgStdDevFrameTmp = (0.2 * (avgsThisFrame.stdDevFrameTemp < MIN_TMP_STDDEV ? MIN_TMP_STDDEV : avgsThisFrame.stdDevFrameTemp)) + (0.8 * movingAvgStdDevFrameTmp); // exponential moving average retaining a minimum standard deviation of 20 degrees Celsius
+  if (totalOutliersThisFrame == 0) { // only if we have an outlier-free frame; exponential moving average 
+    movingAvgRowDeltaTmp = (0.2 * (avgsThisFrame.avgMaxFrameTemp - avgsThisFrame.avgMinFrameTemp)) + (0.8 * movingAvgRowDeltaTmp); // exponential moving average
+    if (movingAvgRowDeltaTmp > maxRowDeltaTmp) maxRowDeltaTmp = movingAvgRowDeltaTmp; // if we have a new contender for highest (filtered) delta temperature
+  }
   
   interpolate((int)outerTireEdgePositionSmoothed, (int)innerTireEdgePositionSmoothed, measurement_16);
 }
@@ -114,7 +123,7 @@ void TempSensor::getMinMaxSlopePosition() {
   }
 }
 
-boolean TempSensor::checkAutorangeValidityAndSetAvgTemps() {
+boolean TempSensor::checkAutozoomValidityAndSetAvgTemps() {
   float avgTireTempThisFrame = 0.0;
   float avgInnerAmbientThisFrame = 0.0;
   float avgOuterAmbientThisFrame = 0.0;
@@ -125,7 +134,7 @@ boolean TempSensor::checkAutorangeValidityAndSetAvgTemps() {
   if (measurement_slope[innerTireEdgePositionThisFrameViaSlopeMin] > -7) return false;
   if (measurement_slope[outerTireEdgePositionThisFrameViaSlopeMax-1] < 7) return false;
   if (innerTireEdgePositionThisFrameViaSlopeMin < outerTireEdgePositionThisFrameViaSlopeMax) return false; // Inner or outer edge of tire out of camera view
-  if ((innerTireEdgePositionThisFrameViaSlopeMin-outerTireEdgePositionThisFrameViaSlopeMax+1) < AUTORANGING_MINIMUM_TIRE_WIDTH) return false; // Too thin tire
+  if ((innerTireEdgePositionThisFrameViaSlopeMin-outerTireEdgePositionThisFrameViaSlopeMax+1) < AUTOZOOM_MINIMUM_TIRE_WIDTH) return false; // Too thin tire
   
   for (uint8_t i=0; i<FIS_X; i++) {
     if (i < outerTireEdgePositionThisFrameViaSlopeMax) {
@@ -169,7 +178,7 @@ boolean TempSensor::checkAutorangeValidityAndSetAvgTemps() {
 
 // determine outliers according to Chauvenet's criterion, replace outlier values with ABS_ZERO and return the number of outliers removed
 uint16_t TempSensor::removeOutliersChauvenet(int16_t *arr, int size) {
-  uint16_t outlierCount = 0;
+  int outlierCount = 0;
   const float outlierCriterion = 0.50;
   float significanceLevel = outlierCriterion / size;
   int16_t valueClosestToMean = 0;
@@ -181,8 +190,8 @@ uint16_t TempSensor::removeOutliersChauvenet(int16_t *arr, int size) {
     
     float prob = cumulativeProbability((float)arr[i], mean, stdDev);
     
-    if (prob < significanceLevel || prob > (1-significanceLevel) || arr[i] == ABS_ZERO || arr[i] == 0) {
-      Serial.print("OUTLIER DETECTED: Column temps: ");
+    if ( prob < significanceLevel || prob > (1-significanceLevel) || arr[i] == ABS_ZERO || arr[i] == 0 || arr[i] == ((-1 + TEMPOFFSET) * 10 * TEMPSCALING) ) {
+      Serial.printf("OUTLIER DETECTED IN FRAME %.0f: Column temps: ", totalFrameCount);
       for (uint8_t u=0; u < size; u++) {
         Serial.print(arr[u]);
         Serial.print(", ");

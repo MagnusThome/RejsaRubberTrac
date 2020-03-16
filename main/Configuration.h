@@ -5,7 +5,7 @@
 
 
 // -- Basic device configuration, see Constants.h
-#define BOARD              BOARD_LOLIND32
+#define BOARD              BOARD_ESP32_LOLIND32
 #define DISP_DEVICE        DISP_NONE
 
 // -- Distance Sensor related settings
@@ -19,7 +19,7 @@
 // -- Far Infrared Sensor related settings
 
 #define FIS_SENSOR         FIS_MLX90640  // Device to use, see Constants.h                        
-#if BOARD == BOARD_LOLIND32
+#if BOARD == BOARD_ESP32_LOLIND32
   #define FIS_SENSOR2_PRESENT 1            // Set to 1 if second sensor on second I2C hardware bus is present (ESP32 only)
 #elif
   #define FIS_SENSOR2_PRESENT 0
@@ -31,8 +31,8 @@
 
 #define COLUMN_AGGREGATE   COLUMN_AGGREGATE_AVG_MINUS_OUTLIERS // Set column aggregation algorhytm, see Constants.h
 
-#define FIS_AUTORANGING          // Comment to disable autoranging
-#define AUTORANGING_MINIMUM_TIRE_WIDTH 16 // Minimum tire width for autoranging
+#define FIS_AUTOZOOM          // Comment to disable autozooming
+#define AUTOZOOM_MINIMUM_TIRE_WIDTH 16 // Minimum tire width for autozooming
 
 #define TEMPSCALING        1.00  // Default = 1.00
 #define TEMPOFFSET         0     // Default = 0      NOTE: in TENTHS of degrees Celsius --> TEMPOFFSET 10 --> 1 degree
@@ -65,7 +65,7 @@
 
 // -- Board-specific settings
 
-#if BOARD == BOARD_LOLIND32
+#if BOARD == BOARD_ESP32_LOLIND32
   #define MILLIVOLTFULLSCALE  3300
   #define STEPSFULLSCALE      4096
   #define BATRESISTORCOMP    2.100 // Compensation for a resistor voltage divider between battery and ADC input pin
@@ -84,7 +84,7 @@
   #define GPIOMIRR2           26  // GPIO pin: Mirr B
   #define GPIOUNUSEDA2        19  // GPIO pin: Unused A2
   #define GPIOUNUSEDB1        25  // GPIO pin: Unused B1
-#elif BOARD == BOARD_ESP32
+#elif BOARD == BOARD_ESP32_FEATHER
   #define VBAT_PIN            A13
   #define MILLIVOLTFULLSCALE  3300
   #define STEPSFULLSCALE      4096
@@ -100,7 +100,7 @@
   #define GPIOFRONT           29  // GPIO pin number
   #define GPIOLEFT            13  // GPIO pin number
   #define GPIOMIRR            14  // GPIO pin number
-#elif BOARD == BOARD_NRF52
+#elif BOARD == BOARD_NRF52_FEATHER
   #define VBAT_PIN              A7
   #define MILLIVOLTFULLSCALE  3600
   #define STEPSFULLSCALE      1024

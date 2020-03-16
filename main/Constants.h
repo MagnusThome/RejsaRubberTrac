@@ -12,9 +12,9 @@
 #define DISP_NONE   1
 
 // Boards
-#define BOARD_NRF52 0
-#define BOARD_ESP32 1
-#define BOARD_LOLIND32 2
+#define BOARD_NRF52_FEATHER 0
+#define BOARD_ESP32_FEATHER 1
+#define BOARD_ESP32_LOLIND32 2
 
 // Column aggregation algo identifiers
 #define COLUMN_AGGREGATE_MAX 0

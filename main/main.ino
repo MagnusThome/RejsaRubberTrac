@@ -14,7 +14,7 @@ uint8_t mirrorTire = 0;
 char wheelPos[] = "  ";  // Wheel position for Tire A
 char deviceNameSuffix[] = "  ";
 
-#if BOARD == BOARD_LOLIND32
+#if BOARD == BOARD_ESP32_LOLIND32
   #if FIS_SENSOR2_PRESENT == 1
     TempSensor tempSensor2;
     uint8_t mirrorTire2 = 0;
@@ -55,7 +55,7 @@ void setup(){
   while (!Serial); // Wait for Serial
   Serial.printf("\nBegin startup. Arduino version: %d\n",ARDUINO);
 
-#if BOARD == BOARD_ESP32 || BOARD == BOARD_LOLIND32
+#if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
   Serial.printf("ESP32 IDF version: %s\n", esp_get_idf_version());
   analogReadResolution(12); //12 bits
   analogSetAttenuation(ADC_11db);  //For all pins
@@ -72,7 +72,7 @@ void setup(){
   pinMode(GPIOFRONT, INPUT_PULLUP);
   pinMode(GPIOCAR, INPUT_PULLUP);
   pinMode(GPIOMIRR, INPUT_PULLUP);
-#if BOARD == BOARD_LOLIND32
+#if BOARD == BOARD_ESP32_LOLIND32
   pinMode(GPIOMIRR2, INPUT_PULLUP);
   pinMode(GPIOUNUSEDA2, INPUT);
   pinMode(GPIOUNUSEDA2, INPUT);
@@ -106,7 +106,7 @@ void setup(){
   debug("Starting temperature sensor for %s...\n", wheelPos);
   tempSensor.initialise(FIS_REFRESHRATE, &Wire);
 
-#if BOARD == BOARD_LOLIND32
+#if BOARD == BOARD_ESP32_LOLIND32
   // I2C channel 2
   #if FIS_SENSOR2_PRESENT == 1
   
@@ -195,7 +195,7 @@ void loop() {
 }
 
 void updateDisplay(void) {
-  display.refreshDisplay(tempSensor.measurement, tempSensor.outerTireEdgePositionSmoothed, tempSensor.innerTireEdgePositionSmoothed, tempSensor.validAutorangeFrame, updateRate, distSensor.distance, lipoPercentage, bleDevice.isConnected());
+  display.refreshDisplay(tempSensor.measurement, tempSensor.outerTireEdgePositionSmoothed, tempSensor.innerTireEdgePositionSmoothed, tempSensor.validAutozoomFrame, updateRate, distSensor.distance, lipoPercentage, bleDevice.isConnected());
 
 // 2do: integrate tempSensor2 & distSensor2 for display
 }
@@ -275,14 +275,14 @@ void printStatus(void) {
 
 
   debug("Rate: %.1fHz\tV: %dmV (%d%%) \tWheel: %s\tD: %s\t", (float)updateRate, vBattery, lipoPercentage, wheelPos, distSensor_str);
-  debug("Outliers: %.2f%%\tZoomrate: %.2f%%\tAvgTemp: %.1f\tAvgStdDev: %.1f\t", tempSensor.runningAvgOutlierRatePerFrame*100, tempSensor.runningAvgZoomedFramesToTotalFramesViaSlope*100, tempSensor.movingAvgFrameTmp/10, tempSensor.movingAvgStdDevFrameTmp/10);
+  debug("Zoomrate: %.2f%% \tOutliers: %.2f%%\tMaxRowDelta: %.1f\tAvgTemp: %.1f\tAvgStdDev: %.1f\t", tempSensor.runningAvgZoomedFramesRate*100, tempSensor.runningAvgOutlierRate*100, tempSensor.maxRowDeltaTmp/10, tempSensor.movingAvgFrameTmp/10, tempSensor.movingAvgStdDevFrameTmp/10);
   for (uint8_t i=0; i<FIS_X; i++) {
     debug("T: %.1f\t",(float)tempSensor.measurement[i]/10);
   }
   debug("\n");
 #if FIS_SENSOR2_PRESENT == 1
   debug("\t\t\t\t\tWheel: %s\tD: %s\t", wheelPos2, distSensor2_str);
-  debug("Outliers: %.2f%%\tZoomrate: %.2f%%\tAvgTemp: %.1f\tAvgStdDev: %.1f\t", tempSensor2.runningAvgOutlierRatePerFrame*100, tempSensor2.runningAvgZoomedFramesToTotalFramesViaSlope*100, tempSensor2.movingAvgFrameTmp/10, tempSensor2.movingAvgStdDevFrameTmp/10);
+  debug("Zoomrate: %.2f%% \tOutliers: %.2f%%\tMaxRowDelta: %.1f\tAvgTemp: %.1f\tAvgStdDev: %.1f\t", tempSensor2.runningAvgZoomedFramesRate*100, tempSensor2.runningAvgOutlierRate*100, tempSensor2.maxRowDeltaTmp/10, tempSensor2.movingAvgFrameTmp/10, tempSensor2.movingAvgStdDevFrameTmp/10);
   for (uint8_t i=0; i<FIS_X; i++) {
     debug("T: %.1f\t",(float)tempSensor2.measurement[i]/10);
   }
@@ -333,7 +333,7 @@ void blinkOnTempChange(int16_t tempnew) {
 
 int getVbat(void) {
   double adcRead=0;
-#if BOARD == BOARD_ESP32 || BOARD_LOLIND32 // Compensation for ESP32's crappy ADC -> https://bitbucket.org/Blackneron/esp32_adc/src/master/
+#if BOARD == BOARD_ESP32_FEATHER || BOARD_ESP32_LOLIND32 // Compensation for ESP32's crappy ADC -> https://bitbucket.org/Blackneron/esp32_adc/src/master/
   const double f1 = 1.7111361460487501e+001;
   const double f2 = 4.2319467860421662e+000;
   const double f3 = -1.9077375643188468e-002;
@@ -361,7 +361,7 @@ int getVbat(void) {
   }
   averageInputValue = totalInputValue / loops;
   adcRead = f1 + f2 * pow(averageInputValue, 1) + f3 * pow(averageInputValue, 2) + f4 * pow(averageInputValue, 3) + f5 * pow(averageInputValue, 4) + f6 * pow(averageInputValue, 5) + f7 * pow(averageInputValue, 6) + f8 * pow(averageInputValue, 7) + f9 * pow(averageInputValue, 8) + f10 * pow(averageInputValue, 9) + f11 * pow(averageInputValue, 10) + f12 * pow(averageInputValue, 11);
-#elif BOARD == BOARD_NRF52
+#elif BOARD == BOARD_NRF52_FEATHER
   adcRead = analogRead(VBAT_PIN);
 #endif
   return adcRead * MILLIVOLTFULLSCALE * BATRESISTORCOMP / STEPSFULLSCALE;
