@@ -7,8 +7,12 @@
   #include "MLX90640.h"
 #endif
 
+#define ABS_ZERO -2732
+
 typedef struct {
   float  avgFrameTemp = 0; // after normalizing to one row; full width = avg(FIS_X)
+  float  stdDevFrameTemp = 0; // after normalizing to one row; full width = avg(FIS_X)
+
   float  avgTireTemp = 0; // 0 if no valid autorange
   float  avgOuterTireTemp = 0; // 1/3 of outermost tire pixels; 0 if no valid autorange 
   float  avgMiddleTireTemp = 0; // 1/3 of middle tire pixels; 0 if no valid autorange
@@ -58,8 +62,8 @@ public:
   double totalFrameCount = 0;
   float runningAvgOutlierRatePerFrame = 0;
   float runningAvgZoomedFramesToTotalFramesViaSlope = 0;
-  float runningAvgFrameTmp = 0.0; // 2do: init value to be replaced by heuristically determined real life value; also update removeOutliersChauvenet()
-  float runningAvgStdDevFrameTmp = 0.0; // 2do: init value to be replaced by heuristically determined real life value; also update removeOutliersChauvenet()
+  float movingAvgFrameTmp = 400.0; // init value = 40 degrees Celsius
+  float movingAvgStdDevFrameTmp = 250.0; // init value = minimum standard deviation we use for outlier detection (25 degrees Celsius)
 
   
 	void initialise(int refrate, TwoWire *I2Cpipe = &Wire);

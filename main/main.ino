@@ -275,14 +275,14 @@ void printStatus(void) {
 
 
   debug("Rate: %.1fHz\tV: %dmV (%d%%) \tWheel: %s\tD: %s\t", (float)updateRate, vBattery, lipoPercentage, wheelPos, distSensor_str);
-  debug("Outliers: %.2f%%\tZoomrate: %.2f%%\tAvgTemp: %.1f\tAvgStdDev: %.1f\t", tempSensor.runningAvgOutlierRatePerFrame*100, tempSensor.runningAvgZoomedFramesToTotalFramesViaSlope*100, tempSensor.runningAvgFrameTmp/10, tempSensor.runningAvgStdDevFrameTmp/10);
+  debug("Outliers: %.2f%%\tZoomrate: %.2f%%\tAvgTemp: %.1f\tAvgStdDev: %.1f\t", tempSensor.runningAvgOutlierRatePerFrame*100, tempSensor.runningAvgZoomedFramesToTotalFramesViaSlope*100, tempSensor.movingAvgFrameTmp/10, tempSensor.movingAvgStdDevFrameTmp/10);
   for (uint8_t i=0; i<FIS_X; i++) {
     debug("T: %.1f\t",(float)tempSensor.measurement[i]/10);
   }
   debug("\n");
 #if FIS_SENSOR2_PRESENT == 1
   debug("\t\t\t\t\tWheel: %s\tD: %s\t", wheelPos2, distSensor2_str);
-  debug("Outliers: %.2f%%\tZoomrate: %.2f%%\tAvgTemp: %.1f\tAvgStdDev: %.1f\t", tempSensor2.runningAvgOutlierRatePerFrame*100, tempSensor2.runningAvgZoomedFramesToTotalFramesViaSlope*100, tempSensor2.runningAvgFrameTmp/10, tempSensor2.runningAvgStdDevFrameTmp/10);
+  debug("Outliers: %.2f%%\tZoomrate: %.2f%%\tAvgTemp: %.1f\tAvgStdDev: %.1f\t", tempSensor2.runningAvgOutlierRatePerFrame*100, tempSensor2.runningAvgZoomedFramesToTotalFramesViaSlope*100, tempSensor2.movingAvgFrameTmp/10, tempSensor2.movingAvgStdDevFrameTmp/10);
   for (uint8_t i=0; i<FIS_X; i++) {
     debug("T: %.1f\t",(float)tempSensor2.measurement[i]/10);
   }
