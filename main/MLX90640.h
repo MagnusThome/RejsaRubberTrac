@@ -3,12 +3,12 @@
 #include "Arduino.h"
 #include <Wire.h>
 
-#define TA_SHIFT 8 //Default shift for MLX90640 in open air
+#define TA_SHIFT 8 // default shift for MLX90640 in open air
+#define MLX90640_ADDRESS 0x33
 
 class MLX90640 {
 private:
   byte refreshRate;        
-  byte MLX90640_address;
   float temperatures[768]; //Contains the calculated temperatures of each pixel in the array
   float Tambient;          //Tracks the changing ambient temperature of the sensor
   float Vdd;               //Tracks ... well, Vdd.
@@ -18,5 +18,5 @@ public:
   boolean isConnected();
   void measure(bool);
   float getTemperature(int num);
-  void initialise(int refrate, TwoWire *thisI2c = &Wire);
+  boolean initialise(int refrate, TwoWire *thisI2c = &Wire);
 };

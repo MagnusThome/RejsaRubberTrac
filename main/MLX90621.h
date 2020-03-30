@@ -93,7 +93,7 @@ private:
   TwoWire *i2c;
 public:
 	int16_t irData[64]; //Contains the raw IR data from the sensor
-	void initialise(int refrate, TwoWire *thisI2c = &Wire);
+	boolean initialise(int refrate, TwoWire *thisI2c = &Wire);
 	void measure(bool);
 	float getTemperature(int num);
 	float getAmbient();

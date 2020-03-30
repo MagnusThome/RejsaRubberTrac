@@ -53,7 +53,7 @@ void updateRefreshRate(void);
 void setup(){
   Serial.begin(115200);
   while (!Serial); // Wait for Serial
-  Serial.printf("\nBegin startup. Arduino version: %d\n",ARDUINO);
+  Serial.printf("\nBegin startup. Arduino version: %d\n", ARDUINO);
 
 #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
   Serial.printf("ESP32 IDF version: %s\n", esp_get_idf_version());
@@ -91,7 +91,11 @@ void setup(){
   }
 
 // I2C channel 1
-  Wire.begin(GPIOSDA,GPIOSCL); // initialize I2C w/ I2C pins from config
+  #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+    Wire.begin(GPIOSDA,GPIOSCL); // initialize I2C w/ I2C pins from config
+  #else
+    Wire.begin();
+  #endif
 
   #if DIST_SENSOR != DIST_NONE
     debug("Starting distance sensor for %s...\n", wheelPos);
@@ -104,7 +108,16 @@ void setup(){
   #endif
 
   debug("Starting temperature sensor for %s...\n", wheelPos);
-  tempSensor.initialise(FIS_REFRESHRATE, &Wire);
+  if (!tempSensor.initialise(FIS_REFRESHRATE, &Wire)) {
+    // perform automatic system reboot to retry temp sensor initialization
+    #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+      debug("Rebooting the MCU now...\n");
+      ESP.restart();
+    #elif BOARD == BOARD_NRF52_FEATHER
+      debug("Rebooting the MCU now...\n");
+      NVIC_SystemReset();
+    #endif
+  }
 
 #if BOARD == BOARD_ESP32_LOLIND32
   // I2C channel 2
@@ -129,7 +142,13 @@ void setup(){
     #endif
   
     debug("Starting temperature sensor 2 for %s...\n", wheelPos2);
-    tempSensor2.initialise(FIS_REFRESHRATE, &Wire1);
+    if (!tempSensor2.initialise(FIS_REFRESHRATE, &Wire1)) {
+      // perform automatic system reboot to retry temp sensor initialization
+      #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+        debug("Rebooting the MCU now...\n");
+        ESP.restart();
+      #endif
+    }
   #else
     // set unused I2C pins to input mode (just to be sure)
     pinMode(GPIOSDA2, INPUT);
@@ -147,8 +166,6 @@ void setup(){
   debug("Starting BLE device: %s\n", bleName);
   bleDevice.setupDevice(bleName);
 
-  debug("Running!\n");
-
 // Set up periodic functions
 #ifdef _DEBUG
   tasker.setInterval(printStatus, SERIAL_UPDATERATE*1000); // Print status every second
@@ -156,11 +173,13 @@ void setup(){
   tasker.setInterval(updateBattery, BATTERY_UPDATERATE*1000); // Update battery status every minute
   tasker.setInterval(updateRefreshRate, 2000);
 
+  debug("Running!\n");
+
 #ifdef DUMMYDATA
   // 2do: make DUMMYDATA compatible with 2x I2C
   dummyloop();
 #endif
-}
+}                                                           
 
 void loop() {
 // I2C channel 1

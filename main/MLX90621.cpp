@@ -11,7 +11,7 @@
 #include "Configuration.h"
 #include <Wire.h>
 
-void MLX90621::initialise(int refrate, TwoWire *thisI2c) {
+boolean MLX90621::initialise(int refrate, TwoWire *thisI2c) {
 	refreshRate = refrate;
 //  Wire.begin for initializing I2C needs to be called before MLX initialization
   i2c = thisI2c;
@@ -20,6 +20,7 @@ void MLX90621::initialise(int refrate, TwoWire *thisI2c) {
 	writeTrimmingValue();
 	setConfiguration();
 	preCalculateConstants();
+  return true;
 }
 
 void MLX90621::measure(bool calculate_temps) {

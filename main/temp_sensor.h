@@ -9,7 +9,8 @@
 
 #define ABS_ZERO -2732
 #define MIN_TMP_STDDEV ((25 + TEMPOFFSET) * 10 * TEMPSCALING) // minimum standard deviation we use for outlier detection (25 degrees Celsius)
-
+#define TMP_TRIGGER_DELTA_AMBIENT_TIRE (7 * 10 * TEMPSCALING) // delta temperature threshold for detecting a tire edge
+#define TMP_AVG_DELTA_AMBIENT_TIRE (5 * 10 * TEMPSCALING) // tire needs to be significantly warmer than ambient temp
 
 typedef struct {
   float  avgFrameTemp = 0; // after normalizing to one row; full width = avg(FIS_X)
@@ -63,7 +64,7 @@ public:
   avgTemps_t avgsThisFrame;
   uint16_t totalOutliersThisFrame = 0;
 
-  // Let's keep track some history of this session...
+  // Let's keep track of some history of this session...
   double totalFrameCount = 0.0;
   float runningAvgOutlierRate = 0.0;
   float runningAvgZoomedFramesRate = 0.0;
@@ -72,6 +73,6 @@ public:
   float movingAvgRowDeltaTmp = 0.0; // delta between all lowest row values vs. all highest row values of the frames
   float maxRowDeltaTmp = 0.0; // maximum of the moving average to detect shaded rows through increasing deltas with increasingly warm tire temps vs. constantly cold bodywork
   
-	void initialise(int refrate, TwoWire *I2Cpipe = &Wire);
+	boolean initialise(int refrate, TwoWire *I2Cpipe = &Wire);
 	void measure();
 };

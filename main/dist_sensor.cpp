@@ -39,6 +39,8 @@ void DistSensor::measure() {
       Serial.print(thisWheelPos);
       Serial.print("!\n");
     }
+  } else {
+    distance = -1;
   }
 }
 

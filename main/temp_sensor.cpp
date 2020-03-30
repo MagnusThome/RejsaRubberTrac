@@ -5,13 +5,13 @@
 #include <Wire.h>
 #include "spline.h"
 
-void TempSensor::initialise(int refrate, TwoWire *I2Cpipe) {
-  innerTireEdgePositionThisFrameViaSlopeMin= FIS_X;
-  outerTireEdgePositionThisFrameViaSlopeMax= 0;
+boolean TempSensor::initialise(int refrate, TwoWire *I2Cpipe) {
+  innerTireEdgePositionThisFrameViaSlopeMin = FIS_X;
+  outerTireEdgePositionThisFrameViaSlopeMax = 0;
   outerTireEdgePositionSmoothed = 0.0;
   innerTireEdgePositionSmoothed = (float)FIS_X;
   thisWire = I2Cpipe;
-  FISDevice.initialise(refrate, thisWire);
+  return FISDevice.initialise(refrate, thisWire);
 };
 
 void TempSensor::measure() {
@@ -131,8 +131,8 @@ boolean TempSensor::checkAutozoomValidityAndSetAvgTemps() {
   avgsThisFrame.avgFrameTemp = getAverage(measurement, FIS_X);
   avgsThisFrame.stdDevFrameTemp = getStdDev(measurement, FIS_X);
 
-  if (measurement_slope[innerTireEdgePositionThisFrameViaSlopeMin] > -7) return false;
-  if (measurement_slope[outerTireEdgePositionThisFrameViaSlopeMax-1] < 7) return false;
+  if (measurement_slope[innerTireEdgePositionThisFrameViaSlopeMin] > -TMP_TRIGGER_DELTA_AMBIENT_TIRE) return false;
+  if (measurement_slope[outerTireEdgePositionThisFrameViaSlopeMax-1] < TMP_TRIGGER_DELTA_AMBIENT_TIRE) return false;
   if (innerTireEdgePositionThisFrameViaSlopeMin < outerTireEdgePositionThisFrameViaSlopeMax) return false; // Inner or outer edge of tire out of camera view
   if ((innerTireEdgePositionThisFrameViaSlopeMin-outerTireEdgePositionThisFrameViaSlopeMax+1) < AUTOZOOM_MINIMUM_TIRE_WIDTH) return false; // Too thin tire
   
@@ -150,8 +150,8 @@ boolean TempSensor::checkAutozoomValidityAndSetAvgTemps() {
   avgTireTempThisFrame = avgTireTempThisFrame / tireWidthThisFrame;
   avgInnerAmbientThisFrame = avgInnerAmbientThisFrame / outerTireEdgePositionThisFrameViaSlopeMax;
   avgOuterAmbientThisFrame = avgOuterAmbientThisFrame / (FIS_X-innerTireEdgePositionThisFrameViaSlopeMin-1);
-  if (avgTireTempThisFrame - avgInnerAmbientThisFrame < 5.0) return false; // Tire is not significantly hotter than ambient
-  if (avgTireTempThisFrame - avgOuterAmbientThisFrame < 5.0) return false; // Tire is not significantly hotter than ambient
+  if (avgTireTempThisFrame - avgInnerAmbientThisFrame < TMP_AVG_DELTA_AMBIENT_TIRE) return false; // Tire is not significantly hotter than ambient
+  if (avgTireTempThisFrame - avgOuterAmbientThisFrame < TMP_AVG_DELTA_AMBIENT_TIRE) return false; // Tire is not significantly hotter than ambient
 
   avgsThisFrame.avgTireTemp = avgTireTempThisFrame;
   
@@ -260,8 +260,8 @@ float TempSensor::getGeometricMean(int16_t arr[], int size) {
   }
 
   float invN = 1.0 / sizeAfterOutliers;
-  float gmMean = powf(std::numeric_limits<float>::radix, ex * invN) * powf(m, invN);
-//  float gmMean = scalblnf(1, ex * invN) * powf(m, invN);
+//  float gmMean = powf(std::numeric_limits<float>::radix, ex * invN) * powf(m, invN); // not compatible to nrf52
+  float gmMean = scalblnf(1, ex * invN) * powf(m, invN);
   return gmMean;
 }
 

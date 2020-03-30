@@ -21,7 +21,7 @@
 #define FIS_SENSOR         FIS_MLX90640  // Device to use, see Constants.h                        
 #if BOARD == BOARD_ESP32_LOLIND32
   #define FIS_SENSOR2_PRESENT 1            // Set to 1 if second sensor on second I2C hardware bus is present (ESP32 only)
-#elif
+#else
   #define FIS_SENSOR2_PRESENT 0
 #endif
 #define FIS_REFRESHRATE    16            // Sets the FIS refresh rate in Hz, MLX90640 should be 4 with nRF52, MLX90621 works at 16Hz
@@ -68,49 +68,49 @@
 #if BOARD == BOARD_ESP32_LOLIND32
   #define MILLIVOLTFULLSCALE  3300
   #define STEPSFULLSCALE      4096
-  #define BATRESISTORCOMP    2.100 // Compensation for a resistor voltage divider between battery and ADC input pin
-  #define VBAT_PIN            A13
+  #define BATRESISTORCOMP     2.000 // Compensation for a resistor voltage divider between battery and ADC input pin
+  #define VBAT_PIN            35
   #define GPIOLEDDIST         -1 // ESP32 only has one LED, we prefer temp updates to be signalled
   #define GPIOLEDTEMP         LED_BUILTIN  // note: system constant LED_BUILTIN does not seem to work for some of the ESP32 boards => set pin statically here in case
   #define GPIOSDA             21 // set I2C bus GPIO pins in case of ESP32 explicitly to specific pins (different board designs have the I2C pins assigned differently)
   #define GPIOSCL             22
   #define GPIOSDA2            33 // set second I2C bus GPIO pins in case of ESP32 explicitly to specific pins (different board designs have the I2C pins assigned differently)
   #define GPIOSCL2            32
-  #define GPIODISTSENSORXSHUT 23  // GPIO pin: A+B = Distance Sensor Shutdown
+  #define GPIODISTSENSORXSHUT 15  // GPIO pin: A+B = Distance Sensor Shutdown
   #define GPIOLEFT            12  // GPIO pin: A+B Axis orientation
   #define GPIOFRONT           14  // GPIO pin: A+B Axis 1(0)/Axis 2(1)
   #define GPIOCAR             27  // GPIO pin: A+B = Car(1)
   #define GPIOMIRR            13  // GPIO pin: Mirr A
   #define GPIOMIRR2           26  // GPIO pin: Mirr B
-  #define GPIOUNUSEDA2        19  // GPIO pin: Unused A2
+  #define GPIOUNUSEDA2        17  // GPIO pin: Unused A2 (NOTE: works only on non-Pro LOLIN D32, because pin is NC on Pro)
   #define GPIOUNUSEDB1        25  // GPIO pin: Unused B1
 #elif BOARD == BOARD_ESP32_FEATHER
-  #define VBAT_PIN            A13
   #define MILLIVOLTFULLSCALE  3300
   #define STEPSFULLSCALE      4096
-  #define BATRESISTORCOMP    2.100 // Compensation for a resistor voltage divider between battery and ADC input pin
-  #define GPIOSDA             SDA // set I2C bus GPIO pins to default pins
-  #define GPIOSCL             SCL
-  #define GPIOSDA2            -1 // second I2C bus only available for ESP32
-  #define GPIOSCL2            -1
+  #define BATRESISTORCOMP     2.100 // Compensation for a resistor voltage divider between battery and ADC input pin
+  #define VBAT_PIN            A13
   #define GPIOLEDDIST         -1
   #define GPIOLEDTEMP         -1
+  #define GPIOSDA             SDA // set I2C bus GPIO pins to default pins
+  #define GPIOSCL             SCL
+  #define GPIOSDA2            -1 // second I2C bus only available with LOLIN D32-based PCB
+  #define GPIOSCL2            -1
   #define GPIODISTSENSORXSHUT 12  // GPIO pin number
   #define GPIOCAR             28  // GPIO pin number
   #define GPIOFRONT           29  // GPIO pin number
   #define GPIOLEFT            13  // GPIO pin number
   #define GPIOMIRR            14  // GPIO pin number
 #elif BOARD == BOARD_NRF52_FEATHER
-  #define VBAT_PIN              A7
   #define MILLIVOLTFULLSCALE  3600
   #define STEPSFULLSCALE      1024
-  #define BATRESISTORCOMP    1.403 // Compensation for a resistor voltage divider between battery and ADC input pin
-  #define GPIOSDA             SDA // set I2C bus GPIO pins to default pins
-  #define GPIOSCL             SCL
-  #define GPIOSDA2            -1 // second I2C bus only available for ESP32
-  #define GPIOSCL2            -1
+  #define BATRESISTORCOMP     1.403 // Compensation for a resistor voltage divider between battery and ADC input pin
+  #define VBAT_PIN            A7
   #define GPIOLEDDIST         LED_RED
   #define GPIOLEDTEMP         LED_BLUE
+  #define GPIOSDA             PIN_WIRE_SDA // set I2C bus GPIO pins to default pins
+  #define GPIOSCL             PIN_WIRE_SCL
+  #define GPIOSDA2            -1 // second I2C bus only available for ESP32
+  #define GPIOSCL2            -1
   #define GPIODISTSENSORXSHUT 12  // GPIO pin number
   #define GPIOCAR             28  // GPIO pin number
   #define GPIOFRONT           29  // GPIO pin number
