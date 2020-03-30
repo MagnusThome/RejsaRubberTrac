@@ -282,14 +282,16 @@ void updateWheelPos(void) {
 
 void printStatus(void) {
 #if DIST_SENSOR != DIST_NONE
-  String distSensor_str = String(distSensor.distance) + "mm ";
+  char distSensor_str[6];
+  sprintf(distSensor_str, "%imm", distSensor.distance);
 #else
-  String distSensor_str = "N/A  ";
+  char* distSensor_str = "N/A  ";
 #endif
 #if DIST_SENSOR2 != DIST_NONE
-  String distSensor2_str = String(distSensor2.distance) + "mm ";
+  char distSensor2_str[6];
+  sprintf(distSensor2_str, "%imm", distSensor2.distance);
 #else
-  String distSensor2_str = "N/A  ";
+  char* distSensor2_str = "N/A  ";
 #endif
 
 

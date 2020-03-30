@@ -30,9 +30,9 @@ bool DistSensor::initialise(TwoWire *I2Cpipe, char *wheelPos) {
 
 void DistSensor::measure() {
   if (present) {
-    int16_t rawDistance = sensor.readRangeContinuousMillimeters();
+    uint16_t rawDistance = sensor.readRangeContinuousMillimeters();
     if (rawDistance < 500) {
-       distance = distanceFilter(rawDistance) - DISTANCEOFFSET; // Only update distance if it is less than 500mm
+       distance = distanceFilter((int16_t)rawDistance) - DISTANCEOFFSET; // Only update distance if it is less than 500mm
     }
     if (sensor.timeoutOccurred()) {
       Serial.print("TIMEOUT: Distance sensor for ");
