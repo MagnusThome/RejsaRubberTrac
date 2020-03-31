@@ -1,5 +1,7 @@
 /**
  * @copyright (C) 2017 Melexis N.V.
+ * => including changes made by slavysis committed on 29 Aug 2019
+ *    https://github.com/melexis/mlx90640-library/commit/8f2e23e42b0a7839e8458f14129291fecc073e59
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +21,9 @@
     
 #include <Wire.h>
 
-  typedef struct
+#define SCALEALPHA 0.000001
+    
+typedef struct
     {
         int16_t kVdd;
         int16_t vdd25;
@@ -34,12 +38,15 @@
         uint8_t resolutionEE;
         uint8_t calibrationModeEE;
         float KsTa;
-        float ksTo[4];
-        int16_t ct[4];
-        float alpha[768];    
+        float ksTo[5];
+        int16_t ct[5];
+        uint16_t alpha[768];    
+        uint8_t alphaScale;
         int16_t offset[768];    
-        float kta[768];    
-        float kv[768];
+        int8_t kta[768];
+        uint8_t ktaScale;    
+        int8_t kv[768];
+        uint8_t kvScale;
         float cpAlpha[2];
         int16_t cpOffset[2];
         float ilChessC[3]; 
