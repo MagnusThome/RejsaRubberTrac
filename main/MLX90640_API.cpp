@@ -109,18 +109,46 @@ int MLX90640_ExtractParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
     int error = 0;
     
     ExtractVDDParameters(eeData, mlx90640);
+delay(1000);
+Serial.println("ExtractVDDParameters ok");
     ExtractPTATParameters(eeData, mlx90640);
+delay(1000);
+Serial.println("ExtractPTATParameters ok");
     ExtractGainParameters(eeData, mlx90640);
+delay(1000);
+Serial.println("ExtractGainParameters ok");
     ExtractTgcParameters(eeData, mlx90640);
+delay(1000);
+Serial.println("ExtractTgcParameters ok");
     ExtractResolutionParameters(eeData, mlx90640);
+delay(1000);
+Serial.println("ExtractResolutionParameters ok");
     ExtractKsTaParameters(eeData, mlx90640);
+delay(1000);
+Serial.println("ExtractKsTaParameters ok");
     ExtractKsToParameters(eeData, mlx90640);
+delay(1000);
+Serial.println("ExtractKsToParameters ok");
     ExtractCPParameters(eeData, mlx90640);
+delay(1000);
+Serial.println("ExtractCPParameters ok");
+delay(1000);
+Serial.println("ExtractCPParameters 2x ok");
     ExtractAlphaParameters(eeData, mlx90640);
+delay(1000);
+Serial.println("ExtractAlphaParameters ok");
     ExtractOffsetParameters(eeData, mlx90640);
+delay(1000);
+Serial.println("ExtractOffsetParameters ok");
     ExtractKtaPixelParameters(eeData, mlx90640);
+delay(1000);
+Serial.println("ExtractKtaPixelParameters ok");
     ExtractKvPixelParameters(eeData, mlx90640);
+delay(1000);
+Serial.println("ExtractKvPixelParameters ok");
     ExtractCILCParameters(eeData, mlx90640);
+delay(1000);
+Serial.println("ExtractCILCParameters ok");
     error = ExtractDeviatingPixels(eeData, mlx90640);  
     
     return error;
@@ -828,6 +856,7 @@ void ExtractKsToParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
 
 void ExtractAlphaParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
 {
+Serial.println("ExtractAlphaParameters 859 ok");
     int accRow[24];
     int accColumn[32];
     int p = 0;
@@ -846,6 +875,7 @@ void ExtractAlphaParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
     alphaScale = ((eeData[32] & 0xF000) >> 12) + 30;
     alphaRef = eeData[33];
     
+Serial.println("ExtractAlphaParameters 878 ok");
     for(int i = 0; i < 6; i++)
     {
         p = i * 4;
@@ -879,7 +909,7 @@ void ExtractAlphaParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
             accColumn[i] = accColumn[i] - 16;
         }
     }
-
+Serial.println("ExtractAlphaParameters 912 ok");
     for(int i = 0; i < 24; i++)
     {
         for(int j = 0; j < 32; j ++)
@@ -898,6 +928,7 @@ void ExtractAlphaParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
         }
     }
     
+Serial.println("ExtractAlphaParameters 931 ok");
     temp = alphaTemp[0];
     for(int i = 1; i < 768; i++)
     {
@@ -907,6 +938,7 @@ void ExtractAlphaParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
         }
     }
     
+Serial.println("ExtractAlphaParameters 941 ok");
     alphaScale = 0;
     while(temp < 32768)
     {
@@ -914,12 +946,14 @@ void ExtractAlphaParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
         alphaScale = alphaScale + 1;
     } 
     
+Serial.println("ExtractAlphaParameters 949 ok");
     for(int i = 0; i < 768; i++)
     {
         temp = alphaTemp[i] * pow(2,(double)alphaScale);        
         mlx90640->alpha[i] = (temp + 0.5);        
         
     } 
+Serial.println("ExtractAlphaParameters 956 ok");
     
     mlx90640->alphaScale = alphaScale;      
    
@@ -1198,7 +1232,7 @@ void ExtractCPParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
     uint8_t alphaScale;
     uint8_t ktaScale1;
     uint8_t kvScale;
-
+Serial.println("ExtractCPParameters 1220 ok");
     alphaScale = ((eeData[32] & 0xF000) >> 12) + 27;
     
     offsetSP[0] = (eeData[58] & 0x03FF);
@@ -1220,7 +1254,7 @@ void ExtractCPParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
         alphaSP[0] = alphaSP[0] - 1024;
     }
     alphaSP[0] = alphaSP[0] /  pow(2,(double)alphaScale);
-    
+Serial.println("ExtractCPParameters 1242 ok");
     alphaSP[1] = (eeData[57] & 0xFC00) >> 10;
     if (alphaSP[1] > 31)
     {
@@ -1243,11 +1277,12 @@ void ExtractCPParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
     }
     kvScale = (eeData[56] & 0x0F00) >> 8;
     mlx90640->cpKv = cpKv / pow(2,(double)kvScale);
-       
+Serial.println("ExtractCPParameters 1265 ok");
     mlx90640->cpAlpha[0] = alphaSP[0];
     mlx90640->cpAlpha[1] = alphaSP[1];
     mlx90640->cpOffset[0] = offsetSP[0];
     mlx90640->cpOffset[1] = offsetSP[1];  
+Serial.println("ExtractCPParameters 1270 ok");
 }
 
 //------------------------------------------------------------------------------

@@ -5,6 +5,8 @@
 boolean MLX90640::initialise(int refrate, TwoWire *thisI2c) {
 //  Wire.begin for initializing I2C needs to be called before MLX initialization
   i2c = thisI2c;
+  int status;
+  
 //  MLX90640_I2CFreqSet(800, i2c); //Changing gears, ensure that I2C clock speed set to 1MHz
   MLX90640_I2CFreqSet(1000, i2c); //Changing gears, ensure that I2C clock speed set to 1MHz
  
@@ -18,21 +20,35 @@ boolean MLX90640::initialise(int refrate, TwoWire *thisI2c) {
       return false;
     }
   }
+/*
+for (int i = 0; i < 5; i++) {
+  delay(1000);
+  Serial.println("Waiting after isConnected().");
+} */
   
-  int status;
   uint16_t eeMLX90640[832];
   status = MLX90640_DumpEE((uint8_t)MLX90640_ADDRESS, eeMLX90640, i2c);
   if (status != 0) {
     Serial.println("ERROR: Failed to load MLX90640 system parameters.");
     return false;
   }
-
+/*
+for (int i = 0; i < 5; i++) {
+  delay(1000);
+  Serial.println("Waiting after MLX90640_DumpEE().");
+} */
+  
   status = MLX90640_ExtractParameters(eeMLX90640, &mlx90640);
   if (status != 0) {
     Serial.println("ERROR: MLX90640 Parameter extraction failed.");
     return false;
   }
 
+for (int i = 0; i < 5; i++) {
+  delay(1000);
+  Serial.println("Waiting after MLX90640_ExtractParameters().");
+}
+  
   byte Hz;
   switch (refrate) {
     case 0:  Hz = 0x00; break;
@@ -51,6 +67,11 @@ boolean MLX90640::initialise(int refrate, TwoWire *thisI2c) {
     return false;
   }
 
+for (int i = 0; i < 5; i++) {
+  delay(1000);
+  Serial.println("Waiting after MLX90640_SetRefreshRate().");
+}
+  
   Serial.printf("MLX90640 initialised correctly at I2C address %u...\n", (uint8_t)MLX90640_ADDRESS);
   return true;
 }
