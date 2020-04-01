@@ -5,13 +5,13 @@
 
 
 // -- Basic device configuration, see Constants.h
-#define BOARD              BOARD_NRF52_FEATHER
+#define BOARD              BOARD_ESP32_LOLIND32
 #define DISP_DEVICE        DISP_NONE
 
 // -- Distance Sensor related settings
 
 #define DIST_SENSOR        DIST_VL53L0X
-#define DIST_SENSOR2       DIST_NONE // Device to use for second sensor on second I2C hardware bus (ESP32 only), see Constants.h
+#define DIST_SENSOR2       DIST_VL53L0X // Device to use for second sensor on second I2C hardware bus (ESP32 only), see Constants.h
 
 #define DISTANCEOFFSET 0         // Write distance to tire in mm here to get logged distance data value centered around zero
                                  // If you leave this value here at 0 the distance value in the logs will always be positive numbers
@@ -47,7 +47,7 @@
                           
 // -- General settings
 
-#define DEVICENAMECODE 2      // DEFAULT is 7
+#define DEVICENAMECODE 7      // DEFAULT is 7
                           // 7 = "RejsaRubber" + four last bytes from the bluetooth MAC address
 
                           // 0 = "RejsaRubberFL" + three last bytes from the bluetooth MAC address
