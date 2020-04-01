@@ -2,6 +2,7 @@
  * @copyright (C) 2017 Melexis N.V.
  * => including changes made by slavysis committed on 29 Aug 2019
  *    https://github.com/melexis/mlx90640-library/commit/8f2e23e42b0a7839e8458f14129291fecc073e59
+ * => modified for small stack size of nRF52 (moved large local arrays back to the heap)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,6 +53,10 @@ typedef struct
         float ilChessC[3]; 
         uint16_t brokenPixels[5];
         uint16_t outlierPixels[5];  
+        
+        float alphaTemp[768];
+        float ktaTemp[768];
+        float kvTemp[768];
     } paramsMLX90640;
     
     int MLX90640_DumpEE(uint8_t slaveAddr, uint16_t *eeData, TwoWire *I2Cpipe);

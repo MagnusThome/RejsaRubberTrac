@@ -2,6 +2,7 @@
  * @copyright (C) 2017 Melexis N.V.
  * => including changes made by slavysis committed on 29 Aug 2019
  *    https://github.com/melexis/mlx90640-library/commit/8f2e23e42b0a7839e8458f14129291fecc073e59
+ * => modified for small stack size of nRF52 (moved large local arrays back to the heap)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -836,7 +837,7 @@ void ExtractAlphaParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
     uint8_t accRowScale;
     uint8_t accColumnScale;
     uint8_t accRemScale;
-    float alphaTemp[768];
+//    float alphaTemp[768]; // moved back into paramsMLX90640 because of stack overflow with nRF52
     float temp;
     
 
@@ -885,25 +886,25 @@ void ExtractAlphaParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
         for(int j = 0; j < 32; j ++)
         {
             p = 32 * i +j;
-            alphaTemp[p] = (eeData[64 + p] & 0x03F0) >> 4;
-            if (alphaTemp[p] > 31)
+            mlx90640->alphaTemp[p] = (eeData[64 + p] & 0x03F0) >> 4;
+            if (mlx90640->alphaTemp[p] > 31)
             {
-                alphaTemp[p] = alphaTemp[p] - 64;
+                mlx90640->alphaTemp[p] = mlx90640->alphaTemp[p] - 64;
             }
-            alphaTemp[p] = alphaTemp[p]*(1 << accRemScale);
-            alphaTemp[p] = (alphaRef + (accRow[i] << accRowScale) + (accColumn[j] << accColumnScale) + alphaTemp[p]);
-            alphaTemp[p] = alphaTemp[p] / pow(2,(double)alphaScale);
-            alphaTemp[p] = alphaTemp[p] - mlx90640->tgc * (mlx90640->cpAlpha[0] + mlx90640->cpAlpha[1])/2;
-            alphaTemp[p] = SCALEALPHA/alphaTemp[p];
+            mlx90640->alphaTemp[p] = mlx90640->alphaTemp[p]*(1 << accRemScale);
+            mlx90640->alphaTemp[p] = (alphaRef + (accRow[i] << accRowScale) + (accColumn[j] << accColumnScale) + mlx90640->alphaTemp[p]);
+            mlx90640->alphaTemp[p] = mlx90640->alphaTemp[p] / pow(2,(double)alphaScale);
+            mlx90640->alphaTemp[p] = mlx90640->alphaTemp[p] - mlx90640->tgc * (mlx90640->cpAlpha[0] + mlx90640->cpAlpha[1])/2;
+            mlx90640->alphaTemp[p] = SCALEALPHA/mlx90640->alphaTemp[p];
         }
     }
     
-    temp = alphaTemp[0];
+    temp = mlx90640->alphaTemp[0];
     for(int i = 1; i < 768; i++)
     {
-        if (alphaTemp[i] > temp)
+        if (mlx90640->alphaTemp[i] > temp)
         {
-            temp = alphaTemp[i];
+            temp = mlx90640->alphaTemp[i];
         }
     }
     
@@ -916,7 +917,7 @@ void ExtractAlphaParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
     
     for(int i = 0; i < 768; i++)
     {
-        temp = alphaTemp[i] * pow(2,(double)alphaScale);        
+        temp = mlx90640->alphaTemp[i] * pow(2,(double)alphaScale);        
         mlx90640->alpha[i] = (temp + 0.5);        
         
     } 
@@ -1010,7 +1011,7 @@ void ExtractKtaPixelParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
     uint8_t ktaScale1;
     uint8_t ktaScale2;
     uint8_t split;
-    float ktaTemp[768];
+//    float ktaTemp[768]; // moved back into paramsMLX90640 because of stack overflow with nRF52
     float temp;
     
     KtaRoCo = (eeData[54] & 0xFF00) >> 8;
@@ -1050,24 +1051,24 @@ void ExtractKtaPixelParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
         {
             p = 32 * i +j;
             split = 2*(p/32 - (p/64)*2) + p%2;
-            ktaTemp[p] = (eeData[64 + p] & 0x000E) >> 1;
-            if (ktaTemp[p] > 3)
+            mlx90640->ktaTemp[p] = (eeData[64 + p] & 0x000E) >> 1;
+            if (mlx90640->ktaTemp[p] > 3)
             {
-                ktaTemp[p] = ktaTemp[p] - 8;
+                mlx90640->ktaTemp[p] = mlx90640->ktaTemp[p] - 8;
             }
-            ktaTemp[p] = ktaTemp[p] * (1 << ktaScale2);
-            ktaTemp[p] = KtaRC[split] + ktaTemp[p];
-            ktaTemp[p] = ktaTemp[p] / pow(2,(double)ktaScale1);
-            //ktaTemp[p] = ktaTemp[p] * mlx90640->offset[p];
+            mlx90640->ktaTemp[p] = mlx90640->ktaTemp[p] * (1 << ktaScale2);
+            mlx90640->ktaTemp[p] = KtaRC[split] + mlx90640->ktaTemp[p];
+            mlx90640->ktaTemp[p] = mlx90640->ktaTemp[p] / pow(2,(double)ktaScale1);
+            //mlx90640->ktaTemp[p] = mlx90640->ktaTemp[p] * mlx90640->offset[p];
         }
     }
     
-    temp = fabs(ktaTemp[0]);
+    temp = fabs(mlx90640->ktaTemp[0]);
     for(int i = 1; i < 768; i++)
     {
-        if (fabs(ktaTemp[i]) > temp)
+        if (fabs(mlx90640->ktaTemp[i]) > temp)
         {
-            temp = fabs(ktaTemp[i]);
+            temp = fabs(mlx90640->ktaTemp[i]);
         }
     }
     
@@ -1080,7 +1081,7 @@ void ExtractKtaPixelParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
      
     for(int i = 0; i < 768; i++)
     {
-        temp = ktaTemp[i] * pow(2,(double)ktaScale1);
+        temp = mlx90640->ktaTemp[i] * pow(2,(double)ktaScale1);
         if (temp < 0)
         {
             mlx90640->kta[i] = (temp - 0.5);
@@ -1108,7 +1109,7 @@ void ExtractKvPixelParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
     int8_t KvReCe;
     uint8_t kvScale;
     uint8_t split;
-    float kvTemp[768];
+//    float kvTemp[768]; // moved back into paramsMLX90640 because of stack overflow with nRF52
     float temp;
 
     KvRoCo = (eeData[52] & 0xF000) >> 12;
@@ -1148,18 +1149,18 @@ void ExtractKvPixelParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
         {
             p = 32 * i +j;
             split = 2*(p/32 - (p/64)*2) + p%2;
-            kvTemp[p] = KvT[split];
-            kvTemp[p] = kvTemp[p] / pow(2,(double)kvScale);
-            //kvTemp[p] = kvTemp[p] * mlx90640->offset[p];
+            mlx90640->kvTemp[p] = KvT[split];
+            mlx90640->kvTemp[p] = mlx90640->kvTemp[p] / pow(2,(double)kvScale);
+            //mlx90640->kvTemp[p] = mlx90640->kvTemp[p] * mlx90640->offset[p];
         }
     }
     
-    temp = fabs(kvTemp[0]);
+    temp = fabs(mlx90640->kvTemp[0]);
     for(int i = 1; i < 768; i++)
     {
-        if (fabs(kvTemp[i]) > temp)
+        if (fabs(mlx90640->kvTemp[i]) > temp)
         {
-            temp = fabs(kvTemp[i]);
+            temp = fabs(mlx90640->kvTemp[i]);
         }
     }
     
@@ -1172,7 +1173,7 @@ void ExtractKvPixelParameters(uint16_t *eeData, paramsMLX90640 *mlx90640)
      
     for(int i = 0; i < 768; i++)
     {
-        temp = kvTemp[i] * pow(2,(double)kvScale);
+        temp = mlx90640->kvTemp[i] * pow(2,(double)kvScale);
         if (temp < 0)
         {
             mlx90640->kv[i] = (temp - 0.5);
