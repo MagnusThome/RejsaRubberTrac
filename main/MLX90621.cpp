@@ -11,16 +11,22 @@
 #include "Configuration.h"
 #include <Wire.h>
 
-boolean MLX90621::initialise(int refrate, TwoWire *thisI2c) {
-	refreshRate = refrate;
+boolean MLX90621::initialise(TwoWire *thisI2c, char *wheelPos, int refrate) {
 //  Wire.begin for initializing I2C needs to be called before MLX initialization
   i2c = thisI2c;
+  thisWheelPos = wheelPos;
+	refreshRate = refrate;
 	delay(5);
 	readEEPROM();
 	writeTrimmingValue();
 	setConfiguration();
 	preCalculateConstants();
-  return true;
+  present = true;
+  return present;
+}
+
+boolean MLX90621::isConnected() {
+  return present;
 }
 
 void MLX90621::measure(bool calculate_temps) {
@@ -37,6 +43,7 @@ void MLX90621::measure(bool calculate_temps) {
 		calculateTO();
 	}
 
+  measurementCycles++;
 }
 
 float MLX90621::getTemperature(int num) {
@@ -45,6 +52,10 @@ float MLX90621::getTemperature(int num) {
 	} else {
 		return 0;
 	}
+}
+
+float MLX90621::getPixelTemperature(uint8_t x, uint8_t y) {
+  return getTemperature((y+IGNORE_TOP_ROWS+x*FIS_Y) + TEMPOFFSET) * 10 * TEMPSCALING; // MLX90621 iterates in columns
 }
 
 float MLX90621::getAmbient() {
@@ -79,7 +90,7 @@ void MLX90621::setConfiguration() {
 		Hz_LSB = 0b00111110;
 	}
 	byte defaultConfig_H = 0b01000110;  //kmoto: See data sheet p.11 and 25
-	i2c->beginTransmission(0x60);
+	i2c->beginTransmission(sensorAddress);
 	i2c->write(0x03);
 	i2c->write((byte) Hz_LSB - 0x55);
 	i2c->write(Hz_LSB);
@@ -104,7 +115,7 @@ void MLX90621::readEEPROM() { // Read in blocks of 32 bytes to accomodate Wire l
 }
 
 void MLX90621::writeTrimmingValue() {
-	i2c->beginTransmission(0x60);
+	i2c->beginTransmission(sensorAddress);
 	i2c->write(0x04);
 	i2c->write((byte) eepromData[OSC_TRIM_VALUE] - 0xAA);
 	i2c->write(eepromData[OSC_TRIM_VALUE]);
@@ -181,13 +192,13 @@ float MLX90621::getMaxTemp() {
 
 void MLX90621::readIR() {
 	for (int j = 0; j < 64; j += 16) { // Read in blocks of 32 bytes to overcome Wire buffer limit
-		i2c->beginTransmission(0x60);
+		i2c->beginTransmission(sensorAddress);
 		i2c->write(0x02);
 		i2c->write(j);
 		i2c->write(0x01);
 		i2c->write(0x20);
 		i2c->endTransmission(false);
-		i2c->requestFrom(0x60, 32);
+		i2c->requestFrom(sensorAddress, 32);
 		for (int i = 0; i < 16; i++) {
 			uint8_t pixelDataLow = (uint8_t) i2c->read();
 			uint8_t pixelDataHigh = (uint8_t) i2c->read();
@@ -197,13 +208,13 @@ void MLX90621::readIR() {
 }
 
 void MLX90621::readPTAT() {
-	i2c->beginTransmission(0x60);
+	i2c->beginTransmission(sensorAddress);
 	i2c->write(0x02);
 	i2c->write(0x40);
 	i2c->write((byte)0x00);
 	i2c->write(0x01);
 	i2c->endTransmission(false);
-	i2c->requestFrom(0x60, 2);
+	i2c->requestFrom(sensorAddress, 2);
 	byte ptatLow = i2c->read();
 	byte ptatHigh = i2c->read();
 	ptat = (ptatHigh * 256) + ptatLow;
@@ -211,13 +222,13 @@ void MLX90621::readPTAT() {
 }
 
 void MLX90621::readCPIX() {
-	i2c->beginTransmission(0x60);
+	i2c->beginTransmission(sensorAddress);
 	i2c->write(0x02);
 	i2c->write(0x41);
 	i2c->write((byte)0x00);
 	i2c->write(0x01);
 	i2c->endTransmission(false);
-	i2c->requestFrom(0x60, 2);
+	i2c->requestFrom(sensorAddress, 2);
 	byte cpixLow = i2c->read();
 	byte cpixHigh = i2c->read();
 	cpix = twos_16(cpixHigh, cpixLow);
@@ -241,13 +252,13 @@ uint16_t MLX90621::unsigned_16(uint8_t highByte, uint8_t lowByte){
 }
 
 uint16_t MLX90621::readConfig() {
-	i2c->beginTransmission(0x60);
+	i2c->beginTransmission(sensorAddress);
 	i2c->write(0x02);
 	i2c->write(0x92);
 	i2c->write((byte)0x00);
 	i2c->write(0x01);
 	i2c->endTransmission(false);
-	i2c->requestFrom(0x60, 2);
+	i2c->requestFrom(sensorAddress, 2);
 	byte configLow = i2c->read();
 	byte configHigh = i2c->read();
 	uint16_t config = ((uint16_t) (configHigh << 8) | configLow);

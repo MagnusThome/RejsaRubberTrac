@@ -8,20 +8,20 @@
 #include "ble.h"
 #include "algo.h"
   
-TempSensor tempSensor;
-DistSensor distSensor;
+TireTreadTemperature tempSensor;
+SuspensionTravel* distSensor;
 uint8_t mirrorTire = 0;
 char wheelPos[] = "  ";  // Wheel position for Tire A
 char deviceNameSuffix[] = "  ";
 
 #if BOARD == BOARD_ESP32_LOLIND32
   #if FIS_SENSOR2_PRESENT == 1
-    TempSensor tempSensor2;
+    TireTreadTemperature tempSensor2;
     uint8_t mirrorTire2 = 0;
     char wheelPos2[] = "  ";  // Wheel position for Tire B
   #endif
   #if DIST_SENSOR2 != DIST_NONE
-    DistSensor distSensor2;
+    SuspensionTravel* distSensor2;
   #endif
 #endif
 
@@ -99,7 +99,8 @@ void setup(){
 
   #if DIST_SENSOR != DIST_NONE
     debug("Starting distance sensor for %s...\n", wheelPos);
-    if (distSensor.initialise(&Wire, wheelPos)) {
+    distSensor = new SuspensionTravel();
+    if (distSensor->initialise(&Wire, wheelPos)) {
       debug("Distance sensor for %s present.\n", wheelPos);
     }
     else {
@@ -108,7 +109,7 @@ void setup(){
   #endif
 
   debug("Starting temperature sensor for %s...\n", wheelPos);
-  if (!tempSensor.initialise(FIS_REFRESHRATE, &Wire)) {
+  if (!tempSensor.initialise(&Wire, wheelPos, FIS_REFRESHRATE)) {
     // perform automatic system reboot to retry temp sensor initialization
     #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
       debug("Rebooting the MCU now...\n");
@@ -133,7 +134,8 @@ void setup(){
   
     #if DIST_SENSOR2 != DIST_NONE
       debug("Starting distance sensor 2 for %s...\n", wheelPos2);
-      if (distSensor2.initialise(&Wire1, wheelPos2)) {
+      distSensor2 = new SuspensionTravel();
+      if (distSensor2->initialise(&Wire1, wheelPos2)) {
         debug("Distance sensor 2 for %s present.\n", wheelPos2);
       }
       else {
@@ -142,7 +144,7 @@ void setup(){
     #endif
   
     debug("Starting temperature sensor 2 for %s...\n", wheelPos2);
-    if (!tempSensor2.initialise(FIS_REFRESHRATE, &Wire1)) {
+    if (!tempSensor2.initialise(&Wire1, wheelPos2, FIS_REFRESHRATE)) {
       // perform automatic system reboot to retry temp sensor initialization
       #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
         debug("Rebooting the MCU now...\n");
@@ -184,25 +186,25 @@ void setup(){
 void loop() {
 // I2C channel 1
   #if DIST_SENSOR != DIST_NONE
-    distSensor.measure();
+    distSensor->measure();
   #endif
   tempSensor.measure();
 
 // I2C channel 2
 #if FIS_SENSOR2_PRESENT == 1
   #if DIST_SENSOR2 != DIST_NONE
-    distSensor2.measure();
+    distSensor2->measure();
   #endif
   tempSensor2.measure();
 #endif
 
   if (bleDevice.isConnected()) {
-    bleDevice.transmit(tempSensor.measurement_16, mirrorTire, distSensor.distance, vBattery, lipoPercentage);
+    bleDevice.transmit(tempSensor.measurement_16, mirrorTire, distSensor->distance, vBattery, lipoPercentage);
   }
   
   #if DISP_DEVICE == DISP_NONE // Only use the LEDs w/o display
     blinkOnTempChange(tempSensor.measurement_16[8]/20);    // Use one single temp in the middle of the array
-    blinkOnDistChange(distSensor.distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
+    blinkOnDistChange(distSensor->distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
   #endif
 
 // 2do: integrate tempSensor2 & distSensor2 into BLE transmission
@@ -214,7 +216,7 @@ void loop() {
 }
 
 void updateDisplay(void) {
-  display.refreshDisplay(tempSensor.measurement, tempSensor.outerTireEdgePositionSmoothed, tempSensor.innerTireEdgePositionSmoothed, tempSensor.validAutozoomFrame, updateRate, distSensor.distance, lipoPercentage, bleDevice.isConnected());
+  display.refreshDisplay(tempSensor.measurement, tempSensor.outerTireEdgePositionSmoothed, tempSensor.innerTireEdgePositionSmoothed, tempSensor.validAutozoomFrame, updateRate, distSensor->distance, lipoPercentage, bleDevice.isConnected());
 
 // 2do: integrate tempSensor2 & distSensor2 for display
 }
@@ -283,13 +285,13 @@ void updateWheelPos(void) {
 void printStatus(void) {
 #if DIST_SENSOR != DIST_NONE
   char distSensor_str[6];
-  sprintf(distSensor_str, "%imm", distSensor.distance);
+  sprintf(distSensor_str, "%imm", distSensor->distance);
 #else
   char* distSensor_str = "N/A  ";
 #endif
 #if DIST_SENSOR2 != DIST_NONE
   char distSensor2_str[6];
-  sprintf(distSensor2_str, "%imm", distSensor2.distance);
+  sprintf(distSensor2_str, "%imm", distSensor2->distance);
 #else
   char* distSensor2_str = "N/A  ";
 #endif

@@ -3,6 +3,7 @@
  *
  *  Created on: 08.07.2014
  *      Author: Max Ritter
+ *  => modified for dual I2C channel use and to extend FISDevice general class
  *
  *  Adapted by https://github.com/longjos
  *  	Adapted for use with Arduino UNO
@@ -16,6 +17,7 @@
 //Libraries to be included
 #include <Arduino.h>
 #include <Wire.h>
+#include "Sensor.h"
 
 //Begin registers
 #define CAL_ACOMMON_L 0xD0
@@ -55,7 +57,7 @@
 //Bits within configuration register 0x92
 #define POR_TEST 10
 
-class MLX90621 {
+class MLX90621 : public FISDevice {
 private:
 	/* Variables */
 	byte refreshRate; //Set this value to your desired refresh frequency
@@ -90,16 +92,19 @@ private:
 	int16_t cpix;
 	float a_ij, b_ij, alpha_ij;
 	float minTemp, maxTemp;
-  TwoWire *i2c;
+  bool present = false;
+protected:
+  const byte sensorAddress = byte(0x60);
+  virtual float getTemperature(int num);
 public:
 	int16_t irData[64]; //Contains the raw IR data from the sensor
-	boolean initialise(int refrate, TwoWire *thisI2c = &Wire);
-	void measure(bool);
-	float getTemperature(int num);
 	float getAmbient();
 	float getMinTemp();
 	float getMaxTemp();
-
+  virtual boolean initialise(TwoWire *thisI2c = &Wire, char *wheelPos = NULL, int refrate = -1);
+  virtual boolean isConnected();
+  virtual void measure(bool calculate_temps = true);
+  virtual float getPixelTemperature(uint8_t x, uint8_t y);
 };
 
 #endif

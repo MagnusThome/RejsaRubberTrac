@@ -2,26 +2,28 @@
 #include "MLX90640.h"
 #include "Configuration.h"
 
-boolean MLX90640::initialise(int refrate, TwoWire *thisI2c) {
+boolean MLX90640::initialise(TwoWire *thisI2c, char *wheelPos, int refrate) {
 //  Wire.begin for initializing I2C needs to be called before MLX initialization
   i2c = thisI2c;
+  thisWheelPos = wheelPos;
+  
 //  MLX90640_I2CFreqSet(800, i2c); //Changing gears, ensure that I2C clock speed set to 1MHz
   MLX90640_I2CFreqSet(1000, i2c); //Changing gears, ensure that I2C clock speed set to 1MHz
  
   static long startTime = millis();
   while (!isConnected()) {
     if (millis() < (startTime+10000)) { // keep trying for 10 seconds
-      Serial.printf("Waiting for MLX90640 to connect at I2C address %u...\n", (uint8_t)MLX90640_ADDRESS);
+      Serial.printf("Waiting for MLX90640 to connect at I2C address %u...\n", sensorAddress);
       delay(100);
     } else {
-      Serial.printf("ERROR: Failed connecting to MLX90640 at I2C address %u...\n", (uint8_t)MLX90640_ADDRESS);
+      Serial.printf("ERROR: Failed connecting to MLX90640 at I2C address %u...\n", sensorAddress);
       return false;
     }
   }
   
   int status;
   uint16_t eeMLX90640[832];
-  status = MLX90640_DumpEE((uint8_t)MLX90640_ADDRESS, eeMLX90640, i2c);
+  status = MLX90640_DumpEE(sensorAddress, eeMLX90640, i2c);
   if (status != 0) {
     Serial.println("ERROR: Failed to load MLX90640 system parameters.");
     return false;
@@ -45,27 +47,27 @@ boolean MLX90640::initialise(int refrate, TwoWire *thisI2c) {
     case 64: Hz = 0x07; break;
     default: Hz = 0b00;
   }
-  status = MLX90640_SetRefreshRate((uint8_t)MLX90640_ADDRESS, Hz, i2c);
+  status = MLX90640_SetRefreshRate(sensorAddress, Hz, i2c);
   if (status != 0) {
     Serial.println("ERROR: Setting MLX90640 refresh rate failed.");
     return false;
   }
 
-  Serial.printf("MLX90640 initialised correctly at I2C address %u...\n", (uint8_t)MLX90640_ADDRESS);
+  Serial.printf("MLX90640 initialised correctly at I2C address %u...\n", sensorAddress);
   return true;
 }
 
 boolean MLX90640::isConnected() {
-  i2c->beginTransmission((uint8_t)MLX90640_ADDRESS);
+  i2c->beginTransmission(sensorAddress);
   if (i2c->endTransmission() != 0)
     return (false); //Sensor did not ACK
   return (true);
 }
 
-void MLX90640::measure(bool) {
+void MLX90640::measure() {
   uint16_t mlx90640Frame[834];
   MLX90640_I2CFreqSet(800, i2c); //Changing gears, ensure that I2C clock speed set to 1MHz
-  int _stat = MLX90640_GetFrameData((uint8_t)MLX90640_ADDRESS, mlx90640Frame, i2c);
+  int _stat = MLX90640_GetFrameData(sensorAddress, mlx90640Frame, i2c);
   if (_stat < 0) Serial.printf("GetFrame Error: %d\n", _stat);
   //Vdd = MLX90640_GetVdd(mlx90640Frame, &mlx90640);
   //int subpage = MLX90640_GetSubPageNumber(mlx90640Frame);
@@ -73,6 +75,8 @@ void MLX90640::measure(bool) {
   float tr = Tambient - TA_SHIFT; //Reflected temperature based on the sensor ambient temperature
   float emissivity = 1;
   MLX90640_CalculateTo(mlx90640Frame, &mlx90640, emissivity, tr, temperatures);
+
+  measurementCycles++;
 }
 
 float MLX90640::getTemperature(int num) {
@@ -81,4 +85,8 @@ float MLX90640::getTemperature(int num) {
   } else {
     return 0;
   }
+}
+
+float MLX90640::getPixelTemperature(uint8_t x, uint8_t y) {
+  return getTemperature((y*FIS_X+IGNORE_TOP_ROWS*FIS_X+x) + TEMPOFFSET) * 10 * TEMPSCALING; // MLX90640 iterates in rows
 }

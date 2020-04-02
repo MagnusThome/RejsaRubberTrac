@@ -3,11 +3,11 @@
 #include "Configuration.h"
 #include <Wire.h>
 
-bool DistSensor::xshutInitialized = false;
+bool SuspensionTravel::xshutInitialized = false;
 
-bool DistSensor::initialise(TwoWire *I2Cpipe, char *wheelPos) {
+boolean SuspensionTravel::initialise(TwoWire *thisI2c, char *wheelPos, int refrate) { // refrate is ignored for this type of sensor
   distance = 0;
-  thisWire = I2Cpipe;
+  i2c = thisI2c;
   thisWheelPos = wheelPos;
 
   if (!xshutInitialized) {
@@ -22,14 +22,18 @@ bool DistSensor::initialise(TwoWire *I2Cpipe, char *wheelPos) {
   }
 
   sensor.setTimeout(500);
-  present = sensor.init(true, thisWire);
+  present = sensor.init(true, i2c);
   sensor.startContinuous();
 
-  return present;
+  return isConnected();
 };
 
-void DistSensor::measure() {
-  if (present) {
+boolean SuspensionTravel::isConnected() {
+  return present;
+}
+
+void SuspensionTravel::measure() {
+  if (isConnected()) {
     uint16_t rawDistance = sensor.readRangeContinuousMillimeters();
     if (rawDistance < 500) {
        distance = distanceFilter((int16_t)rawDistance) - DISTANCEOFFSET; // Only update distance if it is less than 500mm
@@ -42,9 +46,11 @@ void DistSensor::measure() {
   } else {
     distance = -1;
   }
+
+  measurementCycles++;
 }
 
-int16_t DistSensor::distanceFilter(int16_t distanceIn) {
+int16_t SuspensionTravel::distanceFilter(int16_t distanceIn) {
   int16_t distanceOut = 0;
   for (int8_t i=0; i<(filterSz-1); i++) {
     filterArr[i] = filterArr[i+1];
