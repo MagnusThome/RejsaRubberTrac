@@ -7,10 +7,6 @@
 #define DIST_VL53L0X 0
 #define DIST_NONE    1
 
-// Display device
-#define DISP_128X32 0
-#define DISP_NONE   1
-
 // Boards
 #define BOARD_NRF52_FEATHER 0
 #define BOARD_ESP32_FEATHER 1

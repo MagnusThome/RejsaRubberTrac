@@ -4,7 +4,6 @@
 #include "Configuration.h"
 #include "temp_sensor.h"
 #include "dist_sensor.h"
-#include "display.h"
 #include "ble.h"
 #include "algo.h"
   
@@ -26,7 +25,6 @@ char deviceNameSuffix[] = "  ";
 #endif
 
 BLDevice bleDevice;
-Display display;
 Tasker tasker;
 
 int vBattery = 0;          // Current battery voltage in mV
@@ -158,12 +156,6 @@ void setup(){
   #endif
 #endif
 
-// display
-#if DISP_DEVICE != DISP_NONE
-  display.setup();
-  tasker.setInterval(updateDisplay,200);
-#endif
-
 // BLE
   debug("Starting BLE device: %s\n", bleName);
   bleDevice.setupDevice(bleName);
@@ -202,10 +194,8 @@ void loop() {
     bleDevice.transmit(tempSensor.measurement_16, mirrorTire, distSensor->distance, vBattery, lipoPercentage);
   }
   
-  #if DISP_DEVICE == DISP_NONE // Only use the LEDs w/o display
-    blinkOnTempChange(tempSensor.measurement_16[8]/20);    // Use one single temp in the middle of the array
-    blinkOnDistChange(distSensor->distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
-  #endif
+  blinkOnTempChange(tempSensor.measurement_16[8]/20);    // Use one single temp in the middle of the array
+  blinkOnDistChange(distSensor->distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
 
 // 2do: integrate tempSensor2 & distSensor2 into BLE transmission
 // 2do: integrate Wheelpost into BLE transmission
@@ -213,12 +203,6 @@ void loop() {
   measurementCycles++;
 
   tasker.loop();
-}
-
-void updateDisplay(void) {
-  display.refreshDisplay(tempSensor.measurement, tempSensor.outerTireEdgePositionSmoothed, tempSensor.innerTireEdgePositionSmoothed, tempSensor.validAutozoomFrame, updateRate, distSensor->distance, lipoPercentage, bleDevice.isConnected());
-
-// 2do: integrate tempSensor2 & distSensor2 for display
 }
 
 // Figure out wheel position coding
@@ -320,7 +304,6 @@ void updateRefreshRate(void) {
   measurementCycles = 0;
 }
 
-#if DISP_DEVICE == DISP_NONE
 void blinkOnDistChange(uint16_t distnew) {
   if (GPIOLEDDIST > 0) {
     static uint16_t distold = 0;
@@ -352,7 +335,6 @@ void blinkOnTempChange(int16_t tempnew) {
     tempold = tempnew;
   }
 }
-#endif
 
 int getVbat(void) {
   double adcRead=0;
