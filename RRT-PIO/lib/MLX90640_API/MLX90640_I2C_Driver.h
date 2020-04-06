@@ -24,22 +24,26 @@
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__)
 
-//I2C_BUFFER_LENGTH is defined in Wire.H
-#define I2C_BUFFER_LENGTH BUFFER_LENGTH
+//MLX_I2C_BUFFER_LENGTH is defined in Wire.H
+#define MLX_I2C_BUFFER_LENGTH BUFFER_LENGTH
 
 #elif defined(__SAMD21G18A__)
 
 //SAMD21 uses RingBuffer.h
-#define I2C_BUFFER_LENGTH SERIAL_BUFFER_SIZE
+#define MLX_I2C_BUFFER_LENGTH SERIAL_BUFFER_SIZE
 
 #elif __MK20DX256__
 //Teensy 3.2
-#define I2C_BUFFER_LENGTH 32
+#define MLX_I2C_BUFFER_LENGTH 32
+
+#elif defined(HAL_ESP32_HAL_H_)
+//ESP32
+#define MLX_I2C_BUFFER_LENGTH I2C_BUFFER_LENGTH
 
 #else
 
 //The catch-all default is 32
-#define I2C_BUFFER_LENGTH 32
+#define MLX_I2C_BUFFER_LENGTH 32
 
 #endif
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
