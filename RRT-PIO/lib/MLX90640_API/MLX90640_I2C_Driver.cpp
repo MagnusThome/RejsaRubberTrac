@@ -37,7 +37,7 @@ int MLX90640_I2CRead(uint8_t _deviceAddress, unsigned int startAddress, unsigned
 
   uint16_t dataSpot = 0; //Start at beginning of array
 
-  //Setup a series of chunked I2C_BUFFER_LENGTH byte reads
+  //Setup a series of chunked MLX_I2C_BUFFER_LENGTH byte reads
   while (bytesRemaining > 0)
   {
     I2Cpipe->beginTransmission(_deviceAddress);
@@ -50,7 +50,7 @@ int MLX90640_I2CRead(uint8_t _deviceAddress, unsigned int startAddress, unsigned
     }
 
     uint16_t numberOfBytesToRead = bytesRemaining;
-    if (numberOfBytesToRead > I2C_BUFFER_LENGTH) numberOfBytesToRead = I2C_BUFFER_LENGTH;
+    if (numberOfBytesToRead > MLX_I2C_BUFFER_LENGTH) numberOfBytesToRead = MLX_I2C_BUFFER_LENGTH;
 
     I2Cpipe->requestFrom((uint8_t)_deviceAddress, numberOfBytesToRead);
     if (I2Cpipe->available())

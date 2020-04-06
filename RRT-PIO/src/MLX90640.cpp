@@ -10,7 +10,7 @@ boolean MLX90640::initialise(TwoWire *thisI2c, char *wheelPos, int refrate) {
 //  MLX90640_I2CFreqSet(800, i2c); //Changing gears, ensure that I2C clock speed set to 1MHz
   MLX90640_I2CFreqSet(1000, i2c); //Changing gears, ensure that I2C clock speed set to 1MHz
  
-  static long startTime = millis();
+  static unsigned long startTime = millis();
   while (!isConnected()) {
     if (millis() < (startTime+10000)) { // keep trying for 10 seconds
       Serial.printf("Waiting for MLX90640 to connect at I2C address %u...\n", sensorAddress);
