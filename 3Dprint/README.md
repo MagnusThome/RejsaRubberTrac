@@ -1,4 +1,4 @@
-# Print you own enclosures
+# Print your own enclosures
 
 You can of course create your own casing. Or you can 3D print one of the versions I've put together. There are some different options, either one box for the whole kit including rechargeable battery. Or a separate smaller enclosure for the sensor components only, easier to place in the wheel well but it obviosuly necessitates a cable between the sensor and cpu/bluetooth unit.
 
@@ -59,6 +59,7 @@ Short holder tube for the wide angle temperature sensor, long tube for narrow an
 <img src=images/under_car_0.jpg>  
 <img src=images/under_car_1.jpg>  
 <img src=images/under_car_2.jpg>  
+<img src=images/ALT.%20temp%20sensor%20mounting.jpg>  
 
 ## Snap-in holder (Inner fender for BMW M2) 
   
