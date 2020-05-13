@@ -5,9 +5,9 @@
 
 
 // FIS identifiers
+#define FIS_DUMMY    0
 #define FIS_MLX90621 1
 #define FIS_MLX90640 2
-#define FIS_DUMMY    3
 
 // Distance sensor identifiers
 #define DIST_NONE    0
@@ -19,9 +19,9 @@
 #define BOARD_ESP32_LOLIND32 3
 
 // Column aggregation algo identifiers
-#define COLUMN_AGGREGATE_MAX 0
-#define COLUMN_AGGREGATE_AVG 1
-#define COLUMN_AGGREGATE_AVG_MINUS_OUTLIERS 2
+#define COLUMN_AGGREGATE_MAX 1
+#define COLUMN_AGGREGATE_AVG 2
+#define COLUMN_AGGREGATE_AVG_MINUS_OUTLIERS 3
 
 // Voltage Measurement related items
 

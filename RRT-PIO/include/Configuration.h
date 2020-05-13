@@ -8,7 +8,7 @@
 
 
 // -- Basic device configuration, see Constants.h
-//#define BOARD              BOARD_NRF52_FEATHER
+//#define BOARD              BOARD_NRF52_FEATHER => set via BUILD_FLAGS
 
 // -- Distance Sensor related settings
 
@@ -19,7 +19,7 @@
 
 // -- Far Infrared Sensor related settings
 
-#define FIS_SENSOR         FIS_MLX90640  // Device to use, see Constants.h                        
+//#define FIS_SENSOR         FIS_MLX90640  // Device to use, see Constants.h => set via BUILD_FLAGS
 #if BOARD == BOARD_ESP32_LOLIND32
   #define FIS_SENSOR2_PRESENT 1            // Set to 1 if second sensor on second I2C hardware bus is present (ESP32 only)
   #define DIST_SENSOR2        DIST_VL53L0X // Device to use for second sensor on second I2C hardware bus (ESP32 only), see Constants.h
