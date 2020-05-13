@@ -1,3 +1,6 @@
+#ifndef protocol_h
+#define protocol_h
+
 #define PROTOCOL 0x02
 
 typedef struct {
@@ -22,3 +25,5 @@ typedef struct {
   int16_t distance;          // millimeters
   int16_t  temps[8];         // all 16 temp spots averaged together in pairs of two and two into 8 temp values (degrees Celsius x 10)
 } thr_t;
+
+#endif

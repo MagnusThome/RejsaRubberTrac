@@ -1,16 +1,21 @@
+#ifndef ble_h
+#define ble_h
+
+#include <Arduino.h>
+#include "protocol.h"
 #include "Configuration.h"
+
 #if BOARD == BOARD_NRF52_FEATHER
 //  #include <BLEService.h>
 //  #include <BLECharacteristic.h>
   #include <bluefruit.h>
+  #include <ble_gap.h>
 #elif BOARD == BOARD_ESP32_FEATHER || BOARD_ESP32_LOLIND32
   #include <BLEDevice.h>
   #include <BLEServer.h>
   #include <BLEUtils.h>
   #include <BLE2902.h>
 #endif
-#include <Arduino.h>
-#include "protocol.h"
 
 class BLDevice {
 private:
@@ -41,3 +46,5 @@ public:
   void transmit(int16_t tempMeasurements[], uint8_t mirrorTire, int16_t distance, int vBattery, int lipoPercentage);
   BLDevice();
 };
+
+#endif

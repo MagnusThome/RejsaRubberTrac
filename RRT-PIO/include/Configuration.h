@@ -1,3 +1,6 @@
+#ifndef Configuration_h
+#define Configuration_h
+
 #include "Constants.h"
 
 #define _DEBUG                    // Set debug mode, results in more verbose output on serial port
@@ -5,7 +8,7 @@
 
 
 // -- Basic device configuration, see Constants.h
-#define BOARD              BOARD_NRF52_FEATHER
+//#define BOARD              BOARD_NRF52_FEATHER
 
 // -- Distance Sensor related settings
 
@@ -133,3 +136,5 @@
 #endif
 
 #define EFFECTIVE_ROWS ( FIS_Y - IGNORE_TOP_ROWS - IGNORE_BOTTOM_ROWS )
+
+#endif
