@@ -135,6 +135,15 @@
   #define FIS_X            4
 #endif
 
+
 #define EFFECTIVE_ROWS ( FIS_Y - IGNORE_TOP_ROWS - IGNORE_BOTTOM_ROWS )
+
+
+#ifdef _DEBUG
+  #define debug(fmt, ...) { Serial.printf(fmt,## __VA_ARGS__); }
+#else
+  #define debug(fmt, ...) {} // Silence is golden
+#endif
+
 
 #endif
