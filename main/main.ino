@@ -4,33 +4,29 @@
 #include "Configuration.h"
 #include "temp_sensor.h"
 #include "dist_sensor.h"
-#include "display.h"
 #include "ble.h"
-#include "algo.h"
+#include "Battery.h"
   
-TempSensor tempSensor;
-DistSensor distSensor;
+TireTreadTemperature tempSensor;
+SuspensionTravel* distSensor;
 uint8_t mirrorTire = 0;
 char wheelPos[] = "  ";  // Wheel position for Tire A
 char deviceNameSuffix[] = "  ";
 
 #if BOARD == BOARD_ESP32_LOLIND32
   #if FIS_SENSOR2_PRESENT == 1
-    TempSensor tempSensor2;
+    TireTreadTemperature tempSensor2;
     uint8_t mirrorTire2 = 0;
     char wheelPos2[] = "  ";  // Wheel position for Tire B
   #endif
   #if DIST_SENSOR2 != DIST_NONE
-    DistSensor distSensor2;
+    SuspensionTravel* distSensor2;
   #endif
 #endif
 
 BLDevice bleDevice;
-Display display;
 Tasker tasker;
 
-int vBattery = 0;          // Current battery voltage in mV
-int lipoPercentage = 0;    // Current battery percentage
 float updateRate = 0.0;    // Reflects the actual update rate
 int measurementCycles = 0; // Counts how many measurement cycles were completed. printStatus() uses it to roughly calculate refresh rate.
 
@@ -39,8 +35,6 @@ void updateWheelPos(void);
 void printStatus(void);
 void blinkOnTempChange(int16_t);
 void blinkOnDistChange(uint16_t);
-int getVbat(void);
-void updateBattery(void);
 void updateRefreshRate(void);
 
 #ifdef DUMMYDATA
@@ -99,7 +93,8 @@ void setup(){
 
   #if DIST_SENSOR != DIST_NONE
     debug("Starting distance sensor for %s...\n", wheelPos);
-    if (distSensor.initialise(&Wire, wheelPos)) {
+    distSensor = new SuspensionTravel();
+    if (distSensor->initialise(&Wire, wheelPos)) {
       debug("Distance sensor for %s present.\n", wheelPos);
     }
     else {
@@ -108,7 +103,7 @@ void setup(){
   #endif
 
   debug("Starting temperature sensor for %s...\n", wheelPos);
-  if (!tempSensor.initialise(FIS_REFRESHRATE, &Wire)) {
+  if (!tempSensor.initialise(&Wire, wheelPos, FIS_REFRESHRATE)) {
     // perform automatic system reboot to retry temp sensor initialization
     #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
       debug("Rebooting the MCU now...\n");
@@ -133,7 +128,8 @@ void setup(){
   
     #if DIST_SENSOR2 != DIST_NONE
       debug("Starting distance sensor 2 for %s...\n", wheelPos2);
-      if (distSensor2.initialise(&Wire1, wheelPos2)) {
+      distSensor2 = new SuspensionTravel();
+      if (distSensor2->initialise(&Wire1, wheelPos2)) {
         debug("Distance sensor 2 for %s present.\n", wheelPos2);
       }
       else {
@@ -142,7 +138,7 @@ void setup(){
     #endif
   
     debug("Starting temperature sensor 2 for %s...\n", wheelPos2);
-    if (!tempSensor2.initialise(FIS_REFRESHRATE, &Wire1)) {
+    if (!tempSensor2.initialise(&Wire1, wheelPos2, FIS_REFRESHRATE)) {
       // perform automatic system reboot to retry temp sensor initialization
       #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
         debug("Rebooting the MCU now...\n");
@@ -154,12 +150,6 @@ void setup(){
     pinMode(GPIOSDA2, INPUT);
     pinMode(GPIOSCL2, INPUT);
   #endif
-#endif
-
-// display
-#if DISP_DEVICE != DISP_NONE
-  display.setup();
-  tasker.setInterval(updateDisplay,200);
 #endif
 
 // BLE
@@ -184,26 +174,24 @@ void setup(){
 void loop() {
 // I2C channel 1
   #if DIST_SENSOR != DIST_NONE
-    distSensor.measure();
+    distSensor->measure();
   #endif
   tempSensor.measure();
 
 // I2C channel 2
 #if FIS_SENSOR2_PRESENT == 1
   #if DIST_SENSOR2 != DIST_NONE
-    distSensor2.measure();
+    distSensor2->measure();
   #endif
   tempSensor2.measure();
 #endif
 
   if (bleDevice.isConnected()) {
-    bleDevice.transmit(tempSensor.measurement_16, mirrorTire, distSensor.distance, vBattery, lipoPercentage);
+    bleDevice.transmit(tempSensor.measurement_16, mirrorTire, distSensor->distance, vBattery, lipoPercentage);
   }
   
-  #if DISP_DEVICE == DISP_NONE // Only use the LEDs w/o display
-    blinkOnTempChange(tempSensor.measurement_16[8]/20);    // Use one single temp in the middle of the array
-    blinkOnDistChange(distSensor.distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
-  #endif
+  blinkOnTempChange(tempSensor.measurement_16[8]/20);    // Use one single temp in the middle of the array
+  blinkOnDistChange(distSensor->distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
 
 // 2do: integrate tempSensor2 & distSensor2 into BLE transmission
 // 2do: integrate Wheelpost into BLE transmission
@@ -211,12 +199,6 @@ void loop() {
   measurementCycles++;
 
   tasker.loop();
-}
-
-void updateDisplay(void) {
-  display.refreshDisplay(tempSensor.measurement, tempSensor.outerTireEdgePositionSmoothed, tempSensor.innerTireEdgePositionSmoothed, tempSensor.validAutozoomFrame, updateRate, distSensor.distance, lipoPercentage, bleDevice.isConnected());
-
-// 2do: integrate tempSensor2 & distSensor2 for display
 }
 
 // Figure out wheel position coding
@@ -283,13 +265,13 @@ void updateWheelPos(void) {
 void printStatus(void) {
 #if DIST_SENSOR != DIST_NONE
   char distSensor_str[6];
-  sprintf(distSensor_str, "%imm", distSensor.distance);
+  sprintf(distSensor_str, "%imm", distSensor->distance);
 #else
   char* distSensor_str = "N/A  ";
 #endif
 #if DIST_SENSOR2 != DIST_NONE
   char distSensor2_str[6];
-  sprintf(distSensor2_str, "%imm", distSensor2.distance);
+  sprintf(distSensor2_str, "%imm", distSensor2->distance);
 #else
   char* distSensor2_str = "N/A  ";
 #endif
@@ -318,7 +300,6 @@ void updateRefreshRate(void) {
   measurementCycles = 0;
 }
 
-#if DISP_DEVICE == DISP_NONE
 void blinkOnDistChange(uint16_t distnew) {
   if (GPIOLEDDIST > 0) {
     static uint16_t distold = 0;
@@ -349,46 +330,4 @@ void blinkOnTempChange(int16_t tempnew) {
     }
     tempold = tempnew;
   }
-}
-#endif
-
-int getVbat(void) {
-  double adcRead=0;
-#if BOARD == BOARD_ESP32_FEATHER || BOARD_ESP32_LOLIND32 // Compensation for ESP32's crappy ADC -> https://bitbucket.org/Blackneron/esp32_adc/src/master/
-  const double f1 = 1.7111361460487501e+001;
-  const double f2 = 4.2319467860421662e+000;
-  const double f3 = -1.9077375643188468e-002;
-  const double f4 = 5.4338055402459246e-005;
-  const double f5 = -8.7712931081088873e-008;
-  const double f6 = 8.7526709101221588e-011;
-  const double f7 = -5.6536248553232152e-014;
-  const double f8 = 2.4073049082147032e-017;
-  const double f9 = -6.7106284580950781e-021;
-  const double f10 = 1.1781963823253708e-024;
-  const double f11 = -1.1818752813719799e-028;
-  const double f12 = 5.1642864552256602e-033;
-
-  const int loops = 5;
-  const int loopDelay = 1;
-
-  int counter = 1;
-  int inputValue = 0;
-  double totalInputValue = 0;
-  double averageInputValue = 0;
-  for (counter = 1; counter <= loops; counter++) {
-    inputValue = analogRead(VBAT_PIN);
-    totalInputValue += inputValue;
-    delay(loopDelay);
-  }
-  averageInputValue = totalInputValue / loops;
-  adcRead = f1 + f2 * pow(averageInputValue, 1) + f3 * pow(averageInputValue, 2) + f4 * pow(averageInputValue, 3) + f5 * pow(averageInputValue, 4) + f6 * pow(averageInputValue, 5) + f7 * pow(averageInputValue, 6) + f8 * pow(averageInputValue, 7) + f9 * pow(averageInputValue, 8) + f10 * pow(averageInputValue, 9) + f11 * pow(averageInputValue, 10) + f12 * pow(averageInputValue, 11);
-#elif BOARD == BOARD_NRF52_FEATHER
-  adcRead = analogRead(VBAT_PIN);
-#endif
-  return adcRead * MILLIVOLTFULLSCALE * BATRESISTORCOMP / STEPSFULLSCALE;
-}
-
-void updateBattery(void) {
-  vBattery = getVbat();
-  lipoPercentage = lipoPercent(vBattery);
 }

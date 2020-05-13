@@ -27,52 +27,47 @@ typedef struct {
 } avgTemps_t; // all temps in degrees Celsius x 10
 
 
-class TempSensor {
-private:
-#if FIS_SENSOR == FIS_MLX90621
-  MLX90621 FISDevice;
-#elif FIS_SENSOR == FIS_MLX90640
-  MLX90640 FISDevice;
-#endif
+class TireTreadTemperature
+{
+  public:
+    int16_t measurement[FIS_X];
+    int16_t measurement_slope[FIS_X-1];
+    int16_t measurement_16[16];
+    boolean validAutozoomFrame = false;
+    uint8_t outerTireEdgePositionThisFrameViaSlopeMax; // i.e. the index of the first pixel _on_ the tire as detected for this measurement; corresponds to Max value in the Slope
+    uint8_t innerTireEdgePositionThisFrameViaSlopeMin; // i.e. the index of the last pixel _on_ the tire as detected for this measurement; corresponds to Min value in the Slope
+    float outerTireEdgePositionSmoothed; // outer = left = array index 0
+    float innerTireEdgePositionSmoothed; // inner = right = array index FIS_X
   
-  TwoWire *thisWire;
-
-  int16_t getPixelTemperature(uint8_t x, uint8_t y);
-  int16_t calculateColumnTemperature(int16_t column_content[], uint8_t size);
-  void interpolate(uint8_t startColumn, uint8_t endColumn, int16_t result[]);
-  void calculateSlope(int16_t result[]);
-  void getMinMaxSlopePosition();
-  boolean checkAutozoomValidityAndSetAvgTemps();
-  int16_t getMaximum(int16_t arr[], int size);
-  int16_t getMinimum(int16_t arr[], int size);
-  float getAverage(int16_t arr[], int size);
-  float getGeometricMean(int16_t arr[], int size);
-  float getStdDev(int16_t arr[], int size);
-  float cumulativeProbability(float val, float avg, float stdDev);
-  uint16_t removeOutliersChauvenet(int16_t *arr, int size);
+    avgTemps_t avgsThisFrame;
+    uint16_t totalOutliersThisFrame = 0;
   
-public:
-  int16_t measurement[FIS_X];
-  int16_t measurement_slope[FIS_X-1];
-  int16_t measurement_16[16];
-  boolean validAutozoomFrame = false;
-  uint8_t outerTireEdgePositionThisFrameViaSlopeMax; // i.e. the index of the first pixel _on_ the tire as detected for this measurement; corresponds to Max value in the Slope
-  uint8_t innerTireEdgePositionThisFrameViaSlopeMin; // i.e. the index of the last pixel _on_ the tire as detected for this measurement; corresponds to Min value in the Slope
-  float outerTireEdgePositionSmoothed; // outer = left = array index 0
-  float innerTireEdgePositionSmoothed; // inner = right = array index FIS_X
-
-  avgTemps_t avgsThisFrame;
-  uint16_t totalOutliersThisFrame = 0;
-
-  // Let's keep track of some history of this session...
-  double totalFrameCount = 0.0;
-  float runningAvgOutlierRate = 0.0;
-  float runningAvgZoomedFramesRate = 0.0;
-  float movingAvgFrameTmp = (40.0 + TEMPOFFSET) * 10 * TEMPSCALING; // init value = 40 degrees Celsius
-  float movingAvgStdDevFrameTmp = MIN_TMP_STDDEV;
-  float movingAvgRowDeltaTmp = 0.0; // delta between all lowest row values vs. all highest row values of the frames
-  float maxRowDeltaTmp = 0.0; // maximum of the moving average to detect shaded rows through increasing deltas with increasingly warm tire temps vs. constantly cold bodywork
+    // Let's keep track of some history of this session...
+    double totalFrameCount = 0.0;
+    float runningAvgOutlierRate = 0.0;
+    float runningAvgZoomedFramesRate = 0.0;
+    float movingAvgFrameTmp = (40.0 + TEMPOFFSET) * 10 * TEMPSCALING; // init value = 40 degrees Celsius
+    float movingAvgStdDevFrameTmp = MIN_TMP_STDDEV;
+    float movingAvgRowDeltaTmp = 0.0; // delta between all lowest row values vs. all highest row values of the frames
+    float maxRowDeltaTmp = 0.0; // maximum of the moving average to detect shaded rows through increasing deltas with increasingly warm tire temps vs. constantly cold bodywork
+    
+    boolean initialise(TwoWire *thisI2c = &Wire, char *wheelPos = NULL, int fisRefrate = -1);
+    void measure();
+    
+  private:
+    FISDevice* thisFISDevice;
+    TwoWire *thisWire;
   
-	boolean initialise(int refrate, TwoWire *I2Cpipe = &Wire);
-	void measure();
+    int16_t calculateColumnTemperature(int16_t column_content[], uint8_t size);
+    void interpolate(uint8_t startColumn, uint8_t endColumn, int16_t result[]);
+    void calculateSlope(int16_t result[]);
+    void getMinMaxSlopePosition();
+    boolean checkAutozoomValidityAndSetAvgTemps();
+    int16_t getMaximum(int16_t arr[], int size);
+    int16_t getMinimum(int16_t arr[], int size);
+    float getAverage(int16_t arr[], int size);
+    float getGeometricMean(int16_t arr[], int size);
+    float getStdDev(int16_t arr[], int size);
+    float cumulativeProbability(float val, float avg, float stdDev);
+    uint16_t removeOutliersChauvenet(int16_t *arr, int size);
 };

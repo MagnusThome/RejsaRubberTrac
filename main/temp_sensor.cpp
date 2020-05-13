@@ -5,27 +5,35 @@
 #include <Wire.h>
 #include "spline.h"
 
-boolean TempSensor::initialise(int refrate, TwoWire *I2Cpipe) {
+boolean TireTreadTemperature::initialise(TwoWire *thisI2c, char *wheelPos, int fisRefrate) {
+  #if FIS_SENSOR == FIS_MLX90621
+    thisFISDevice = new MLX90621();
+  #elif FIS_SENSOR == FIS_MLX90640
+    thisFISDevice = new MLX90640();
+  #else
+    return false;
+  #endif
+
   innerTireEdgePositionThisFrameViaSlopeMin = FIS_X;
   outerTireEdgePositionThisFrameViaSlopeMax = 0;
   outerTireEdgePositionSmoothed = 0.0;
   innerTireEdgePositionSmoothed = (float)FIS_X;
-  thisWire = I2Cpipe;
-  return FISDevice.initialise(refrate, thisWire);
+  thisWire = thisI2c;
+  return thisFISDevice->initialise(thisWire, wheelPos, fisRefrate);
 };
 
-void TempSensor::measure() {
+void TireTreadTemperature::measure() {
   int16_t column_content[EFFECTIVE_ROWS];
   float avgMins = 0.0;
   float avgMaxs = 0.0;
 
   totalFrameCount++;
   totalOutliersThisFrame = 0;
-  FISDevice.measure(true);
+  thisFISDevice->measure();
   
   for(uint8_t x=0; x<FIS_X; x++){
     for (uint8_t y=0; y<EFFECTIVE_ROWS; y++) { // Read the columns first
-      column_content[y] = getPixelTemperature(x, y);
+      column_content[y] = (int16_t)thisFISDevice->getPixelTemperature(x, y);
     }
     measurement[x] = calculateColumnTemperature(column_content, EFFECTIVE_ROWS);
     avgMins = ((float)getMinimum(column_content, EFFECTIVE_ROWS) - avgMins) / (x+1);
@@ -76,15 +84,7 @@ void TempSensor::measure() {
   interpolate((int)outerTireEdgePositionSmoothed, (int)innerTireEdgePositionSmoothed, measurement_16);
 }
 
-int16_t TempSensor::getPixelTemperature(uint8_t x, uint8_t y) {
-#if FIS_SENSOR == FIS_MLX90621
-  return (int16_t)FISDevice.getTemperature((y+IGNORE_TOP_ROWS+x*FIS_Y) + TEMPOFFSET) * 10 * TEMPSCALING; // MLX90621 iterates in columns
-#elif FIS_SENSOR == FIS_MLX90640
-  return (int16_t)FISDevice.getTemperature((y*FIS_X+IGNORE_TOP_ROWS*FIS_X+x) + TEMPOFFSET) * 10 * TEMPSCALING; // MLX90640 iterates in rows
-#endif
-}
-
-int16_t TempSensor::calculateColumnTemperature(int16_t column_content[], uint8_t size) {
+int16_t TireTreadTemperature::calculateColumnTemperature(int16_t column_content[], uint8_t size) {
 #if COLUMN_AGGREGATE == COLUMN_AGGREGATE_MAX
   return getMaximum(column_content, size);
 #elif COLUMN_AGGREGATE == COLUMN_AGGREGATE_AVG
@@ -95,7 +95,7 @@ int16_t TempSensor::calculateColumnTemperature(int16_t column_content[], uint8_t
 #endif
 }
 
-void TempSensor::interpolate(uint8_t startColumn, uint8_t endColumn, int16_t result[]) {
+void TireTreadTemperature::interpolate(uint8_t startColumn, uint8_t endColumn, int16_t result[]) {
   float stepSize = (endColumn-startColumn)/16.0;
   int16_t x[FIS_X];
   
@@ -104,11 +104,11 @@ void TempSensor::interpolate(uint8_t startColumn, uint8_t endColumn, int16_t res
   for (uint8_t i=0; i<16; i++) result[i] = linearSpline.value(startColumn+i*stepSize);
 }
 
-void TempSensor::calculateSlope(int16_t result[]) {
+void TireTreadTemperature::calculateSlope(int16_t result[]) {
   for (uint8_t i=0; i<FIS_X-1; i++) result[i] = measurement[i+1]-measurement[i];
 }
 
-void TempSensor::getMinMaxSlopePosition() {
+void TireTreadTemperature::getMinMaxSlopePosition() {
   int16_t minSlopeValue = 0;
   int16_t maxSlopeValue = 0;
   for (uint8_t i=0; i<FIS_X-1; i++) {
@@ -123,7 +123,7 @@ void TempSensor::getMinMaxSlopePosition() {
   }
 }
 
-boolean TempSensor::checkAutozoomValidityAndSetAvgTemps() {
+boolean TireTreadTemperature::checkAutozoomValidityAndSetAvgTemps() {
   float avgTireTempThisFrame = 0.0;
   float avgInnerAmbientThisFrame = 0.0;
   float avgOuterAmbientThisFrame = 0.0;
@@ -177,7 +177,7 @@ boolean TempSensor::checkAutozoomValidityAndSetAvgTemps() {
 }
 
 // determine outliers according to Chauvenet's criterion, replace outlier values with ABS_ZERO and return the number of outliers removed
-uint16_t TempSensor::removeOutliersChauvenet(int16_t *arr, int size) {
+uint16_t TireTreadTemperature::removeOutliersChauvenet(int16_t *arr, int size) {
   int outlierCount = 0;
   const float outlierCriterion = 0.50;
   float significanceLevel = outlierCriterion / size;
@@ -213,7 +213,7 @@ uint16_t TempSensor::removeOutliersChauvenet(int16_t *arr, int size) {
   return outlierCount;
 }
 
-int16_t TempSensor::getMaximum(int16_t arr[], int size) {
+int16_t TireTreadTemperature::getMaximum(int16_t arr[], int size) {
   int16_t max_value = arr[0];
   for (uint8_t i=0; i < size; i++) {
     if (arr[i] > ABS_ZERO && arr[i] > max_value) max_value = arr[i]; // ignore ABS_ZERO = outlier
@@ -221,7 +221,7 @@ int16_t TempSensor::getMaximum(int16_t arr[], int size) {
   return max_value;
 }
 
-int16_t TempSensor::getMinimum(int16_t arr[], int size) {
+int16_t TireTreadTemperature::getMinimum(int16_t arr[], int size) {
   int16_t min_value = arr[0];
   for (uint8_t i=0; i < size; i++) {
     if (arr[i] > ABS_ZERO && arr[i] < min_value) min_value = arr[i]; // ignore ABS_ZERO = outlier
@@ -229,7 +229,7 @@ int16_t TempSensor::getMinimum(int16_t arr[], int size) {
   return min_value;
 }
 
-float TempSensor::getAverage(int16_t arr[], int size) {
+float TireTreadTemperature::getAverage(int16_t arr[], int size) {
   long total = 0;
   int sizeAfterOutliers = size;
   for (uint8_t i=0; i < size; i++) {
@@ -243,7 +243,7 @@ float TempSensor::getAverage(int16_t arr[], int size) {
   return avg;
 }
 
-float TempSensor::getGeometricMean(int16_t arr[], int size) {
+float TireTreadTemperature::getGeometricMean(int16_t arr[], int size) {
   float m = 1.0;
   long long ex = 0;
   int sizeAfterOutliers = size;
@@ -266,7 +266,7 @@ float TempSensor::getGeometricMean(int16_t arr[], int size) {
 }
 
 // Welford's algorithm
-float TempSensor::getStdDev(int16_t arr[], int size) {
+float TireTreadTemperature::getStdDev(int16_t arr[], int size) {
   float variance = 0.0;
   float M = 0.0;
   float oldM = 0.0;
@@ -286,7 +286,7 @@ float TempSensor::getStdDev(int16_t arr[], int size) {
   return stdDev;
 }
 
-float TempSensor::cumulativeProbability(float val, float avg, float stdDev) {
+float TireTreadTemperature::cumulativeProbability(float val, float avg, float stdDev) {
   float thisDev = val - avg;
   if (fabs(thisDev) > (40 * stdDev)) {
     return thisDev < 0 ? 0.0 : 1.0; // if val is more than 40 standard deviations from the mean, 0 or 1 is returned, as in these cases we are close enough
