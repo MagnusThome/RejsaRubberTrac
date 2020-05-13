@@ -1,5 +1,7 @@
 #include "Configuration.h"
 #if BOARD == BOARD_NRF52_FEATHER
+//  #include <BLEService.h>
+//  #include <BLECharacteristic.h>
   #include <bluefruit.h>
 #elif BOARD == BOARD_ESP32_FEATHER || BOARD_ESP32_LOLIND32
   #include <BLEDevice.h>

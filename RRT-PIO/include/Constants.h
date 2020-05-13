@@ -1,16 +1,22 @@
+#ifndef Constants_h
+#define Constants_h
+
+#include "Configuration.h"
+
+
 // FIS identifiers
-#define FIS_MLX90621 0
-#define FIS_MLX90640 1
-#define FIS_DUMMY    2
+#define FIS_MLX90621 1
+#define FIS_MLX90640 2
+#define FIS_DUMMY    3
 
 // Distance sensor identifiers
-#define DIST_VL53L0X 0
-#define DIST_NONE    1
+#define DIST_NONE    0
+#define DIST_VL53L0X 1
 
 // Boards
-#define BOARD_NRF52_FEATHER 0
-#define BOARD_ESP32_FEATHER 1
-#define BOARD_ESP32_LOLIND32 2
+#define BOARD_NRF52_FEATHER  1
+#define BOARD_ESP32_FEATHER  2
+#define BOARD_ESP32_LOLIND32 3
 
 // Column aggregation algo identifiers
 #define COLUMN_AGGREGATE_MAX 0
@@ -23,4 +29,7 @@
   #define debug(fmt, ...) { Serial.printf(fmt,## __VA_ARGS__); }
 #else
   #define debug(fmt, ...) {} // Silence is golden
+#endif
+
+
 #endif

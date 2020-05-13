@@ -5,12 +5,11 @@
 
 
 // -- Basic device configuration, see Constants.h
-#define BOARD              BOARD_ESP32_LOLIND32
+#define BOARD              BOARD_NRF52_FEATHER
 
 // -- Distance Sensor related settings
 
 #define DIST_SENSOR        DIST_VL53L0X
-#define DIST_SENSOR2       DIST_VL53L0X // Device to use for second sensor on second I2C hardware bus (ESP32 only), see Constants.h
 
 #define DISTANCEOFFSET 0         // Write distance to tire in mm here to get logged distance data value centered around zero
                                  // If you leave this value here at 0 the distance value in the logs will always be positive numbers
@@ -20,8 +19,10 @@
 #define FIS_SENSOR         FIS_MLX90640  // Device to use, see Constants.h                        
 #if BOARD == BOARD_ESP32_LOLIND32
   #define FIS_SENSOR2_PRESENT 1            // Set to 1 if second sensor on second I2C hardware bus is present (ESP32 only)
+  #define DIST_SENSOR2        DIST_VL53L0X // Device to use for second sensor on second I2C hardware bus (ESP32 only), see Constants.h
 #else
   #define FIS_SENSOR2_PRESENT 0
+  #define DIST_SENSOR2        DIST_NONE // Device to use for second sensor on second I2C hardware bus (ESP32 only), see Constants.h
 #endif
 #define FIS_REFRESHRATE    16            // Sets the FIS refresh rate in Hz, MLX90640 should be 4 with nRF52, MLX90621 works at 16Hz
 
