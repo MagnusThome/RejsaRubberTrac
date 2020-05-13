@@ -75,7 +75,7 @@ void setup(){
   updateBattery();
   updateWheelPos();
   char bleName[32] = "RejsaRubber";
-  sprintf(bleName, "%s%s\0",bleName, deviceNameSuffix); // Extend bleName[] with the suffix
+  sprintf(bleName, "%s%s",bleName, deviceNameSuffix); // Extend bleName[] with the suffix
 
 
 // TIRE 1 MIRRORED?

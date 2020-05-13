@@ -7,7 +7,7 @@ BLDevice::BLDevice() { // We initialize a couple things in constructor
   datapackThr.distance = 0;
   datapackThr.protocol = PROTOCOL;
 #if BOARD == BOARD_NRF52_FEATHER
-  mainService = BLEService(0x00000001000000fd8933990d6f411ff7);
+  mainService = BLEService(0x1FF7);
   GATTone = BLECharacteristic(0x01);
   GATTtwo = BLECharacteristic(0x02);
   GATTthr = BLECharacteristic(0x03);
@@ -15,13 +15,13 @@ BLDevice::BLDevice() { // We initialize a couple things in constructor
 }
 
 void BLDevice::setupDevice(char bleName[]) {
+#if BOARD == BOARD_NRF52_FEATHER
   uint8_t macaddr[6];
 
-#if BOARD == BOARD_NRF52_FEATHER
   Bluefruit.autoConnLed(false); // DISABLE BLUE BLINK ON CONNECT STATUS
-  Bluefruit.begin(); 
+  Bluefruit.begin();
   Bluefruit.getAddr(macaddr);
-  sprintf(bleName, "%s%02x%02x%02x\0",bleName, macaddr[2], macaddr[1], macaddr[0]); // Extend bleName[] with the last 4 octets of the mac address
+  sprintf(bleName, "%s%02x%02x%02x", bleName, macaddr[2], macaddr[1], macaddr[0]); // Extend bleName[] with the last 4 octets of the mac address
   Bluefruit.setName(bleName);
   Serial.print("Starting bluetooth with MAC address ");
 //  Serial.printBufferReverse(macaddr, 6, ':');
