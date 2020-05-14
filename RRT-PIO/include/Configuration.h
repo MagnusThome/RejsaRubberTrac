@@ -98,11 +98,11 @@
   #define GPIOSCL             SCL
   #define GPIOSDA2            -1 // second I2C bus only available with LOLIN D32-based PCB
   #define GPIOSCL2            -1
-  #define GPIODISTSENSORXSHUT 12  // GPIO pin number
-  #define GPIOCAR             28  // GPIO pin number
-  #define GPIOFRONT           29  // GPIO pin number
-  #define GPIOLEFT            13  // GPIO pin number
-  #define GPIOMIRR            14  // GPIO pin number
+  #define GPIODISTSENSORXSHUT SCK  // =5  // GPIO pin number
+  #define GPIOCAR             36          // GPIO pin number
+  #define GPIOFRONT           4           // GPIO pin number
+  #define GPIOLEFT            MOSI // =22 // GPIO pin number
+  #define GPIOMIRR            MISO // =23 // GPIO pin number
 #elif BOARD == BOARD_NRF52_FEATHER
   #define MILLIVOLTFULLSCALE  3600
   #define STEPSFULLSCALE      1024
