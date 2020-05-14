@@ -31,7 +31,7 @@ void TireTreadTemperature::measure() {
   totalOutliersThisFrame = 0;
   thisFISDevice->measure();
   
-  for(uint8_t x=0; x<FIS_X; x++){
+  for (uint8_t x=0; x<FIS_X; x++){
     for (uint8_t y=0; y<EFFECTIVE_ROWS; y++) { // Read the columns first
       column_content[y] = (int16_t)thisFISDevice->getPixelTemperature(x, y);
     }

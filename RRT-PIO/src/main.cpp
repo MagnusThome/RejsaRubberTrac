@@ -4,7 +4,7 @@
 #include "Configuration.h"
 #include "temp_sensor.h"
 #include "dist_sensor.h"
-#include "ble_server_rrt.h"
+#include "DataSink.h"
 #include "Battery.h"
   
 TireTreadTemperature tempSensor;
@@ -24,7 +24,7 @@ char deviceNameSuffix[] = "  ";
   #endif
 #endif
 
-BLDevice bleDevice;
+BLEServiceDataSink *thisTrackDayApp;
 Tasker tasker;
 
 float updateRate = 0.0;    // Reflects the actual update rate
@@ -153,8 +153,22 @@ void setup(){
 #endif
 
 // BLE
-  debug("Starting BLE device: %s\n", bleName);
-  bleDevice.setupDevice(bleName);
+  //bleDevice.setupDevice(bleName);
+  #if BOARD == BOARD_NRF52_FEATHER
+    Nrf52BLEDataSink::initializeBLEDevice(bleName);
+    thisTrackDayApp = new Nrf52TrackDayApp();
+  #elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+    Esp32BLEDataSink::initializeBLEDevice(bleName);
+    thisTrackDayApp = new Esp32TrackDayApp();
+  #endif
+
+    thisTrackDayApp->initializeBLEService();
+
+  #if BOARD == BOARD_NRF52_FEATHER
+    Nrf52BLEDataSink::startAdvertising();
+  #elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+    Esp32BLEDataSink::startAdvertising();
+  #endif
 
 // Set up periodic functions
 #ifdef _DEBUG
@@ -186,9 +200,7 @@ void loop() {
   tempSensor2.measure();
 #endif
 
-  if (bleDevice.isConnected()) {
-    bleDevice.transmit(tempSensor.measurement_16, mirrorTire, distSensor->distance, vBattery, lipoPercentage);
-  }
+  thisTrackDayApp->transmit(tempSensor.measurement_16, mirrorTire, distSensor->distance, vBattery, lipoPercentage);
   
   blinkOnTempChange(tempSensor.measurement_16[8]/20);    // Use one single temp in the middle of the array
   blinkOnDistChange(distSensor->distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
