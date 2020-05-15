@@ -91,9 +91,12 @@ boolean Esp32BLEDataSink::startAdvertising() {
   if (!deviceIsAlreadyAdvertising) {
     thisBLEAdvertising = BLEDevice::getAdvertising();
 
+    if (BLEServiceDataSink::serviceCountForAdvertising < 1) {
+      return false;
+    }
     for (uint8_t i=0; i < BLEServiceDataSink::serviceCountForAdvertising; i++) {
       thisBLEAdvertising->addServiceUUID(BLEServiceDataSink::servicesForAdvertising[i]->getUUID());
-//      Serial.printf("BLE Service UUID for advertising: %s\n", BLEServiceDataSink::servicesForAdvertising[i]->getUUID().toString().c_str());
+      Serial.printf("BLE Service UUID for advertising: %s\n", BLEServiceDataSink::servicesForAdvertising[i]->getUUID().toString().c_str());
     }
 
     thisBLEAdvertising->setScanResponse(false);
@@ -149,6 +152,8 @@ void Nrf52TrackDayApp::initializeBLEService() {
   GATTthr.setPermission(SECMODE_OPEN, SECMODE_NO_ACCESS);
   GATTthr.setFixedLen(20);
   GATTthr.begin();
+
+  BLEServiceDataSink::addServiceForAdvertising(&TrackDayAppService);
 }
 
 void Nrf52TrackDayApp::transmit(int16_t tempMeasurements[], uint8_t mirrorTire, int16_t distance, int vBattery, int lipoPercentage) {
@@ -174,6 +179,8 @@ void Esp32TrackDayApp::initializeBLEService() {
   GATTtwo->addDescriptor(new BLE2902());
   GATTthr->addDescriptor(new BLE2902());
   TrackDayAppService->start();
+
+  BLEServiceDataSink::addServiceForAdvertising(TrackDayAppService);
 }
 
 void Esp32TrackDayApp::transmit(int16_t tempMeasurements[], uint8_t mirrorTire, int16_t distance, int vBattery, int lipoPercentage) {

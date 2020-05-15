@@ -155,19 +155,27 @@ void setup(){
 // BLE
   //bleDevice.setupDevice(bleName);
   #if BOARD == BOARD_NRF52_FEATHER
-    Nrf52BLEDataSink::initializeBLEDevice(bleName);
+    if (!Nrf52BLEDataSink::initializeBLEDevice(bleName)) {
+      debug("ERROR initializing BLE Device.\n");
+    }
     thisTrackDayApp = new Nrf52TrackDayApp();
   #elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
-    Esp32BLEDataSink::initializeBLEDevice(bleName);
+    if (!Esp32BLEDataSink::initializeBLEDevice(bleName)) {
+      debug("ERROR initializing BLE Device.\n");
+    }
     thisTrackDayApp = new Esp32TrackDayApp();
   #endif
 
     thisTrackDayApp->initializeBLEService();
 
   #if BOARD == BOARD_NRF52_FEATHER
-    Nrf52BLEDataSink::startAdvertising();
+    if (!Nrf52BLEDataSink::startAdvertising()) {
+      debug("ERROR advertising BLE Services.\n");
+    }
   #elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
-    Esp32BLEDataSink::startAdvertising();
+    if (!Esp32BLEDataSink::startAdvertising()) {
+      debug("ERROR advertising BLE Services.\n");
+    }
   #endif
 
 // Set up periodic functions
