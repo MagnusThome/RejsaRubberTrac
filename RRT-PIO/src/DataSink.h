@@ -23,8 +23,13 @@ class DataSink
     virtual void transmit(int16_t tempMeasurements[], uint8_t mirrorTire, int16_t distance, int vBattery, int lipoPercentage) = 0;
 
     // Optionally call this to throttle down the number of transmits to a minimum interval in milliseconds.
-    void setThrottleInterval(int16_t newThrottleInterval) {
+    void setThrottleInterval(uint16_t newThrottleInterval) {
       throttleInterval = newThrottleInterval;
+    };
+
+    // do we have a go for this transmit if throttling is enabled (throttleInterval > 0)
+    boolean areWeFullThrottle() {
+      return (millis() > lastTransmit + throttleInterval);
     };
 
     // Returns the transmit refresh rate since the last call of getRefreshRate().
@@ -36,8 +41,8 @@ class DataSink
     };
 
   protected:
-    long lastTransmit = 0;
-    int16_t throttleInterval = 0; // minimum interval between transmits in milliseconds
+    long lastTransmit = 0; // needs to be set in transmit()
+    uint16_t throttleInterval = 0; // minimum interval between transmits in milliseconds
     long lastRefreshRateUpdate = 0;
     float measurementCycles = 0.0; // Counts how many measurement cycles were completed since last update of the refresh rate. Needs to be updated in the transmit() function.
 };
