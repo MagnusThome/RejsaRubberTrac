@@ -93,6 +93,7 @@ boolean Esp32BLEDataSink::startAdvertising() {
 
     for (uint8_t i=0; i < BLEServiceDataSink::serviceCountForAdvertising; i++) {
       thisBLEAdvertising->addServiceUUID(BLEServiceDataSink::servicesForAdvertising[i]->getUUID());
+//      Serial.printf("BLE Service UUID for advertising: %s\n", BLEServiceDataSink::servicesForAdvertising[i]->getUUID().toString().c_str());
     }
 
     thisBLEAdvertising->setScanResponse(false);

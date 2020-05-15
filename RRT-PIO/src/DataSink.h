@@ -15,6 +15,8 @@
   #include <BLE2902.h>
 #endif
 
+
+// Everything that takes RRT data as a data target is a DataSink.
 class DataSink
 {
   public:
@@ -133,6 +135,10 @@ class Nrf52TrackDayApp : public Nrf52BLEDataSink, TrackDayApp {
 #elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
 class Esp32TrackDayApp : public Esp32BLEDataSink, TrackDayApp {
   public:
+    Esp32TrackDayApp() {
+            serviceUUID = trackDayAppServiceUUID;
+    }
+
     virtual void initializeBLEService(void);
     virtual void transmit(int16_t tempMeasurements[], uint8_t mirrorTire, int16_t distance, int vBattery, int lipoPercentage);
 
