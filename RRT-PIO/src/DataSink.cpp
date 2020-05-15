@@ -23,7 +23,7 @@ boolean Nrf52BLEDataSink::initializeBLEDevice(char bleName[]) {
 
     Serial.printf("Starting BLE device: %s\n", bleName);
     Bluefruit.autoConnLed(false); // DISABLE BLUE BLINK ON CONNECT STATUS
-    Bluefruit.begin();
+    Bluefruit.begin(2, 0); // allow 2 periphals to connect in parallel
     Bluefruit.getAddr(macaddr);
     sprintf(bleName, "%s%02x%02x%02x", bleName, macaddr[2], macaddr[1], macaddr[0]); // Extend bleName[] with the last 4 octets of the mac address
     Bluefruit.setName(bleName);
@@ -43,6 +43,8 @@ boolean Nrf52BLEDataSink::startAdvertising() {
     Bluefruit.setTxPower(4);
     Bluefruit.Advertising.addFlags(BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE);
     Bluefruit.Advertising.addTxPower();
+    Bluefruit.Periph.setConnectCallback(connectCallback);
+    Bluefruit.Periph.setDisconnectCallback(disconnectCallback);
 
     switch (BLEServiceDataSink::serviceCountForAdvertising) {
       case 0:  return false; break;
@@ -64,6 +66,71 @@ boolean Nrf52BLEDataSink::startAdvertising() {
   }
   else {
     return false;
+  }
+}
+
+void Nrf52BLEDataSink::connectCallback(uint16_t conn_handle) {
+  // Get the reference to current connection
+  BLEConnection* connection = Bluefruit.Connection(conn_handle);
+
+  char central_name[32] = { 0 };
+  connection->getPeerName(central_name, sizeof(central_name));
+
+  Serial.println();
+  Serial.printf("Connected to %s (handle %u), let's keep advertising for others to come...", central_name, conn_handle);
+  Serial.println();
+
+  // restart advertising after connection to a new central
+  deviceIsAlreadyAdvertising = false;
+  if (!Nrf52BLEDataSink::startAdvertising()) {
+    Serial.print("ERROR advertising BLE Services.\n");
+  }
+}
+
+void Nrf52BLEDataSink::disconnectCallback(uint16_t conn_handle, uint8_t reason) {
+  //--------------------------------------------------------------------+
+  // HCI STATUS
+  //--------------------------------------------------------------------+
+  // static lookup_entry_t const _strhci_lookup[] =
+  // {
+  //   { .key = BLE_HCI_STATUS_CODE_SUCCESS                         , .data = "STATUS_CODE_SUCCESS"                         },
+  //   { .key = BLE_HCI_STATUS_CODE_UNKNOWN_BTLE_COMMAND            , .data = "STATUS_CODE_UNKNOWN_BTLE_COMMAND "           },
+  //   { .key = BLE_HCI_STATUS_CODE_UNKNOWN_CONNECTION_IDENTIFIER   , .data = "STATUS_CODE_UNKNOWN_CONNECTION_IDENTIFIER"   },
+  //   { .key = BLE_HCI_AUTHENTICATION_FAILURE                      , .data = "AUTHENTICATION_FAILURE "                     },
+  //   { .key = BLE_HCI_STATUS_CODE_PIN_OR_KEY_MISSING              , .data = "STATUS_CODE_PIN_OR_KEY_MISSING "             },
+  //   { .key = BLE_HCI_MEMORY_CAPACITY_EXCEEDED                    , .data = "MEMORY_CAPACITY_EXCEEDED "                   }, // 0x07
+  //   { .key = BLE_HCI_CONNECTION_TIMEOUT                          , .data = "CONNECTION_TIMEOUT "                         }, // 0x08
+  //   { .key = BLE_HCI_STATUS_CODE_COMMAND_DISALLOWED              , .data = "STATUS_CODE_COMMAND_DISALLOWED "             },
+  //   { .key = BLE_HCI_STATUS_CODE_INVALID_BTLE_COMMAND_PARAMETERS , .data = "STATUS_CODE_INVALID_BTLE_COMMAND_PARAMETERS" }, // 0x12=18
+  //   { .key = BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION           , .data = "REMOTE_USER_TERMINATED_CONNECTION"           }, // 0x13=19
+  //   { .key = BLE_HCI_REMOTE_DEV_TERMINATION_DUE_TO_LOW_RESOURCES , .data = "REMOTE_DEV_TERMINATION_DUE_TO_LOW_RESOURCES" }, // 0x14=20
+  //   { .key = BLE_HCI_REMOTE_DEV_TERMINATION_DUE_TO_POWER_OFF     , .data = "REMOTE_DEV_TERMINATION_DUE_TO_POWER_OFF"     }, // 0x15=21
+  //   { .key = BLE_HCI_LOCAL_HOST_TERMINATED_CONNECTION            , .data = "LOCAL_HOST_TERMINATED_CONNECTION "           }, // 0x16=22
+  //   { .key = BLE_HCI_UNSUPPORTED_REMOTE_FEATURE                  , .data = "UNSUPPORTED_REMOTE_FEATURE"                  },
+  //   { .key = BLE_HCI_STATUS_CODE_INVALID_LMP_PARAMETERS          , .data = "STATUS_CODE_INVALID_LMP_PARAMETERS "         },
+  //   { .key = BLE_HCI_STATUS_CODE_UNSPECIFIED_ERROR               , .data = "STATUS_CODE_UNSPECIFIED_ERROR"               },
+  //   { .key = BLE_HCI_STATUS_CODE_LMP_RESPONSE_TIMEOUT            , .data = "STATUS_CODE_LMP_RESPONSE_TIMEOUT "           },
+  //   { .key = BLE_HCI_STATUS_CODE_LMP_ERROR_TRANSACTION_COLLISION , .data = "STATUS_CODE_LMP_ERROR_TRANSACTION_COLLISION" },
+  //   { .key = BLE_HCI_STATUS_CODE_LMP_PDU_NOT_ALLOWED             , .data = "STATUS_CODE_LMP_PDU_NOT_ALLOWED"             },
+  //   { .key = BLE_HCI_INSTANT_PASSED                              , .data = "INSTANT_PASSED "                             },
+  //   { .key = BLE_HCI_PAIRING_WITH_UNIT_KEY_UNSUPPORTED           , .data = "PAIRING_WITH_UNIT_KEY_UNSUPPORTED"           },
+  //   { .key = BLE_HCI_DIFFERENT_TRANSACTION_COLLISION             , .data = "DIFFERENT_TRANSACTION_COLLISION"             },
+  //   { .key = BLE_HCI_PARAMETER_OUT_OF_MANDATORY_RANGE            , .data = "PARAMETER_OUT_OF_MANDATORY_RANGE "           },
+  //   { .key = BLE_HCI_CONTROLLER_BUSY                             , .data = "CONTROLLER_BUSY"                             },
+  //   { .key = BLE_HCI_CONN_INTERVAL_UNACCEPTABLE                  , .data = "CONN_INTERVAL_UNACCEPTABLE "                 },
+  //   { .key = BLE_HCI_DIRECTED_ADVERTISER_TIMEOUT                 , .data = "DIRECTED_ADVERTISER_TIMEOUT"                 },
+  //   { .key = BLE_HCI_CONN_TERMINATED_DUE_TO_MIC_FAILURE          , .data = "CONN_TERMINATED_DUE_TO_MIC_FAILURE "         },
+  //   { .key = BLE_HCI_CONN_FAILED_TO_BE_ESTABLISHED               , .data = "CONN_FAILED_TO_BE_ESTABLISHED"               }
+  // };
+  
+  Serial.println();
+  Serial.printf("Disconnected from handle %u (reason: %u)...", conn_handle, reason);
+  Serial.println();
+
+  // restart advertising after connection to a new central
+  deviceIsAlreadyAdvertising = false;
+  if (!Nrf52BLEDataSink::startAdvertising()) {
+    Serial.print("ERROR advertising BLE Services.\n");
   }
 }
 

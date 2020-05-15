@@ -41,9 +41,9 @@ class DataSink
     };
 
   protected:
-    long lastTransmit = 0; // needs to be set in transmit()
+    uint32_t lastTransmit = 0; // needs to be set in transmit()
     uint16_t throttleInterval = 0; // minimum interval between transmits in milliseconds
-    long lastRefreshRateUpdate = 0;
+    uint32_t lastRefreshRateUpdate = 0;
     float measurementCycles = 0.0; // Counts how many measurement cycles were completed since last update of the refresh rate. Needs to be updated in the transmit() function.
 };
 
@@ -82,6 +82,9 @@ class Nrf52BLEDataSink : public BLEServiceDataSink {
     static boolean isConnected();
     static boolean initializeBLEDevice(char bleName[]);
     static boolean startAdvertising();
+  protected:
+    static void connectCallback(uint16_t conn_handle);
+    static void disconnectCallback(uint16_t conn_handle, uint8_t reason);
 };
 
 #elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
