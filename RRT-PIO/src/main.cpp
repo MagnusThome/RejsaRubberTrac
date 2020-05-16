@@ -5,6 +5,7 @@
 #include "temp_sensor.h"
 #include "dist_sensor.h"
 #include "DataSink.h"
+#include "DataSink_BluefruitLE.h"
 #include "Battery.h"
   
 TireTreadTemperature tempSensor;
@@ -25,6 +26,9 @@ char deviceNameSuffix[] = "  ";
 #endif
 
 BLEServiceDataSink *thisTrackDayApp;
+#if BOARD == BOARD_NRF52_FEATHER
+  Nrf52BluefruitLEMQTT *thisBluefruitLERecorder;
+#endif
 Tasker tasker;
 
 float updateRate = 0.0;    // Reflects the actual update rate
@@ -159,6 +163,8 @@ void setup(){
       debug("ERROR initializing BLE Device.\n");
     }
     thisTrackDayApp = new Nrf52TrackDayApp();
+    thisBluefruitLERecorder = new Nrf52BluefruitLEMQTT();
+    thisBluefruitLERecorder->initializeBLEService();
   #elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
     if (!Esp32BLEDataSink::initializeBLEDevice(bleName)) {
       debug("ERROR initializing BLE Device.\n");
@@ -209,6 +215,9 @@ void loop() {
 #endif
 
   thisTrackDayApp->transmit(tempSensor.measurement_16, mirrorTire, distSensor->distance, vBattery, lipoPercentage);
+  #if BOARD == BOARD_NRF52_FEATHER
+    thisBluefruitLERecorder->transmit(tempSensor.measurement_16, mirrorTire, distSensor->distance, vBattery, lipoPercentage);
+  #endif
   
   blinkOnTempChange(tempSensor.measurement_16[8]/20);    // Use one single temp in the middle of the array
   blinkOnDistChange(distSensor->distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
