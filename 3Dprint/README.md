@@ -4,7 +4,7 @@ You can of course create your own casing. Or you can 3D print one of the version
 
 All printable and editable files are in the <a href=printables/>printables sub directory</a>  
 
-If you or a friend have a 3D printer you can print them all yourself, otherwise there are numerous online print shops that will print and ship you the parts pretty cheap. I haven't used them myself but I got recommended www.3dhubs.com as an example.
+If you or a friend have a 3D printer you can print them all yourself, otherwise there are numerous online print shops that will print and ship you the parts pretty cheap. I haven't used them myself but I got recommended Craftcloud All3DP as an example.
 
 ## Print 
 
