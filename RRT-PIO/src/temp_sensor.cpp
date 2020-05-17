@@ -5,39 +5,58 @@
 #include <Wire.h>
 #include "spline.h"
 
-boolean TireTreadTemperature::initialise(TwoWire *thisI2c, char *wheelPos, int fisRefrate) {
-  #if FIS_SENSOR == FIS_MLX90621
-    thisFISDevice = new MLX90621();
-  #elif FIS_SENSOR == FIS_MLX90640
-    thisFISDevice = new MLX90640();
-  #else
-    return false;
-  #endif
+boolean TireTreadTemperature::initialise(fis_t* _config, status_t* _status, TwoWire *thisI2c, char *wheelPos) {
+  config = _config;
+  status = _status;
+  thisWire = thisI2c;
 
-  innerTireEdgePositionThisFrameViaSlopeMin = FIS_X;
+  innerTireEdgePositionThisFrameViaSlopeMin = config->x;
   outerTireEdgePositionThisFrameViaSlopeMax = 0;
   outerTireEdgePositionSmoothed = 0.0;
-  innerTireEdgePositionSmoothed = (float)FIS_X;
-  thisWire = thisI2c;
-  return thisFISDevice->initialise(thisWire, wheelPos, fisRefrate);
+  innerTireEdgePositionSmoothed = (float)config->x;
+  effective_rows = config->y - config->ignore_bottom - config->ignore_top;
+
+  if (config->type == FIS_MLX90621) {
+    thisFISDevice = new MLX90621();
+  } else { 
+    if (config->type == FIS_MLX90640) {
+      thisFISDevice = new MLX90640();
+      } else {
+        return false;
+      }
+  }
+
+  thisFISDevice->emissivity = (float)config->emissivity/100;
+  return thisFISDevice->initialise(thisWire, wheelPos, config->refresh_rate);
 };
 
 void TireTreadTemperature::measure() {
-  int16_t column_content[EFFECTIVE_ROWS];
+  int16_t column_content[effective_rows];
   float avgMins = 0.0;
   float avgMaxs = 0.0;
-
+    
   totalFrameCount++;
   totalOutliersThisFrame = 0;
+  minTempStdDev = ((25 + config->offset) * 10 * (float)(config->scale/1000));
+  tempTriggerDeltaAmbientTire = (7 * 10 * (float)(config->scale/1000));
+  tempAvgDeltaAmbientTire = (5 * 10 * (float)(config->scale/1000));
+  if (movingAvgFrameTmp == 0.0) movingAvgFrameTmp = (40.0 + config->offset) * 10 * (float)(config->scale/1000); // init value = 40 degrees Celsius
+  if (movingAvgStdDevFrameTmp == 0.0) movingAvgStdDevFrameTmp = minTempStdDev;
+
   thisFISDevice->measure();
-  
-  for (uint8_t x=0; x<FIS_X; x++){
-    for (uint8_t y=0; y<EFFECTIVE_ROWS; y++) { // Read the columns first
-      column_content[y] = (int16_t)thisFISDevice->getPixelTemperature(x, y);
+  status->sensor_stat_1.ambient_t = round(thisFISDevice->getAmbient()*10); //2do: report status to the correct sensor pod
+  if (config->type == FIS_MLX90621) {
+    delay(24);
+  }
+
+  for (uint8_t x=0; x<config->x; x++){ // columns
+    for (uint8_t y=0; y<effective_rows; y++) { // rows
+      column_content[y] = ((int16_t)thisFISDevice->getPixelTemperature(x, y+config->ignore_top) + config->offset) * 10 * (int16_t)(config->scale/1000);
     }
-    measurement[x] = calculateColumnTemperature(column_content, EFFECTIVE_ROWS);
-    avgMins = ((float)getMinimum(column_content, EFFECTIVE_ROWS) - avgMins) / (x+1);
-    avgMaxs = ((float)getMaximum(column_content, EFFECTIVE_ROWS) - avgMaxs) / (x+1);
+    measurement[x] = calculateColumnTemperature(column_content, effective_rows);
+    measurement_32[x] = round(calculateColumnTemperature(column_content, effective_rows));
+    avgMins = ((float)getMinimum(column_content, effective_rows) - avgMins) / (x+1);
+    avgMaxs = ((float)getMaximum(column_content, effective_rows) - avgMaxs) / (x+1);
   }
 
   // reset average temperatures
@@ -51,7 +70,19 @@ void TireTreadTemperature::measure() {
   avgsThisFrame.avgOuterAmbientTemp = 0.0;
   avgsThisFrame.avgInnerAmbientTemp = 0.0;
 
-#ifdef FIS_AUTOZOOM
+  if (config->type == FIS_MLX90621) {
+    for(uint8_t x=0;x<64;x++) picture[x]=round(thisFISDevice->getTemperature(x)*10);
+    for(uint8_t x=64;x<128;x++) picture[x]=0;
+  } else {
+    for(uint8_t x=0;x<128;x++) picture[x]=round(thisFISDevice->getTemperature(x+pictureOffset)*10);
+    if (pictureOffset == 640) {
+      pictureOffset = 0;
+    } else {
+      pictureOffset = pictureOffset + 128;
+    }
+  }
+
+if (config->autozoom) {
   calculateSlope(measurement_slope);
   getMinMaxSlopePosition();
   validAutozoomFrame = checkAutozoomValidityAndSetAvgTemps();
@@ -64,18 +95,20 @@ void TireTreadTemperature::measure() {
     else innerTireEdgePositionSmoothed -= rightStepSize;
     if (innerTireEdgePositionSmoothed < 0) outerTireEdgePositionSmoothed = 0;
     if (outerTireEdgePositionSmoothed < 0) innerTireEdgePositionSmoothed = 0;
-    if (outerTireEdgePositionSmoothed > FIS_X) outerTireEdgePositionSmoothed = FIS_X;
-    if (innerTireEdgePositionSmoothed > FIS_X) innerTireEdgePositionSmoothed = FIS_X;
+    if (outerTireEdgePositionSmoothed > config->x) outerTireEdgePositionSmoothed = 32;
+    if (innerTireEdgePositionSmoothed > config->x) innerTireEdgePositionSmoothed = 32;
+    status->sensor_stat_1.autozoom_stat.innerEdge = round(innerTireEdgePositionSmoothed*10);
+    status->sensor_stat_1.autozoom_stat.outerEdge = round(outerTireEdgePositionSmoothed*10);
   }
-#else
-    avgsThisFrame.avgFrameTemp = getAverage(measurement, FIS_X);
-#endif
+} else {
+    avgsThisFrame.avgFrameTemp = getAverage(measurement, config->x);
+}
 
   // update running averages
-  runningAvgOutlierRate += (((float)totalOutliersThisFrame / ((float)FIS_X * (float)EFFECTIVE_ROWS)) - runningAvgOutlierRate) / totalFrameCount;
+  runningAvgOutlierRate += (((float)totalOutliersThisFrame / ((float)config->x * (float)effective_rows)) - runningAvgOutlierRate) / totalFrameCount;
   runningAvgZoomedFramesRate += ((validAutozoomFrame ? 1 : 0) - runningAvgZoomedFramesRate) / totalFrameCount;
   movingAvgFrameTmp = (0.2 * avgsThisFrame.avgFrameTemp) + (0.8 * movingAvgFrameTmp); // exponential moving average
-  movingAvgStdDevFrameTmp = (0.2 * (avgsThisFrame.stdDevFrameTemp < MIN_TMP_STDDEV ? MIN_TMP_STDDEV : avgsThisFrame.stdDevFrameTemp)) + (0.8 * movingAvgStdDevFrameTmp); // exponential moving average retaining a minimum standard deviation of 20 degrees Celsius
+  movingAvgStdDevFrameTmp = (0.2 * (avgsThisFrame.stdDevFrameTemp < minTempStdDev ? minTempStdDev : avgsThisFrame.stdDevFrameTemp)) + (0.8 * movingAvgStdDevFrameTmp); // exponential moving average retaining a minimum standard deviation of 20 degrees Celsius
   if (totalOutliersThisFrame == 0) { // only if we have an outlier-free frame; exponential moving average 
     movingAvgRowDeltaTmp = (0.2 * (avgsThisFrame.avgMaxFrameTemp - avgsThisFrame.avgMinFrameTemp)) + (0.8 * movingAvgRowDeltaTmp); // exponential moving average
     if (movingAvgRowDeltaTmp > maxRowDeltaTmp) maxRowDeltaTmp = movingAvgRowDeltaTmp; // if we have a new contender for highest (filtered) delta temperature
@@ -97,21 +130,21 @@ int16_t TireTreadTemperature::calculateColumnTemperature(int16_t column_content[
 
 void TireTreadTemperature::interpolate(uint8_t startColumn, uint8_t endColumn, int16_t result[]) {
   float stepSize = (endColumn-startColumn)/16.0;
-  int16_t x[FIS_X];
+  int16_t x[config->x];
   
-  for (uint8_t i=0; i<FIS_X; i++) x[i]=i; // Initialize the X axis of an array {0, 1, 2 ... 30, 31}
-  Spline linearSpline(x, measurement, FIS_X, 1);
+  for (uint8_t i=0; i<config->x; i++) x[i]=i; // Initialize the X axis of an array {0, 1, 2 ... 30, 31}
+  Spline linearSpline(x, measurement, config->x, 1);
   for (uint8_t i=0; i<16; i++) result[i] = linearSpline.value(startColumn+i*stepSize);
 }
 
 void TireTreadTemperature::calculateSlope(int16_t result[]) {
-  for (uint8_t i=0; i<FIS_X-1; i++) result[i] = measurement[i+1]-measurement[i];
+  for (uint8_t i=0; i<config->x-1; i++) result[i] = measurement[i+1]-measurement[i];
 }
 
 void TireTreadTemperature::getMinMaxSlopePosition() {
   int16_t minSlopeValue = 0;
   int16_t maxSlopeValue = 0;
-  for (uint8_t i=0; i<FIS_X-1; i++) {
+  for (uint8_t i=0; i<config->x-1; i++) {
     if (measurement_slope[i] > maxSlopeValue ) {
       maxSlopeValue = measurement_slope[i];
       outerTireEdgePositionThisFrameViaSlopeMax = i+1; // we want the first pixel on the tire; make up for the shift between measurement_slope[] and measurement[]
@@ -128,15 +161,14 @@ boolean TireTreadTemperature::checkAutozoomValidityAndSetAvgTemps() {
   float avgInnerAmbientThisFrame = 0.0;
   float avgOuterAmbientThisFrame = 0.0;
   
-  avgsThisFrame.avgFrameTemp = getAverage(measurement, FIS_X);
-  avgsThisFrame.stdDevFrameTemp = getStdDev(measurement, FIS_X);
-
-  if (measurement_slope[innerTireEdgePositionThisFrameViaSlopeMin] > -TMP_TRIGGER_DELTA_AMBIENT_TIRE) return false;
-  if (measurement_slope[outerTireEdgePositionThisFrameViaSlopeMax-1] < TMP_TRIGGER_DELTA_AMBIENT_TIRE) return false;
+  avgsThisFrame.avgFrameTemp = getAverage(measurement, config->x);
+  avgsThisFrame.stdDevFrameTemp = getStdDev(measurement, config->x);
+  if (measurement_slope[innerTireEdgePositionThisFrameViaSlopeMin] > -tempTriggerDeltaAmbientTire) return false;
+  if (measurement_slope[outerTireEdgePositionThisFrameViaSlopeMax-1] < tempTriggerDeltaAmbientTire) return false;
   if (innerTireEdgePositionThisFrameViaSlopeMin < outerTireEdgePositionThisFrameViaSlopeMax) return false; // Inner or outer edge of tire out of camera view
   if ((innerTireEdgePositionThisFrameViaSlopeMin-outerTireEdgePositionThisFrameViaSlopeMax+1) < AUTOZOOM_MINIMUM_TIRE_WIDTH) return false; // Too thin tire
   
-  for (uint8_t i=0; i<FIS_X; i++) {
+  for (uint8_t i=0; i<config->x; i++) {
     if (i < outerTireEdgePositionThisFrameViaSlopeMax) {
       avgOuterAmbientThisFrame += measurement[i];
     } else if (i > innerTireEdgePositionThisFrameViaSlopeMin) {
@@ -149,9 +181,9 @@ boolean TireTreadTemperature::checkAutozoomValidityAndSetAvgTemps() {
   uint8_t tireWidthThisFrame = (innerTireEdgePositionThisFrameViaSlopeMin-outerTireEdgePositionThisFrameViaSlopeMax+1);
   avgTireTempThisFrame = avgTireTempThisFrame / tireWidthThisFrame;
   avgInnerAmbientThisFrame = avgInnerAmbientThisFrame / outerTireEdgePositionThisFrameViaSlopeMax;
-  avgOuterAmbientThisFrame = avgOuterAmbientThisFrame / (FIS_X-innerTireEdgePositionThisFrameViaSlopeMin-1);
-  if (avgTireTempThisFrame - avgInnerAmbientThisFrame < TMP_AVG_DELTA_AMBIENT_TIRE) return false; // Tire is not significantly hotter than ambient
-  if (avgTireTempThisFrame - avgOuterAmbientThisFrame < TMP_AVG_DELTA_AMBIENT_TIRE) return false; // Tire is not significantly hotter than ambient
+  avgOuterAmbientThisFrame = avgOuterAmbientThisFrame / (config->x-innerTireEdgePositionThisFrameViaSlopeMin-1);
+  if (avgTireTempThisFrame - avgInnerAmbientThisFrame < tempAvgDeltaAmbientTire) return false; // Tire is not significantly hotter than ambient
+  if (avgTireTempThisFrame - avgOuterAmbientThisFrame < tempAvgDeltaAmbientTire) return false; // Tire is not significantly hotter than ambient
 
   avgsThisFrame.avgTireTemp = avgTireTempThisFrame;
   

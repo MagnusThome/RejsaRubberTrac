@@ -9,7 +9,7 @@ class Sensor {
     virtual boolean initialise(TwoWire *thisI2c = &Wire, char *wheelPos = NULL, int refrate = -1) = 0;
     virtual boolean isConnected() = 0;
     virtual void measure() = 0;
-
+    
     // Returns the sensor refresh rate since the last call of getRefreshRate().
     float getRefreshRate() {
       float refreshRate = measurementCycles / (millis()-lastRefreshRateUpdate) * 1000;
@@ -29,10 +29,12 @@ class Sensor {
 
 class FISDevice : public Sensor {
   public:
-    virtual float getPixelTemperature(uint8_t x, uint8_t y) = 0;
+    float emissivity; // public for configurable emissivity
 
-  protected:
+    virtual float getPixelTemperature(uint8_t x, uint8_t y) = 0;
     virtual float getTemperature(int num) = 0;
+    virtual float getAmbient() = 0;
+    
 };
 
 #endif

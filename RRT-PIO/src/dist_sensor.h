@@ -1,3 +1,6 @@
+#ifndef DISTSENSOR_H
+#define DISTSENSOR_H
+
 #include <VL53L0X-2xI2C.h>
 #include <Wire.h>
 #include "Sensor.h"
@@ -24,3 +27,5 @@ class SuspensionTravel : public Sensor
     
     int16_t distanceFilter(int16_t distanceIn);
 };
+
+#endif

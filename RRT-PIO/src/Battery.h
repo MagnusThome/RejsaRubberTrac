@@ -8,6 +8,5 @@ extern int lipoPercentage;    // Current battery percentage
 
 uint8_t lipoPercent(float mvolts);
 int getVbat(void);
-void updateBattery(void);
 
 #endif

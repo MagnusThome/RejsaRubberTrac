@@ -19,6 +19,10 @@
 #include <Wire.h>
 #include "Sensor.h"
 
+// size
+#define MLX90621_X 16  // Far Infrared Sensor columns
+#define MLX90621_Y  4  // Far Infrared Sensor rows
+
 //Begin registers
 #define CAL_ACOMMON_L 0xD0
 #define CAL_ACOMMON_H 0xD1
@@ -87,24 +91,29 @@ private:
 	float tak4, resolution_comp;
 	int16_t a_common, a_i_scale, b_i_scale, k_t1_scale, k_t2_scale, resolution;
 	uint8_t eepromData[256]; //Contains the full EEPROM reading from the MLX90621
-	float k_t1, k_t2, emissivity, tgc, alpha_cp, a_cp, b_cp, v_th;
+	// vvvvvv  change for configurable emissivity  vvvvvv
+	// float k_t1, k_t2, emissivity, tgc, alpha_cp, a_cp, b_cp, v_th;
+	float k_t1, k_t2, tgc, alpha_cp, a_cp, b_cp, v_th;
+	// ^^^^^^  change for configurable emissivity  ^^^^^^
 	uint16_t ptat;
 	int16_t cpix;
 	float a_ij, b_ij, alpha_ij;
 	float minTemp, maxTemp;
   bool present = false;
 protected:
-  const byte sensorAddress = byte(0x60);
-  virtual float getTemperature(int num);
+  	const byte sensorAddress = byte(0x60);
 public:
 	int16_t irData[64]; //Contains the raw IR data from the sensor
-	float getAmbient();
+
 	float getMinTemp();
 	float getMaxTemp();
-  virtual boolean initialise(TwoWire *thisI2c = &Wire, char *wheelPos = NULL, int refrate = -1);
-  virtual boolean isConnected();
-  virtual void measure(bool calculate_temps = true);
-  virtual float getPixelTemperature(uint8_t x, uint8_t y);
+  	virtual boolean initialise(TwoWire *thisI2c = &Wire, char *wheelPos = NULL, int refrate = -1);
+	virtual boolean isConnected();
+	virtual void measure();
+	virtual void measure(bool calculate_temps = true);
+	virtual float getPixelTemperature(uint8_t x, uint8_t y);
+	virtual float getTemperature(int num);
+	virtual float getAmbient();
 };
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef Configuration_h
-#define Configuration_h
+#ifndef RRTCONFIGURATION_H
+#define RRTCONFIGURATION_H
 
 #include "Constants.h"
 
@@ -29,17 +29,18 @@
 #endif
 #define FIS_REFRESHRATE    16            // Sets the FIS refresh rate in Hz, MLX90640 should be 4 with nRF52, MLX90621 works at 16Hz
 
-#define IGNORE_TOP_ROWS    10     // Ignore this many rows from the top of the sensor
-#define IGNORE_BOTTOM_ROWS 10     // Ignore this many rows from the bottom of the sensor
+#define IGNORE_TOP_ROWS    0     // Ignore this many rows from the top of the sensor
+#define IGNORE_BOTTOM_ROWS 0     // Ignore this many rows from the bottom of the sensor
 
 #define COLUMN_AGGREGATE   COLUMN_AGGREGATE_AVG_MINUS_OUTLIERS // Set column aggregation algorhytm, see Constants.h
 
-#define FIS_AUTOZOOM          // Comment to disable autozooming
+#define FIS_AUTOZOOM      1
 #define AUTOZOOM_MINIMUM_TIRE_WIDTH 16 // Minimum tire width for autozooming
 
 #define TEMPSCALING        1.00  // Default = 1.00
 #define TEMPOFFSET         0     // Default = 0      NOTE: in TENTHS of degrees Celsius --> TEMPOFFSET 10 --> 1 degree
                   
+#define EMISSIVITY        60     // Emissivity for FIS 95/100=0.95
 #define MIRRORTIRE        0      // 0 = default
                                  // 1 = Mirror the tire (A), making the outside edge temps the inside edge temps
 #if FIS_SENSOR2_PRESENT == 1
@@ -90,7 +91,7 @@
 #elif BOARD == BOARD_ESP32_FEATHER
   #define MILLIVOLTFULLSCALE  3300
   #define STEPSFULLSCALE      4096
-  #define BATRESISTORCOMP     2.100 // Compensation for a resistor voltage divider between battery and ADC input pin
+  #define BATRESISTORCOMP     2.000 // Compensation for a resistor voltage divider between battery and ADC input pin
   #define VBAT_PIN            A13
   #define GPIOLEDDIST         -1
   #define GPIOLEDTEMP         -1
@@ -136,7 +137,7 @@
 #endif
 
 
-#define EFFECTIVE_ROWS ( FIS_Y - IGNORE_TOP_ROWS - IGNORE_BOTTOM_ROWS )
+//#define EFFECTIVE_ROWS ( FIS_Y - IGNORE_TOP_ROWS - IGNORE_BOTTOM_ROWS )
 
 
 #ifdef _DEBUG

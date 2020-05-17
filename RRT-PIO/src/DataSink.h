@@ -2,8 +2,11 @@
 #define DataSink_h
 
 #include <Arduino.h>
-#include "protocol.h"
 #include "Configuration.h"
+#include "config.h"
+#include "protocol.h"
+#include "temp_sensor.h"
+#include "dist_sensor.h"
 
 #if BOARD == BOARD_NRF52_FEATHER
   #include <bluefruit.h>
@@ -13,6 +16,7 @@
   #include <BLEServer.h>
   #include <BLEUtils.h>
   #include <BLE2902.h>
+  #include <esp_bt_device.h>
 #endif
 
 
@@ -20,7 +24,7 @@
 class DataSink
 {
   public:
-    virtual void transmit(int16_t tempMeasurements[], uint8_t mirrorTire, int16_t distance, int vBattery, int lipoPercentage) = 0;
+    virtual void transmit(TireTreadTemperature* tempsensor, SuspensionTravel* distsensor, status_t* status, config_t config) = 0;
 
     // Optionally call this to throttle down the number of transmits to a minimum interval in milliseconds.
     void setThrottleInterval(uint16_t newThrottleInterval) {
@@ -92,8 +96,10 @@ class Nrf52BLEDataSink : public BLEServiceDataSink {
 class Esp32BLEDataSink : public BLEServiceDataSink {
   public:
     static boolean isConnected();
-    static boolean initializeBLEDevice(char bleName[]);
+    static boolean initializeBLEDevice(config_t config, status_t status);
     static boolean startAdvertising();
+    static void setDeviceName(status_t status);
+
   protected:
     static BLEServer* thisBLEServer;
     static BLEAdvertising* thisBLEAdvertising;
@@ -102,15 +108,25 @@ class Esp32BLEDataSink : public BLEServiceDataSink {
 #endif
 
 // All logic and data structures for creating the BLE packets following the protocol for the Track Day mobile Apps supporting RRT (Harry's Laptimer & RaceChrono)
+// ALso the RejsaRubberTrac iOS mobile App uses this implementation (datapackFour, datapackFive, datapackConfig)
 class TrackDayApp {
   public:
+    static boolean    didReceiveConfig;
+    static config_t   bleConfig;
+
     TrackDayApp() { // We initialize the datapacks in the constructor.
       datapackOne.distance = 0;
       datapackOne.protocol = PROTOCOL;
       datapackTwo.protocol = PROTOCOL;
       datapackThr.distance = 0;
       datapackThr.protocol = PROTOCOL;
+      datapackFour.protocol = PROTOCOL;
+      datapackFive.protocol = PROTOCOL;
+      datapackFive.offset = 0;
     }
+    static boolean isConfigReceived();
+    static config_t* getBleConfig();
+    static void setConfig(config_t config);
 
   protected:
     const uint16_t trackDayAppServiceUUID = (uint16_t)0x1FF7; // The UUID used for advertising the RRT BLE service.
@@ -118,8 +134,21 @@ class TrackDayApp {
     one_t             datapackOne;
     two_t             datapackTwo;
     thr_t             datapackThr;
+    preview_t         datapackFour;
+    five_t            datapackFive;
+    static config_t   datapackConfig;
 
-    void renderPacketTemperature(int16_t measurements[], uint8_t mirrorTire, one_t &FirstPacket, two_t &SecondPacket, thr_t &ThirdPacket);
+    BLEService*               TrackDayAppService;
+    BLECharacteristic*        GATTone;
+    BLECharacteristic*        GATTtwo;
+    BLECharacteristic*        GATTthr;
+    BLECharacteristic*        GATTfour;
+    BLECharacteristic*        GATTfive;
+    static BLECharacteristic* GATTconfig;
+
+    void renderPacketTemperature(int16_t measurements[], one_t &FirstPacket, two_t &SecondPacket, thr_t &ThirdPacket);
+    void renderPacketTemperature32(int16_t measurements[], preview_t &Packet, status_t* status);
+    void renderPacketPicture(int16_t picture[], uint16_t pictureOffset, five_t &Packet);
     void renderPacketBattery(int vbattery, int percentage, two_t &SecondPacket);
 };
 
@@ -148,13 +177,7 @@ class Esp32TrackDayApp : public Esp32BLEDataSink, TrackDayApp {
     }
 
     virtual void initializeBLEService(void);
-    virtual void transmit(int16_t tempMeasurements[], uint8_t mirrorTire, int16_t distance, int vBattery, int lipoPercentage);
-
-  protected:
-    BLEService*        TrackDayAppService;
-    BLECharacteristic* GATTone;
-    BLECharacteristic* GATTtwo;
-    BLECharacteristic* GATTthr;
+    virtual void transmit(TireTreadTemperature* tempsensor, SuspensionTravel* distsensor, status_t* status, config_t config);
 };
 #endif
 

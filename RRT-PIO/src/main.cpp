@@ -7,28 +7,17 @@
 #include "DataSink.h"
 #include "Battery.h"
   
-TireTreadTemperature tempSensor;
+TireTreadTemperature* tempSensor;
+TireTreadTemperature* tempSensor2;
 SuspensionTravel* distSensor;
-uint8_t mirrorTire = 0;
-char wheelPos[] = "  ";  // Wheel position for Tire A
-char deviceNameSuffix[] = "  ";
+SuspensionTravel* distSensor2;
 
-#if BOARD == BOARD_ESP32_LOLIND32
-  #if FIS_SENSOR2_PRESENT == 1
-    TireTreadTemperature tempSensor2;
-    uint8_t mirrorTire2 = 0;
-    char wheelPos2[] = "  ";  // Wheel position for Tire B
-  #endif
-  #if DIST_SENSOR2 != DIST_NONE
-    SuspensionTravel* distSensor2;
-  #endif
-#endif
-
+config_t configuration;
+status_t status = {0,0,0.0,0};
 BLEServiceDataSink *thisTrackDayApp;
 Tasker tasker;
 
-float updateRate = 0.0;    // Reflects the actual update rate
-int measurementCycles = 0; // Counts how many measurement cycles were completed. printStatus() uses it to roughly calculate refresh rate.
+char wheelPos[] = "  ";  // Wheel position for Tire A
 
 // Function declarations
 void updateWheelPos(void);
@@ -36,18 +25,24 @@ void printStatus(void);
 void blinkOnTempChange(int16_t);
 void blinkOnDistChange(uint16_t);
 void updateRefreshRate(void);
-
-#ifdef DUMMYDATA
-  #include "dummydata.h"
-#endif
+void updateBleName(void);
+void updateBattery(void);
 
 
 // ----------------------------------------
 
-void setup(){
+
+void setup() {
   Serial.begin(115200);
   while (!Serial); // Wait for Serial
   Serial.printf("\nBegin startup. Arduino version: %d\n", ARDUINO);
+
+  readConfiguration(&configuration);
+  if (!configuration.initialized || configuration.config_version != CONFIG_V) {
+    Serial.printf("Initialized is %d\nSize is %d\n", configuration.initialized, configuration.config_version);
+    initConfiguration(&configuration);
+  }
+  dumpConfiguration(&configuration);
 
 #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
   Serial.printf("ESP32 IDF version: %s\n", esp_get_idf_version());
@@ -55,117 +50,92 @@ void setup(){
   analogSetAttenuation(ADC_11db);  //For all pins
 #endif
 
-#ifdef DUMMYDATA
-  debug("=======  DUMMYDATA  ========\n");
-#endif
-
   if (GPIOLEDDIST > 0) pinMode(GPIOLEDDIST, OUTPUT);
   if (GPIOLEDTEMP > 0) pinMode(GPIOLEDTEMP, OUTPUT);
   pinMode(GPIODISTSENSORXSHUT, OUTPUT);
-  pinMode(GPIOLEFT, INPUT_PULLUP);
-  pinMode(GPIOFRONT, INPUT_PULLUP);
-  pinMode(GPIOCAR, INPUT_PULLUP);
-  pinMode(GPIOMIRR, INPUT_PULLUP);
 #if BOARD == BOARD_ESP32_LOLIND32
-  pinMode(GPIOMIRR2, INPUT_PULLUP);
   pinMode(GPIOUNUSEDA2, INPUT);
   pinMode(GPIOUNUSEDA2, INPUT);
 #endif
 
   updateBattery();
   updateWheelPos();
-  char bleName[32] = "RejsaRubber";
-  sprintf(bleName, "%s%s",bleName, deviceNameSuffix); // Extend bleName[] with the suffix
-
-
-// TIRE 1 MIRRORED?
-  if ((MIRRORTIRE == 1 || digitalRead(GPIOMIRR) == 0)) {
-    mirrorTire = 1;
-    debug("Temperature sensor orientation for %s is mirrored.\n", wheelPos);
-  }
-
-// I2C channel 1
-  #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
-    Wire.begin(GPIOSDA,GPIOSCL); // initialize I2C w/ I2C pins from config
-  #else
-    Wire.begin();
-  #endif
-
-  #if DIST_SENSOR != DIST_NONE
-    debug("Starting distance sensor for %s...\n", wheelPos);
-    distSensor = new SuspensionTravel();
-    if (distSensor->initialise(&Wire, wheelPos)) {
-      debug("Distance sensor for %s present.\n", wheelPos);
-    }
-    else {
-      debug("ERROR: Distance sensor for %s not present.\n", wheelPos);
-    }
-  #endif
-
-  debug("Starting temperature sensor for %s...\n", wheelPos);
-  if (!tempSensor.initialise(&Wire, wheelPos, FIS_REFRESHRATE)) {
-    // perform automatic system reboot to retry temp sensor initialization
+  updateBleName();
+  
+  if (configuration.sensor_1.enabled) { 
     #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
-      debug("Rebooting the MCU now...\n");
-      ESP.restart();
-    #elif BOARD == BOARD_NRF52_FEATHER
-      debug("Rebooting the MCU now...\n");
-      NVIC_SystemReset();
+      Wire.begin(GPIOSDA,GPIOSCL); // initialize I2C Channel 1 w/ I2C pins from config
+    #else
+      Wire.begin();
     #endif
-  }
 
-#if BOARD == BOARD_ESP32_LOLIND32
-  // I2C channel 2
-  #if FIS_SENSOR2_PRESENT == 1
-  
-    // TIRE 2 MIRRORED?
-    if ((MIRRORTIRE2 == 1 || digitalRead(GPIOMIRR2) == 0)) {
-      mirrorTire2 = 1;
-      debug("Temperature sensor 2 orientation for %s is mirrored.\n", wheelPos2);
-    }
-
-    Wire1.begin(GPIOSDA2,GPIOSCL2); // initialize I2C w/ I2C pins from config
-  
-    #if DIST_SENSOR2 != DIST_NONE
-      debug("Starting distance sensor 2 for %s...\n", wheelPos2);
-      distSensor2 = new SuspensionTravel();
-      if (distSensor2->initialise(&Wire1, wheelPos2)) {
-        debug("Distance sensor 2 for %s present.\n", wheelPos2);
+    if (configuration.sensor_1.dist_type) {
+      debug("Starting first distance sensor for %s...\n", wheelPos);
+      distSensor = new SuspensionTravel();
+      if (distSensor->initialise(&Wire, wheelPos)) {
+        debug("First distance sensor for %s present.\n", wheelPos);
       }
       else {
-        debug("ERROR: Distance sensor 2 for %s not present.\n", wheelPos2);
+        debug("ERROR: First distance sensor for %s not present.\n", wheelPos);
       }
-    #endif
+    }
+    debug("Starting first temperature sensor for %s...\n", wheelPos);
+    tempSensor = new TireTreadTemperature();
+    if (!tempSensor->initialise(&configuration.sensor_1.fis, &status, &Wire)) {
+      // perform automatic system reboot to retry temp sensor initialization
+      #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+        debug("Rebooting the MCU now...\n");
+        ESP.restart();
+      #elif BOARD == BOARD_NRF52_FEATHER
+        debug("Rebooting the MCU now...\n");
+        NVIC_SystemReset();
+      #endif
+    }
+  }
+
   
-    debug("Starting temperature sensor 2 for %s...\n", wheelPos2);
-    if (!tempSensor2.initialise(&Wire1, wheelPos2, FIS_REFRESHRATE)) {
+#if BOARD == BOARD_ESP32_LOLIND32
+  if (configuration.sensor_2.enabled) {  
+    Wire1.begin(GPIOSDA2,GPIOSCL2); // initialize I2C Channel 2 w/ I2C pins from config
+
+    if (configuration.sensor_2.dist_type) {
+      debug("Starting second distance sensor for %s...\n", wheelPos2);
+      distSensor2 = new SuspensionTravel();
+      if (distSensor2->initialise(&Wire1, wheelPos2)) {
+        debug("Second distance sensor for %s present.\n", wheelPos2);
+      }
+      else {
+        debug("ERROR: Second distance sensor for %s not present.\n", wheelPos2);
+      }
+    }
+    debug("Starting second temperature sensor for %s...\n", wheelPos2);
+    tempSensor = new TireTreadTemperature();
+    if (!tempSensor2->initialise(&configuration.sensor_2.fis, &status, &Wire1)) {
       // perform automatic system reboot to retry temp sensor initialization
       #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
         debug("Rebooting the MCU now...\n");
         ESP.restart();
       #endif
     }
-  #else
+  } else {
     // set unused I2C pins to input mode (just to be sure)
     pinMode(GPIOSDA2, INPUT);
     pinMode(GPIOSCL2, INPUT);
-  #endif
+  }
 #endif
 
 // BLE
-  //bleDevice.setupDevice(bleName);
   #if BOARD == BOARD_NRF52_FEATHER
     if (!Nrf52BLEDataSink::initializeBLEDevice(bleName)) {
       debug("ERROR initializing BLE Device.\n");
     }
     thisTrackDayApp = new Nrf52TrackDayApp();
   #elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
-    if (!Esp32BLEDataSink::initializeBLEDevice(bleName)) {
+    if (!Esp32BLEDataSink::initializeBLEDevice(configuration, status)) {
       debug("ERROR initializing BLE Device.\n");
     }
     thisTrackDayApp = new Esp32TrackDayApp();
   #endif
-
     thisTrackDayApp->initializeBLEService();
 
   #if BOARD == BOARD_NRF52_FEATHER
@@ -186,37 +156,40 @@ void setup(){
   tasker.setInterval(updateRefreshRate, 2000);
 
   debug("Running!\n");
-
-#ifdef DUMMYDATA
-  // 2do: make DUMMYDATA compatible with 2x I2C
-  dummyloop();
-#endif
-}                                                           
+}
 
 void loop() {
-// I2C channel 1
-  #if DIST_SENSOR != DIST_NONE
-    distSensor->measure();
-  #endif
-  tempSensor.measure();
+  if (configuration.sensor_1.enabled) {
+    if (configuration.sensor_1.dist_type) {
+      distSensor->measure();
+    }
+    tempSensor->measure();
+  }
+  if (configuration.sensor_2.enabled) {
+    if (configuration.sensor_2.dist_type) {
+      distSensor2->measure();
+    }
+    tempSensor2->measure();
+  }
 
-// I2C channel 2
-#if FIS_SENSOR2_PRESENT == 1
-  #if DIST_SENSOR2 != DIST_NONE
-    distSensor2->measure();
-  #endif
-  tempSensor2.measure();
-#endif
-
-  thisTrackDayApp->transmit(tempSensor.measurement_16, mirrorTire, distSensor->distance, vBattery, lipoPercentage);
+  if (TrackDayApp::isConfigReceived()) {
+    debug("Config received.\n");
+    memcpy(&configuration, TrackDayApp::getBleConfig(), sizeof(config_t));
+// 2do: encapsulate properly
+    tempSensor->initialise(&configuration.sensor_1.fis, &status, &Wire);
+    updateBleName();
+    Esp32BLEDataSink::setDeviceName(status);
+    dumpConfiguration(&configuration);
+    writeConfiguration(&configuration);
+  }
+  thisTrackDayApp->transmit(tempSensor, distSensor, &status, configuration);
   
-  blinkOnTempChange(tempSensor.measurement_16[8]/20);    // Use one single temp in the middle of the array
+  blinkOnTempChange(tempSensor->measurement_16[8]/20);    // Use one single temp in the middle of the array
   blinkOnDistChange(distSensor->distance/20);    // value/nn -> Ignore smaller changes to prevent noise triggering blinks
 
 // 2do: integrate tempSensor2 & distSensor2 into BLE transmission
-// 2do: integrate Wheelpost into BLE transmission
 
-  measurementCycles++;
+  status.measurementCycles++;
 
   tasker.loop();
 }
@@ -267,18 +240,9 @@ void updateWheelPos(void) {
   uint8_t wheelPosCode = digitalRead(GPIOLEFT) + (digitalRead(GPIOFRONT) << 1) + (digitalRead(GPIOCAR) << 2);
   if (wheelPosCode >= 7) wheelPosCode = DEVICENAMECODE; // set from configuration
   
-  switch (wheelPosCode) {
-    case 0: sprintf(wheelPos, "FL"); break;
-    case 1: sprintf(wheelPos, "FR"); break;
-    case 2: sprintf(wheelPos, "RL"); break;
-    case 3: sprintf(wheelPos, "RR"); break;
-    case 4: sprintf(wheelPos, "F "); break;
-    case 5: sprintf(wheelPos, "F "); break;
-    case 6: sprintf(wheelPos, "R "); break;
-    case 7: sprintf(wheelPos, "  "); break;
-    default: sprintf(wheelPos, "??"); break;
-  }
-  strncpy(deviceNameSuffix, wheelPos, 3);
+  sprintf(wheelPos, "%s%s",
+          configuration.sensor_1.position.rear ? "R": "F",
+          configuration.sensor_1.position.bike ? "": configuration.sensor_1.position.right ? "R" : "L");
 #endif
 }
 
@@ -295,17 +259,17 @@ void printStatus(void) {
 #endif
 
 
-  debug("Rate: %.1fHz\tV: %dmV (%d%%) \tWheel: %s\tD: %s\t", (float)updateRate, vBattery, lipoPercentage, wheelPos, distSensor_str);
-  debug("Zoomrate: %.2f%% \tOutliers: %.2f%%\tMaxRowDelta: %.1f\tAvgTemp: %.1f\tAvgStdDev: %.1f\t", tempSensor.runningAvgZoomedFramesRate*100, tempSensor.runningAvgOutlierRate*100, tempSensor.maxRowDeltaTmp/10, tempSensor.movingAvgFrameTmp/10, tempSensor.movingAvgStdDevFrameTmp/10);
+  debug("Rate: %.1fHz\tV: %dmV (%d%%) \tWheel: %s\tD: %s\t", (float)status.updateRate, status.mv, status.lipoPercentage, wheelPos, distSensor_str);
+  debug("Zoomrate: %.2f%% \tOutliers: %.2f%%\tMaxRowDelta: %.1f\tAvgTemp: %.1f\tAvgStdDev: %.1f\t", tempSensor->runningAvgZoomedFramesRate*100, tempSensor->runningAvgOutlierRate*100, tempSensor->maxRowDeltaTmp/10, tempSensor->movingAvgFrameTmp/10, tempSensor->movingAvgStdDevFrameTmp/10);
   for (uint8_t i=0; i<FIS_X; i++) {
-    debug("T: %.1f\t",(float)tempSensor.measurement[i]/10);
+    debug("T: %.1f\t",(float)tempSensor->measurement[i]/10);
   }
   debug("\n");
 #if FIS_SENSOR2_PRESENT == 1
   debug("\t\t\t\t\tWheel: %s\tD: %s\t", wheelPos2, distSensor2_str);
-  debug("Zoomrate: %.2f%% \tOutliers: %.2f%%\tMaxRowDelta: %.1f\tAvgTemp: %.1f\tAvgStdDev: %.1f\t", tempSensor2.runningAvgZoomedFramesRate*100, tempSensor2.runningAvgOutlierRate*100, tempSensor2.maxRowDeltaTmp/10, tempSensor2.movingAvgFrameTmp/10, tempSensor2.movingAvgStdDevFrameTmp/10);
+  debug("Zoomrate: %.2f%% \tOutliers: %.2f%%\tMaxRowDelta: %.1f\tAvgTemp: %.1f\tAvgStdDev: %.1f\t", tempSensor2->runningAvgZoomedFramesRate*100, tempSensor2->runningAvgOutlierRate*100, tempSensor2->maxRowDeltaTmp/10, tempSensor2->movingAvgFrameTmp/10, tempSensor2->movingAvgStdDevFrameTmp/10);
   for (uint8_t i=0; i<FIS_X; i++) {
-    debug("T: %.1f\t",(float)tempSensor2.measurement[i]/10);
+    debug("T: %.1f\t",(float)tempSensor2->measurement[i]/10);
   }
   debug("\n");
 #endif
@@ -313,9 +277,9 @@ void printStatus(void) {
 
 void updateRefreshRate(void) {
   static long lastUpdate = 0;
-  updateRate = (float)measurementCycles / (millis()-lastUpdate) * 1000;
+  status.updateRate = (float)status.measurementCycles / (millis()-lastUpdate) * 1000;
   lastUpdate = millis();
-  measurementCycles = 0;
+  status.measurementCycles = 0;
 }
 
 void blinkOnDistChange(uint16_t distnew) {
@@ -348,4 +312,19 @@ void blinkOnTempChange(int16_t tempnew) {
     }
     tempold = tempnew;
   }
+}
+
+// Figure out final BleName based on the first sensor's position
+// 2do: second sensor pod support
+void updateBleName(void) {
+  sprintf(status.bleName, "%s%s%s",
+          configuration.bleNamePrefix,
+          configuration.sensor_1.position.rear ? "R": "F",
+          configuration.sensor_1.position.bike ? "": configuration.sensor_1.position.right ? "R" : "L");
+}
+
+// 2do: move back to Battery.h
+void updateBattery(void) {
+  status.mv = getVbat() + configuration.voltage_offset;
+  status.lipoPercentage = lipoPercent(status.mv);
 }

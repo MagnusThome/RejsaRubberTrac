@@ -1,16 +1,14 @@
-#include "Configuration.h"
+#ifndef TEMPSENSOR_H
+#define TEMPSENSOR_H
+
 #include <Arduino.h>
+#include "Configuration.h"
+#include "config.h"
 #include <Wire.h>
-#if FIS_SENSOR == FIS_MLX90621
-  #include "MLX90621.h"
-#elif FIS_SENSOR == FIS_MLX90640
-  #include "MLX90640.h"
-#endif
+#include "MLX90621.h"
+#include "MLX90640.h"
 
 #define ABS_ZERO -2732
-#define MIN_TMP_STDDEV ((25 + TEMPOFFSET) * 10 * TEMPSCALING) // minimum standard deviation we use for outlier detection (25 degrees Celsius)
-#define TMP_TRIGGER_DELTA_AMBIENT_TIRE (7 * 10 * TEMPSCALING) // delta temperature threshold for detecting a tire edge
-#define TMP_AVG_DELTA_AMBIENT_TIRE (5 * 10 * TEMPSCALING) // tire needs to be significantly warmer than ambient temp
 
 typedef struct {
   float  avgFrameTemp = 0; // after normalizing to one row; full width = avg(FIS_X)
@@ -30,15 +28,23 @@ typedef struct {
 class TireTreadTemperature
 {
   public:
-    int16_t measurement[FIS_X];
-    int16_t measurement_slope[FIS_X-1];
+    fis_t*    config;
+    status_t* status;
+
+// 2do: document contents better
+    int16_t measurement[32];
+    int16_t measurement_slope[31];
     int16_t measurement_16[16];
+    int16_t measurement_32[32];
+    int16_t  picture[128];
+    uint16_t pictureOffset;
     boolean validAutozoomFrame = false;
     uint8_t outerTireEdgePositionThisFrameViaSlopeMax; // i.e. the index of the first pixel _on_ the tire as detected for this measurement; corresponds to Max value in the Slope
     uint8_t innerTireEdgePositionThisFrameViaSlopeMin; // i.e. the index of the last pixel _on_ the tire as detected for this measurement; corresponds to Min value in the Slope
     float outerTireEdgePositionSmoothed; // outer = left = array index 0
     float innerTireEdgePositionSmoothed; // inner = right = array index FIS_X
-  
+    uint8_t   effective_rows;
+
     avgTemps_t avgsThisFrame;
     uint16_t totalOutliersThisFrame = 0;
   
@@ -46,18 +52,22 @@ class TireTreadTemperature
     double totalFrameCount = 0.0;
     float runningAvgOutlierRate = 0.0;
     float runningAvgZoomedFramesRate = 0.0;
-    float movingAvgFrameTmp = (40.0 + TEMPOFFSET) * 10 * TEMPSCALING; // init value = 40 degrees Celsius
-    float movingAvgStdDevFrameTmp = MIN_TMP_STDDEV;
+    float movingAvgFrameTmp = 0.0; // init value = 40 degrees Celsius
+    float movingAvgStdDevFrameTmp = 0.0;
     float movingAvgRowDeltaTmp = 0.0; // delta between all lowest row values vs. all highest row values of the frames
     float maxRowDeltaTmp = 0.0; // maximum of the moving average to detect shaded rows through increasing deltas with increasingly warm tire temps vs. constantly cold bodywork
     
-    boolean initialise(TwoWire *thisI2c = &Wire, char *wheelPos = NULL, int fisRefrate = -1);
+    boolean initialise(fis_t* _config, status_t* _status, TwoWire *thisI2c = &Wire, char *wheelPos = NULL);
     void measure();
     
   private:
     FISDevice* thisFISDevice;
     TwoWire *thisWire;
   
+    float minTempStdDev; // minimum standard deviation we use for outlier detection (25 degrees Celsius)
+    float tempTriggerDeltaAmbientTire; // delta temperature threshold for detecting a tire edge
+    float tempAvgDeltaAmbientTire; // tire needs to be significantly warmer than ambient temp
+
     int16_t calculateColumnTemperature(int16_t column_content[], uint8_t size);
     void interpolate(uint8_t startColumn, uint8_t endColumn, int16_t result[]);
     void calculateSlope(int16_t result[]);
@@ -71,3 +81,5 @@ class TireTreadTemperature
     float cumulativeProbability(float val, float avg, float stdDev);
     uint16_t removeOutliersChauvenet(int16_t *arr, int size);
 };
+
+#endif

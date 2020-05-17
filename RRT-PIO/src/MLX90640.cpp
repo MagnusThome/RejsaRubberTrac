@@ -72,8 +72,7 @@ void MLX90640::measure() {
   //Vdd = MLX90640_GetVdd(mlx90640Frame, &mlx90640);
   //int subpage = MLX90640_GetSubPageNumber(mlx90640Frame);
   Tambient = MLX90640_GetTa(mlx90640Frame, &mlx90640);
-  float tr = Tambient - TA_SHIFT; //Reflected temperature based on the sensor ambient temperature
-  float emissivity = 1;
+  float tr = Tambient; //Reflected temperature based on the sensor ambient temperature
   MLX90640_CalculateTo(mlx90640Frame, &mlx90640, emissivity, tr, temperatures);
 
   measurementCycles++;
@@ -83,10 +82,14 @@ float MLX90640::getTemperature(int num) {
   if ((num >= 0) && (num < 768)) {
     return temperatures[num];
   } else {
-    return 0;
+    return 0.0;
   }
 }
 
 float MLX90640::getPixelTemperature(uint8_t x, uint8_t y) {
-  return getTemperature((y*FIS_X+IGNORE_TOP_ROWS*FIS_X+x) + TEMPOFFSET) * 10 * TEMPSCALING; // MLX90640 iterates in rows
+  return getTemperature(y*MLX90640_X+x); // MLX90640 iterates in rows
+}
+
+float MLX90640::getAmbient() {
+  return Tambient;
 }

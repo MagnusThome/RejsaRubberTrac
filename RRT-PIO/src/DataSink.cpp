@@ -5,6 +5,10 @@ BLEService *BLEServiceDataSink::servicesForAdvertising[4];
 uint8_t BLEServiceDataSink::serviceCountForAdvertising;
 boolean BLEServiceDataSink::deviceIsAlreadyInitialized;
 boolean BLEServiceDataSink::deviceIsAlreadyAdvertising;
+config_t TrackDayApp::datapackConfig;
+boolean TrackDayApp::didReceiveConfig;
+config_t TrackDayApp::bleConfig;
+BLECharacteristic* TrackDayApp::GATTconfig;
 
 #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
   BLEServer* Esp32BLEDataSink::thisBLEServer;
@@ -141,11 +145,13 @@ boolean Esp32BLEDataSink::isConnected() {
   return (connectedCount > 0);
 }
 
-boolean Esp32BLEDataSink::initializeBLEDevice(char bleName[]) {
+boolean Esp32BLEDataSink::initializeBLEDevice(config_t config, status_t status) {
   if (!deviceIsAlreadyInitialized) {
-    Serial.printf("Starting BLE device: %s\n", bleName);
-    BLEDevice::init(bleName);
+    Serial.printf("Starting BLE device: %s\n", status.bleName);
+    BLEDevice::init(status.bleName);
     thisBLEServer = BLEDevice::createServer();
+    BLEDevice::setPower(ESP_PWR_LVL_P7);
+    TrackDayApp::bleConfig = config;
     deviceIsAlreadyInitialized = true;
     return true;
   }
@@ -170,6 +176,7 @@ boolean Esp32BLEDataSink::startAdvertising() {
     thisBLEAdvertising->setMinPreferred(0x0);
     BLEDevice::startAdvertising();
     Serial.println("BLE device start successful, now we are advertising...");
+    TrackDayApp::setConfig(TrackDayApp::bleConfig);
     deviceIsAlreadyAdvertising = true;
     return true;
   }
@@ -177,18 +184,44 @@ boolean Esp32BLEDataSink::startAdvertising() {
     return false;
   }
 }
+
+void Esp32BLEDataSink::setDeviceName(status_t status) {
+  esp_bt_dev_set_device_name(status.bleName);
+}
 #endif
 
-void TrackDayApp::renderPacketTemperature(int16_t measurements[], uint8_t mirrorTire, one_t &FirstPacket, two_t &SecondPacket, thr_t &ThirdPacket) {
-  for(uint8_t x=0;x<8;x++){
-    uint8_t _x = x;
-    if (mirrorTire == 1) {
-      _x = 7-x;
-    }
-    FirstPacket.temps[_x]=measurements[x*2];
-    SecondPacket.temps[_x]=measurements[x*2 + 1];
-    ThirdPacket.temps[_x]=max(FirstPacket.temps[_x], SecondPacket.temps[_x]);
+boolean TrackDayApp::isConfigReceived() {
+  if (TrackDayApp::didReceiveConfig) {
+    TrackDayApp::didReceiveConfig = false;
+    return true;
   }
+  return false;
+}
+
+config_t* TrackDayApp::getBleConfig() {
+  return &TrackDayApp::bleConfig;
+}
+
+void TrackDayApp::setConfig(config_t config) {
+  TrackDayApp::GATTconfig->setValue((uint8_t*)&config, sizeof(datapackConfig));
+}
+
+void TrackDayApp::renderPacketTemperature(int16_t measurements[], one_t &FirstPacket, two_t &SecondPacket, thr_t &ThirdPacket) {
+  for (uint8_t x=0;x<8;x++) {
+    FirstPacket.temps[x]=measurements[x*2];
+    SecondPacket.temps[x]=measurements[x*2 + 1];
+    ThirdPacket.temps[x]=max(FirstPacket.temps[x], SecondPacket.temps[x]);
+  }
+}
+
+void TrackDayApp::renderPacketTemperature32(int16_t measurements[], preview_t &Packet, status_t* status) {
+  memcpy(&Packet.temps, &measurements[0], 64);
+  memcpy(&Packet.status, status, sizeof(status_t));
+}
+
+void TrackDayApp::renderPacketPicture(int16_t picture[], uint16_t offset, five_t &Packet) {
+  memcpy(&Packet.temps, &picture[0], 256);
+  Packet.offset = offset;
 }
 
 void TrackDayApp::renderPacketBattery(int vbattery, int percentage, two_t &SecondPacket) {
@@ -237,30 +270,61 @@ void Nrf52TrackDayApp::transmit(int16_t tempMeasurements[], uint8_t mirrorTire, 
 }
 
 #elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+class RRTServerCallbacks : public BLEServerCallbacks {
+    void onConnect(BLEServer* pServer) {
+      BLEDevice::startAdvertising();
+    };
+};
+
+class RRTCharCallbacks : public BLECharacteristicCallbacks {
+    void onWrite(BLECharacteristic *pCharacteristic) {
+      std::string rxValue = pCharacteristic->getValue();
+      Serial.printf("Received something with a length of %d\n", rxValue.length());
+      Serial.printf("Size of config is: %d\n", sizeof(config_t));
+      memcpy(&TrackDayApp::bleConfig, rxValue.c_str(), rxValue.length());
+      TrackDayApp::didReceiveConfig = true;
+    }
+};
+
 void Esp32TrackDayApp::initializeBLEService() {
-  TrackDayAppService = thisBLEServer->createService(BLEUUID(serviceUUID));
+  thisBLEServer->setCallbacks(new RRTServerCallbacks());
+  TrackDayAppService = thisBLEServer->createService(BLEUUID(serviceUUID),300);
   GATTone = TrackDayAppService->createCharacteristic(BLEUUID((uint16_t)0x0001), BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY );
   GATTtwo = TrackDayAppService->createCharacteristic(BLEUUID((uint16_t)0x0002), BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY );
   GATTthr = TrackDayAppService->createCharacteristic(BLEUUID((uint16_t)0x0003), BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY );
+  GATTfour = TrackDayAppService->createCharacteristic(BLEUUID((uint16_t)0x0004), BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY );
+  GATTfive = TrackDayAppService->createCharacteristic(BLEUUID((uint16_t)0x0005), BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY );
+  GATTconfig = TrackDayAppService->createCharacteristic(BLEUUID((uint16_t)0x0006), BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY | BLECharacteristic::PROPERTY_WRITE | BLECharacteristic::PROPERTY_INDICATE);
   GATTone->addDescriptor(new BLE2902());
   GATTtwo->addDescriptor(new BLE2902());
   GATTthr->addDescriptor(new BLE2902());
+  GATTfour->addDescriptor(new BLE2902());
+  GATTfive->addDescriptor(new BLE2902());
+  GATTconfig->addDescriptor(new BLE2902());
+  GATTconfig->setCallbacks(new RRTCharCallbacks());
   TrackDayAppService->start();
 
   BLEServiceDataSink::addServiceForAdvertising(TrackDayAppService);
 }
 
-void Esp32TrackDayApp::transmit(int16_t tempMeasurements[], uint8_t mirrorTire, int16_t distance, int vBattery, int lipoPercentage) {
+void Esp32TrackDayApp::transmit(TireTreadTemperature* tempsensor, SuspensionTravel* distsensor, status_t* status, config_t config) {
   if (isConnected()) {
-    renderPacketTemperature(tempMeasurements, mirrorTire, datapackOne, datapackTwo, datapackThr);
-    renderPacketBattery(vBattery, lipoPercentage, datapackTwo);
-    datapackOne.distance = datapackThr.distance = distance;
+    renderPacketTemperature(tempsensor->measurement_16, datapackOne, datapackTwo, datapackThr);
+    renderPacketTemperature32(tempsensor->measurement_32, datapackFour, status);
+    renderPacketPicture(tempsensor->picture, tempsensor->pictureOffset, datapackFive);
+    renderPacketBattery(status->mv, status->lipoPercentage, datapackTwo);
+    datapackOne.distance = datapackThr.distance = distsensor->distance;
+    
     GATTone->setValue((uint8_t*)&datapackOne, sizeof(datapackOne));
     GATTtwo->setValue((uint8_t*)&datapackTwo, sizeof(datapackTwo));
     GATTthr->setValue((uint8_t*)&datapackThr, sizeof(datapackThr));
+    GATTfour->setValue((uint8_t*)&datapackFour, sizeof(datapackFour));
+    GATTfive->setValue((uint8_t*)&datapackFive, sizeof(datapackFive));
     GATTone->notify();
     GATTtwo->notify();
     GATTthr->notify();
+    GATTfour->notify();
+    GATTfive->notify();
 
     measurementCycles++;
   }

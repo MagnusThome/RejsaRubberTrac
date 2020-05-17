@@ -56,8 +56,3 @@ int getVbat(void) {
 #endif
   return adcRead * MILLIVOLTFULLSCALE * BATRESISTORCOMP / STEPSFULLSCALE;
 }
-
-void updateBattery(void) {
-  vBattery = getVbat();
-  lipoPercentage = lipoPercent(vBattery);
-}

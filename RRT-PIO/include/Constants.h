@@ -4,8 +4,8 @@
 
 // FIS identifiers
 #define FIS_DUMMY    0
-#define FIS_MLX90621 1
-#define FIS_MLX90640 2
+#define FIS_MLX90640 1
+#define FIS_MLX90621 2
 
 // Distance sensor identifiers
 #define DIST_NONE    0

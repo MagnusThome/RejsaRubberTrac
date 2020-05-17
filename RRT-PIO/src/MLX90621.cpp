@@ -29,6 +29,10 @@ boolean MLX90621::isConnected() {
   return present;
 }
 
+void MLX90621::measure() {
+	measure(true);
+}
+
 void MLX90621::measure(bool calculate_temps) {
 	if (checkConfig()) {
 		readEEPROM();
@@ -50,12 +54,12 @@ float MLX90621::getTemperature(int num) {
 	if ((num >= 0) && (num < 64)) {
 		return temperatures[num];
 	} else {
-		return 0;
+		return 0.0;
 	}
 }
 
 float MLX90621::getPixelTemperature(uint8_t x, uint8_t y) {
-  return getTemperature((y+IGNORE_TOP_ROWS+x*FIS_Y) + TEMPOFFSET) * 10 * TEMPSCALING; // MLX90621 iterates in columns
+  return getTemperature((y+x*MLX90621_Y)); // MLX90621 iterates in columns
 }
 
 float MLX90621::getAmbient() {
@@ -131,7 +135,9 @@ void MLX90621::calculateTA(void) {
 
 void MLX90621::preCalculateConstants() {
 	resolution_comp = pow(2.0, (3 - resolution));
-	emissivity = unsigned_16(eepromData[CAL_EMIS_H], eepromData[CAL_EMIS_L]) / 32768.0;
+	// vvvvvv  change for configurable emissivity  vvvvvv
+	// emissivity = unsigned_16(eepromData[CAL_EMIS_H], eepromData[CAL_EMIS_L]) / 32768.0;
+	// ^^^^^^  change for configurable emissivity  ^^^^^^
 	a_common = twos_16(eepromData[CAL_ACOMMON_H], eepromData[CAL_ACOMMON_L]);
 	a_i_scale = (int16_t)(eepromData[CAL_AI_SCALE] & 0xF0) >> 4;
 	b_i_scale = (int16_t) eepromData[CAL_BI_SCALE] & 0x0F;
