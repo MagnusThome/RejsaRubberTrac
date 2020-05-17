@@ -86,6 +86,7 @@ if (config->autozoom) {
   calculateSlope(measurement_slope);
   getMinMaxSlopePosition();
   validAutozoomFrame = checkAutozoomValidityAndSetAvgTemps();
+  status->sensor_stat_1.autozoom_stat.lock = validAutozoomFrame;
   if (validAutozoomFrame) {
     float leftStepSize = abs((outerTireEdgePositionThisFrameViaSlopeMax-outerTireEdgePositionSmoothed)/4);
     float rightStepSize = abs((innerTireEdgePositionThisFrameViaSlopeMin-innerTireEdgePositionSmoothed)/4);
@@ -97,6 +98,9 @@ if (config->autozoom) {
     if (outerTireEdgePositionSmoothed < 0) innerTireEdgePositionSmoothed = 0;
     if (outerTireEdgePositionSmoothed > config->x) outerTireEdgePositionSmoothed = 32;
     if (innerTireEdgePositionSmoothed > config->x) innerTireEdgePositionSmoothed = 32;
+    
+    // Serial.printf("lock: %d\touter: %f=>%u (delta: %f)\tinner: %f=>%u (delta: %f)\n", validAutozoomFrame, outerTireEdgePositionSmoothed, outerTireEdgePositionThisFrameViaSlopeMax, leftStepSize, innerTireEdgePositionSmoothed, innerTireEdgePositionThisFrameViaSlopeMin, rightStepSize);
+    
     status->sensor_stat_1.autozoom_stat.innerEdge = round(innerTireEdgePositionSmoothed*10);
     status->sensor_stat_1.autozoom_stat.outerEdge = round(outerTireEdgePositionSmoothed*10);
   }
