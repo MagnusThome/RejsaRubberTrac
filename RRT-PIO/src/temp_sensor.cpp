@@ -99,12 +99,12 @@ if (config->autozoom) {
     if (outerTireEdgePositionSmoothed > config->x) outerTireEdgePositionSmoothed = 32;
     if (innerTireEdgePositionSmoothed > config->x) innerTireEdgePositionSmoothed = 32;
     
-    Serial.printf("lock: %d\touter: %f=>%u (delta: %f)\tinner: %f=>%u (delta: %f)\n", validAutozoomFrame, outerTireEdgePositionSmoothed, outerTireEdgePositionThisFrameViaSlopeMax, leftStepSize, innerTireEdgePositionSmoothed, innerTireEdgePositionThisFrameViaSlopeMin, rightStepSize);
+    // Serial.printf("lock: %d\touter: %f=>%u (delta: %f)\tinner: %f=>%u (delta: %f)\n", validAutozoomFrame, outerTireEdgePositionSmoothed, outerTireEdgePositionThisFrameViaSlopeMax, leftStepSize, innerTireEdgePositionSmoothed, innerTireEdgePositionThisFrameViaSlopeMin, rightStepSize);
     
     status->sensor_stat_1.autozoom_stat.innerEdge = round(innerTireEdgePositionSmoothed*10);
     status->sensor_stat_1.autozoom_stat.outerEdge = round(outerTireEdgePositionSmoothed*10);
   } else
-    Serial.printf("autozoom fail reason: %d\n", status->sensor_stat_1.autozoom_stat.autozoomFailReason);
+    // Serial.printf("autozoom fail reason: %d (outer: %u, inner: %u)\n", status->sensor_stat_1.autozoom_stat.autozoomFailReason, outerTireEdgePositionThisFrameViaSlopeMax, innerTireEdgePositionThisFrameViaSlopeMin);
 } else {
     avgsThisFrame.avgFrameTemp = getAverage(measurement, config->x);
 }
@@ -165,8 +165,7 @@ boolean TireTreadTemperature::checkAutozoomValidityAndSetAvgTemps() {
   float avgTireTempThisFrame = 0.0;
   float avgInnerAmbientThisFrame = 0.0;
   float avgOuterAmbientThisFrame = 0.0;
-  float mlxAmbientTemp = (float)status->sensor_stat_1.ambient_t;
-
+  
   avgsThisFrame.avgFrameTemp = getAverage(measurement, config->x);
   avgsThisFrame.stdDevFrameTemp = getStdDev(measurement, config->x);
 
@@ -201,11 +200,11 @@ boolean TireTreadTemperature::checkAutozoomValidityAndSetAvgTemps() {
   avgTireTempThisFrame = avgTireTempThisFrame / tireWidthThisFrame;
   avgInnerAmbientThisFrame = avgInnerAmbientThisFrame / outerTireEdgePositionThisFrameViaSlopeMax;
   avgOuterAmbientThisFrame = avgOuterAmbientThisFrame / (config->x-innerTireEdgePositionThisFrameViaSlopeMin-1);
-  if (avgTireTempThisFrame - avgInnerAmbientThisFrame < tempAvgDeltaAmbientTire) {
+  if ((avgTireTempThisFrame - avgInnerAmbientThisFrame < tempAvgDeltaAmbientTire) && (innerTireEdgePositionThisFrameViaSlopeMin < (config->x-7))) { // if the tire edge is closing in on the sensor FOV, we cannot reasonable determine the ambient temperature any longer => we accept the slope position in a small window near the FOV edge, even if the ambient delta threshold does not hold
     status->sensor_stat_1.autozoom_stat.autozoomFailReason = AMBIENT_DELTA_TOO_SMALL_INNER;
     return false; // Tire is not significantly hotter than inner ambient
   }
-  if (avgTireTempThisFrame - avgOuterAmbientThisFrame < tempAvgDeltaAmbientTire) {
+  if ((avgTireTempThisFrame - avgOuterAmbientThisFrame < tempAvgDeltaAmbientTire) && (outerTireEdgePositionThisFrameViaSlopeMax > 6)) {
     status->sensor_stat_1.autozoom_stat.autozoomFailReason = AMBIENT_DELTA_TOO_SMALL_OUTER;
     return false; // Tire is not significantly hotter than outer ambient
   }
