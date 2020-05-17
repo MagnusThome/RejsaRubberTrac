@@ -99,11 +99,12 @@ if (config->autozoom) {
     if (outerTireEdgePositionSmoothed > config->x) outerTireEdgePositionSmoothed = 32;
     if (innerTireEdgePositionSmoothed > config->x) innerTireEdgePositionSmoothed = 32;
     
-    // Serial.printf("lock: %d\touter: %f=>%u (delta: %f)\tinner: %f=>%u (delta: %f)\n", validAutozoomFrame, outerTireEdgePositionSmoothed, outerTireEdgePositionThisFrameViaSlopeMax, leftStepSize, innerTireEdgePositionSmoothed, innerTireEdgePositionThisFrameViaSlopeMin, rightStepSize);
+    Serial.printf("lock: %d\touter: %f=>%u (delta: %f)\tinner: %f=>%u (delta: %f)\n", validAutozoomFrame, outerTireEdgePositionSmoothed, outerTireEdgePositionThisFrameViaSlopeMax, leftStepSize, innerTireEdgePositionSmoothed, innerTireEdgePositionThisFrameViaSlopeMin, rightStepSize);
     
     status->sensor_stat_1.autozoom_stat.innerEdge = round(innerTireEdgePositionSmoothed*10);
     status->sensor_stat_1.autozoom_stat.outerEdge = round(outerTireEdgePositionSmoothed*10);
-  }
+  } else
+    Serial.printf("autozoom fail reason: %d\n", status->sensor_stat_1.autozoom_stat.autozoomFailReason);
 } else {
     avgsThisFrame.avgFrameTemp = getAverage(measurement, config->x);
 }
@@ -164,14 +165,28 @@ boolean TireTreadTemperature::checkAutozoomValidityAndSetAvgTemps() {
   float avgTireTempThisFrame = 0.0;
   float avgInnerAmbientThisFrame = 0.0;
   float avgOuterAmbientThisFrame = 0.0;
-  
+  float mlxAmbientTemp = (float)status->sensor_stat_1.ambient_t;
+
   avgsThisFrame.avgFrameTemp = getAverage(measurement, config->x);
   avgsThisFrame.stdDevFrameTemp = getStdDev(measurement, config->x);
-  if (measurement_slope[innerTireEdgePositionThisFrameViaSlopeMin] > -tempTriggerDeltaAmbientTire) return false;
-  if (measurement_slope[outerTireEdgePositionThisFrameViaSlopeMax-1] < tempTriggerDeltaAmbientTire) return false;
-  if (innerTireEdgePositionThisFrameViaSlopeMin < outerTireEdgePositionThisFrameViaSlopeMax) return false; // Inner or outer edge of tire out of camera view
-  if ((innerTireEdgePositionThisFrameViaSlopeMin-outerTireEdgePositionThisFrameViaSlopeMax+1) < AUTOZOOM_MINIMUM_TIRE_WIDTH) return false; // Too thin tire
-  
+
+  if ((innerTireEdgePositionThisFrameViaSlopeMin-outerTireEdgePositionThisFrameViaSlopeMax+1) < AUTOZOOM_MINIMUM_TIRE_WIDTH) {
+    status->sensor_stat_1.autozoom_stat.autozoomFailReason = TIRE_TOO_THIN;
+    return false;
+  }
+  if (measurement_slope[innerTireEdgePositionThisFrameViaSlopeMin] > -tempTriggerDeltaAmbientTire) {
+    status->sensor_stat_1.autozoom_stat.autozoomFailReason = SLOPE_DELTA_TEMP_TOO_SMALL_INNER;
+    return false;
+  }
+  if (measurement_slope[outerTireEdgePositionThisFrameViaSlopeMax-1] < tempTriggerDeltaAmbientTire) {
+    status->sensor_stat_1.autozoom_stat.autozoomFailReason = SLOPE_DELTA_TEMP_TOO_SMALL_OUTER;
+    return false;
+  }
+  if (innerTireEdgePositionThisFrameViaSlopeMin < outerTireEdgePositionThisFrameViaSlopeMax) {
+    status->sensor_stat_1.autozoom_stat.autozoomFailReason = EDGE_NOT_IN_FOV;
+    return false; // Inner or outer edge of tire out of camera view
+  }
+
   for (uint8_t i=0; i<config->x; i++) {
     if (i < outerTireEdgePositionThisFrameViaSlopeMax) {
       avgOuterAmbientThisFrame += measurement[i];
@@ -186,8 +201,14 @@ boolean TireTreadTemperature::checkAutozoomValidityAndSetAvgTemps() {
   avgTireTempThisFrame = avgTireTempThisFrame / tireWidthThisFrame;
   avgInnerAmbientThisFrame = avgInnerAmbientThisFrame / outerTireEdgePositionThisFrameViaSlopeMax;
   avgOuterAmbientThisFrame = avgOuterAmbientThisFrame / (config->x-innerTireEdgePositionThisFrameViaSlopeMin-1);
-  if (avgTireTempThisFrame - avgInnerAmbientThisFrame < tempAvgDeltaAmbientTire) return false; // Tire is not significantly hotter than ambient
-  if (avgTireTempThisFrame - avgOuterAmbientThisFrame < tempAvgDeltaAmbientTire) return false; // Tire is not significantly hotter than ambient
+  if (avgTireTempThisFrame - avgInnerAmbientThisFrame < tempAvgDeltaAmbientTire) {
+    status->sensor_stat_1.autozoom_stat.autozoomFailReason = AMBIENT_DELTA_TOO_SMALL_INNER;
+    return false; // Tire is not significantly hotter than inner ambient
+  }
+  if (avgTireTempThisFrame - avgOuterAmbientThisFrame < tempAvgDeltaAmbientTire) {
+    status->sensor_stat_1.autozoom_stat.autozoomFailReason = AMBIENT_DELTA_TOO_SMALL_OUTER;
+    return false; // Tire is not significantly hotter than outer ambient
+  }
 
   avgsThisFrame.avgTireTemp = avgTireTempThisFrame;
   
@@ -209,6 +230,7 @@ boolean TireTreadTemperature::checkAutozoomValidityAndSetAvgTemps() {
   avgsThisFrame.avgInnerTireTemp = avgInnerTireTempThisFrame / floor(tireWidthThisFrame/3);
   avgsThisFrame.avgOuterAmbientTemp = avgOuterAmbientThisFrame;
   avgsThisFrame.avgInnerAmbientTemp = avgInnerAmbientThisFrame;
+  status->sensor_stat_1.autozoom_stat.autozoomFailReason = AUTOZOOM_SUCCESSFUL;
   return true;
 }
 

@@ -46,6 +46,7 @@ typedef struct {
     boolean  lock;
     uint16_t innerEdge;
     uint16_t outerEdge;
+    uint8_t  autozoomFailReason;
 } autozoom_stat_t;
 
 typedef struct {

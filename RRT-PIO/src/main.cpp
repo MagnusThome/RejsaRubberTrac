@@ -259,12 +259,12 @@ void printStatus(void) {
 #endif
 
 
-  debug("Rate: %.1fHz\tV: %dmV (%d%%) \tWheel: %s\tD: %s\t", (float)status.updateRate, status.mv, status.lipoPercentage, wheelPos, distSensor_str);
-  debug("Zoomrate: %.2f%% \tOutliers: %.2f%%\tMaxRowDelta: %.1f\tAvgTemp: %.1f\tAvgStdDev: %.1f\t", tempSensor->runningAvgZoomedFramesRate*100, tempSensor->runningAvgOutlierRate*100, tempSensor->maxRowDeltaTmp/10, tempSensor->movingAvgFrameTmp/10, tempSensor->movingAvgStdDevFrameTmp/10);
-  for (uint8_t i=0; i<FIS_X; i++) {
-    debug("T: %.1f\t",(float)tempSensor->measurement[i]/10);
-  }
-  debug("\n");
+  // debug("Rate: %.1fHz\tV: %dmV (%d%%) \tWheel: %s\tD: %s\t", (float)status.updateRate, status.mv, status.lipoPercentage, wheelPos, distSensor_str);
+  // debug("Zoomrate: %.2f%% \tOutliers: %.2f%%\tMaxRowDelta: %.1f\tAvgTemp: %.1f\tAvgStdDev: %.1f\t", tempSensor->runningAvgZoomedFramesRate*100, tempSensor->runningAvgOutlierRate*100, tempSensor->maxRowDeltaTmp/10, tempSensor->movingAvgFrameTmp/10, tempSensor->movingAvgStdDevFrameTmp/10);
+  // for (uint8_t i=0; i<FIS_X; i++) {
+  //   debug("T: %.1f\t",(float)tempSensor->measurement[i]/10);
+  // }
+  // debug("\n");
 #if FIS_SENSOR2_PRESENT == 1
   debug("\t\t\t\t\tWheel: %s\tD: %s\t", wheelPos2, distSensor2_str);
   debug("Zoomrate: %.2f%% \tOutliers: %.2f%%\tMaxRowDelta: %.1f\tAvgTemp: %.1f\tAvgStdDev: %.1f\t", tempSensor2->runningAvgZoomedFramesRate*100, tempSensor2->runningAvgOutlierRate*100, tempSensor2->maxRowDeltaTmp/10, tempSensor2->movingAvgFrameTmp/10, tempSensor2->movingAvgStdDevFrameTmp/10);
