@@ -103,8 +103,9 @@ if (config->autozoom) {
     
     status->sensor_stat_1.autozoom_stat.innerEdge = round(innerTireEdgePositionSmoothed*10);
     status->sensor_stat_1.autozoom_stat.outerEdge = round(outerTireEdgePositionSmoothed*10);
-  } else
+  } else {
     // Serial.printf("autozoom fail reason: %d (outer: %u, inner: %u)\n", status->sensor_stat_1.autozoom_stat.autozoomFailReason, outerTireEdgePositionThisFrameViaSlopeMax, innerTireEdgePositionThisFrameViaSlopeMin);
+  }
 } else {
     avgsThisFrame.avgFrameTemp = getAverage(measurement, config->x);
 }
@@ -248,25 +249,25 @@ uint16_t TireTreadTemperature::removeOutliersChauvenet(int16_t *arr, int size) {
     float prob = cumulativeProbability((float)arr[i], mean, stdDev);
     
     if ( prob < significanceLevel || prob > (1-significanceLevel) || arr[i] == ABS_ZERO || arr[i] == 0 || arr[i] == ((-1 + TEMPOFFSET) * 10 * TEMPSCALING) ) {
-      Serial.printf("OUTLIER DETECTED IN FRAME %.0f: Column temps: ", totalFrameCount);
-      for (uint8_t u=0; u < size; u++) {
-        Serial.print(arr[u]);
-        Serial.print(", ");
-      }
-      Serial.print("==> ");
-      Serial.printf("mean: %.1f, ", mean);
+      // Serial.printf("OUTLIER DETECTED IN FRAME %.0f: Column temps: ", totalFrameCount);
+      // for (uint8_t u=0; u < size; u++) {
+      //   Serial.print(arr[u]);
+      //   Serial.print(", ");
+      // }
+      // Serial.print("==> ");
+      // Serial.printf("mean: %.1f, ", mean);
       if (outlierCount < (size-1)) {
-        Serial.printf("Outlier value to be removed: %i (probability %.1f%%); ", arr[i], prob*100);
+        // Serial.printf("Outlier value to be removed: %i (probability %.1f%%); ", arr[i], prob*100);
         arr[i] = ABS_ZERO;
         outlierCount++;
       } else {
         // if we are about to remove the last array item, then we retain the one value closest to the mean
-        Serial.printf("Outlier value to be removed: %i (probability %.1f%%); Last column value set to: %i; ", arr[i], prob*100, valueClosestToMean);
+        // Serial.printf("Outlier value to be removed: %i (probability %.1f%%); Last column value set to: %i; ", arr[i], prob*100, valueClosestToMean);
         arr[i] = valueClosestToMean;
       }
     }
   }
-  if (outlierCount > 0) Serial.print("\n");
+  // if (outlierCount > 0) Serial.print("\n");
   return outlierCount;
 }
 
