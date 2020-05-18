@@ -150,9 +150,12 @@ boolean TireTreadTemperature::checkAutozoomValidityAndSetAvgTemps() {
   avgTireTempThisFrame = avgTireTempThisFrame / tireWidthThisFrame;
   avgInnerAmbientThisFrame = avgInnerAmbientThisFrame / outerTireEdgePositionThisFrameViaSlopeMax;
   avgOuterAmbientThisFrame = avgOuterAmbientThisFrame / (FIS_X-innerTireEdgePositionThisFrameViaSlopeMin-1);
-  if (avgTireTempThisFrame - avgInnerAmbientThisFrame < TMP_AVG_DELTA_AMBIENT_TIRE) return false; // Tire is not significantly hotter than ambient
-  if (avgTireTempThisFrame - avgOuterAmbientThisFrame < TMP_AVG_DELTA_AMBIENT_TIRE) return false; // Tire is not significantly hotter than ambient
-
+  if ((avgTireTempThisFrame - avgInnerAmbientThisFrame < TMP_AVG_DELTA_AMBIENT_TIRE) && (innerTireEdgePositionThisFrameViaSlopeMin < (FIS_X-7))) { // if the tire edge is closing in on the sensor FOV, we cannot reasonable determine the ambient temperature any longer => we accept the slope position in a small window near the FOV edge, even if the ambient delta threshold does not hold
+    return false; // Tire is not significantly hotter than inner ambient
+  }
+  if ((avgTireTempThisFrame - avgOuterAmbientThisFrame < TMP_AVG_DELTA_AMBIENT_TIRE) && (outerTireEdgePositionThisFrameViaSlopeMax > 6)) {
+    return false; // Tire is not significantly hotter than outer ambient
+  }
   avgsThisFrame.avgTireTemp = avgTireTempThisFrame;
   
   float avgOuterTireTempThisFrame = 0.0;
