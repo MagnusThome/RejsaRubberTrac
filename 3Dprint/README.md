@@ -23,7 +23,7 @@ The distance sensor though works with many clear transparant plastics and glass 
 
 In the current main housing there’s a small “plastic tower window holder” that with its height makes the transparent protection glass (or plastic) window to come right up to and touch the distance sensor housing. Make sure you solder the distance sensor at the exact right height so it actually touches the protection window! You can of course also heat the plastic slightly to make it soft and then adjust the height of the "tower".  
     
-<img src=images/Windows%20and%20LED-filaments.jpg>
+<img src=images/Windows%20and%20LED%20filaments.jpg>
 
 Rubber hat over power switch:  
   
