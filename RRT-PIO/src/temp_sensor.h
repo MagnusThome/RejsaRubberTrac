@@ -33,7 +33,7 @@ class TireTreadTemperature
 
 // 2do: document contents better
     int16_t measurement[32];
-    int16_t measurement_slope[31];
+    int16_t measurement_slope[31]; // How much warmer is the next-inner pixel? Slope of delta temperatures from next-inner to current pixel (measurement[i+1]-measurement[i]); outer = left = array index 0
     int16_t measurement_16[16];
     int16_t measurement_32[32];
     int16_t  picture[128];
