@@ -39,10 +39,10 @@ class TireTreadTemperature
     int16_t  picture[128];
     uint16_t pictureOffset;
     boolean validAutozoomFrame = false;
-    uint8_t outerTireEdgePositionThisFrameViaSlopeMax; // i.e. the index of the first pixel _on_ the tire as detected for this measurement; corresponds to Max value in the Slope
-    uint8_t innerTireEdgePositionThisFrameViaSlopeMin; // i.e. the index of the last pixel _on_ the tire as detected for this measurement; corresponds to Min value in the Slope
-    float outerTireEdgePositionSmoothed; // outer = left = array index 0
-    float innerTireEdgePositionSmoothed; // inner = right = array index FIS_X
+    uint8_t outerTireEdgePosRaw; // The array index of the first pixel _on_ the tire as detected for this frame; corresponds to Max value in the Slope; this index value will be used as input for smoothing; outer = left = array index 0
+    uint8_t innerTireEdgePosRaw; // The array index of the last pixel _on_ the tire as detected for this frame; corresponds to Min value in the Slope; this index value will be used as input for smoothing; inner = right = array index FIS_X
+    float outerTireEdgePos; // The array index of the first pixel _on_ the tire as smoothed/filtered from the previous few valid autozoom frames; this smoothed index value is used to determine the zoomed tire for this frame; outer = left = array index 0
+    float innerTireEdgePos; // The array index of the last pixel _on_ the tire as smoothed/filtered from the previous few valid autozoom frames; this smoothed index value is used to determine the zoomed tire for this frame; inner = right = array index FIS_X
     uint8_t   effective_rows;
 
     avgTemps_t avgsThisFrame;
