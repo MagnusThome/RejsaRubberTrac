@@ -99,12 +99,13 @@ if (config->autozoom) {
     if (outerTireEdgePositionSmoothed > config->x) outerTireEdgePositionSmoothed = FIS_X;
     if (innerTireEdgePositionSmoothed > config->x) innerTireEdgePositionSmoothed = FIS_X;
     
-    Serial.printf("lock: %d\touter: %f=>%u (delta: %f)\tinner: %f=>%u (delta: %f)\n", validAutozoomFrame, outerTireEdgePositionSmoothed, outerTireEdgePositionThisFrameViaSlopeMax, leftStepSize, innerTireEdgePositionSmoothed, innerTireEdgePositionThisFrameViaSlopeMin, rightStepSize);
+    // Serial.printf("lock: %d\touter: %f=>%u (delta: %f)\tinner: %f=>%u (delta: %f)\n", validAutozoomFrame, outerTireEdgePositionSmoothed, outerTireEdgePositionThisFrameViaSlopeMax, leftStepSize, innerTireEdgePositionSmoothed, innerTireEdgePositionThisFrameViaSlopeMin, rightStepSize);
     
     status->sensor_stat_1.autozoom_stat.innerEdge = round(innerTireEdgePositionSmoothed*10);
     status->sensor_stat_1.autozoom_stat.outerEdge = round(outerTireEdgePositionSmoothed*10);
-  } else
-    Serial.printf("autozoom fail reason: %d\n", status->sensor_stat_1.autozoom_stat.autozoomFailReason);
+  } else {
+    // Serial.printf("autozoom fail reason: %d (outer: %u, inner: %u)\n", status->sensor_stat_1.autozoom_stat.autozoomFailReason, outerTireEdgePositionThisFrameViaSlopeMax, innerTireEdgePositionThisFrameViaSlopeMin);
+  }
 } else {
     avgsThisFrame.avgFrameTemp = getAverage(measurement, config->x);
 }
@@ -165,8 +166,7 @@ boolean TireTreadTemperature::checkAutozoomValidityAndSetAvgTemps() {
   float avgTireTempThisFrame = 0.0;
   float avgInnerAmbientThisFrame = 0.0;
   float avgOuterAmbientThisFrame = 0.0;
-  float mlxAmbientTemp = (float)status->sensor_stat_1.ambient_t;
-
+  
   avgsThisFrame.avgFrameTemp = getAverage(measurement, config->x);
   avgsThisFrame.stdDevFrameTemp = getStdDev(measurement, config->x);
 
@@ -202,11 +202,11 @@ boolean TireTreadTemperature::checkAutozoomValidityAndSetAvgTemps() {
   avgTireTempThisFrame = avgTireTempThisFrame / tireWidthThisFrame;
   avgInnerAmbientThisFrame = avgInnerAmbientThisFrame / outerTireEdgePositionThisFrameViaSlopeMax;
   avgOuterAmbientThisFrame = avgOuterAmbientThisFrame / (config->x-innerTireEdgePositionThisFrameViaSlopeMin-1);
-  if (avgTireTempThisFrame - avgInnerAmbientThisFrame < tempAvgDeltaAmbientTire) {
+  if ((avgTireTempThisFrame - avgInnerAmbientThisFrame < tempAvgDeltaAmbientTire) && (innerTireEdgePositionThisFrameViaSlopeMin < (config->x-7))) { // if the tire edge is closing in on the sensor FOV, we cannot reasonable determine the ambient temperature any longer => we accept the slope position in a small window near the FOV edge, even if the ambient delta threshold does not hold
     status->sensor_stat_1.autozoom_stat.autozoomFailReason = AMBIENT_DELTA_TOO_SMALL_INNER;
     return false; // Tire is not significantly hotter than inner ambient
   }
-  if (avgTireTempThisFrame - avgOuterAmbientThisFrame < tempAvgDeltaAmbientTire) {
+  if ((avgTireTempThisFrame - avgOuterAmbientThisFrame < tempAvgDeltaAmbientTire) && (outerTireEdgePositionThisFrameViaSlopeMax > 6)) {
     status->sensor_stat_1.autozoom_stat.autozoomFailReason = AMBIENT_DELTA_TOO_SMALL_OUTER;
     return false; // Tire is not significantly hotter than outer ambient
   }
@@ -250,25 +250,25 @@ uint16_t TireTreadTemperature::removeOutliersChauvenet(int16_t *arr, int size) {
     float prob = cumulativeProbability((float)arr[i], mean, stdDev);
     
     if ( prob < significanceLevel || prob > (1-significanceLevel) || arr[i] == ABS_ZERO || arr[i] == 0 || arr[i] == ((-1 + TEMPOFFSET) * 10 * TEMPSCALING) ) {
-      Serial.printf("OUTLIER DETECTED IN FRAME %.0f: Column temps: ", totalFrameCount);
-      for (uint8_t u=0; u < size; u++) {
-        Serial.print(arr[u]);
-        Serial.print(", ");
-      }
-      Serial.print("==> ");
-      Serial.printf("mean: %.1f, ", mean);
+      // Serial.printf("OUTLIER DETECTED IN FRAME %.0f: Column temps: ", totalFrameCount);
+      // for (uint8_t u=0; u < size; u++) {
+      //   Serial.print(arr[u]);
+      //   Serial.print(", ");
+      // }
+      // Serial.print("==> ");
+      // Serial.printf("mean: %.1f, ", mean);
       if (outlierCount < (size-1)) {
-        Serial.printf("Outlier value to be removed: %i (probability %.1f%%); ", arr[i], prob*100);
+        // Serial.printf("Outlier value to be removed: %i (probability %.1f%%); ", arr[i], prob*100);
         arr[i] = ABS_ZERO;
         outlierCount++;
       } else {
         // if we are about to remove the last array item, then we retain the one value closest to the mean
-        Serial.printf("Outlier value to be removed: %i (probability %.1f%%); Last column value set to: %i; ", arr[i], prob*100, valueClosestToMean);
+        // Serial.printf("Outlier value to be removed: %i (probability %.1f%%); Last column value set to: %i; ", arr[i], prob*100, valueClosestToMean);
         arr[i] = valueClosestToMean;
       }
     }
   }
-  if (outlierCount > 0) Serial.print("\n");
+  // if (outlierCount > 0) Serial.print("\n");
   return outlierCount;
 }
 
