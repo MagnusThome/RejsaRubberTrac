@@ -107,8 +107,8 @@ class Esp32BLEDataSink : public BLEServiceDataSink {
 };
 #endif
 
-// All logic and data structures for creating the BLE packets following the protocol for the Track Day mobile Apps supporting RRT (Harry's Laptimer & RaceChrono)
-// ALso the RejsaRubberTrac iOS mobile App uses this implementation (datapackFour, datapackFive, datapackConfig)
+// Encapsulates all business logic and actual payload data structures, which is platform-independent, for creating the BLE packets following the protocol for the Track Day mobile Apps supporting RRT (Harry's Laptimer & RaceChrono)
+// Also the RejsaRubberTrac iOS mobile App uses this implementation (datapackFour, datapackFive, datapackConfig)
 class TrackDayApp {
   public:
     static boolean    didReceiveConfig;
@@ -153,6 +153,7 @@ class TrackDayApp {
 };
 
 #if BOARD == BOARD_NRF52_FEATHER
+// Adds nRF52-specific implementation to serve Track Day Apps from this platform.
 class Nrf52TrackDayApp : public Nrf52BLEDataSink, TrackDayApp {
   public:
     Nrf52TrackDayApp() {
@@ -170,6 +171,7 @@ class Nrf52TrackDayApp : public Nrf52BLEDataSink, TrackDayApp {
 };
 
 #elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+// Adds ESP32-specific implementation to serve Track Day Apps from this platform.
 class Esp32TrackDayApp : public Esp32BLEDataSink, TrackDayApp {
   public:
     Esp32TrackDayApp() {

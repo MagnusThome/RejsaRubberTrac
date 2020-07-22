@@ -44,8 +44,8 @@ typedef struct { // Global config structure
 
 typedef struct {
     boolean  lock;
-    uint16_t innerEdge;
-    uint16_t outerEdge;
+    uint16_t innerEdge; // index position translated from float & multiplied by 10 to have .1 pixel precision
+    uint16_t outerEdge; // index position translated from float & multiplied by 10 to have .1 pixel precision
     uint8_t  autozoomFailReason;
 } autozoom_stat_t;
 

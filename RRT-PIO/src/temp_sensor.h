@@ -11,10 +11,10 @@
 #define ABS_ZERO -2732
 
 typedef struct {
-  float  avgFrameTemp = 0; // after normalizing to one row; full width = avg(FIS_X)
+  float  avgFrameTemp = 0; // after normalizing to one row; full width = avg(calculateColumnTemperature(FIS_X))
   float  stdDevFrameTemp = 0; // after normalizing to one row; full width = avg(FIS_X)
-  float  avgMinFrameTemp = 0; // after normalizing to one row; full width = avg(FIS_X)
-  float  avgMaxFrameTemp = 0; // after normalizing to one row; full width = avg(FIS_X)
+  float  avgMinFrameTemp = 0; // the calculatory minimum temp row for the entire full width frame = avg(min(FIS_X))
+  float  avgMaxFrameTemp = 0; // the calculatory maximum temp row for the entire full width frame = avg(max(FIS_X))
 
   float  avgTireTemp = 0; // 0 if no valid autozoom frame
   float  avgOuterTireTemp = 0; // 1/3 of outermost tire pixels; 0 if no valid autozoom frame 
@@ -49,13 +49,13 @@ class TireTreadTemperature
     uint16_t totalOutliersThisFrame = 0;
   
     // Let's keep track of some history of this session...
-    double totalFrameCount = 0.0;
-    float runningAvgOutlierRate = 0.0;
-    float runningAvgZoomedFramesRate = 0.0;
-    float movingAvgFrameTmp = 0.0; // init value = 40 degrees Celsius
-    float movingAvgStdDevFrameTmp = 0.0;
-    float movingAvgRowDeltaTmp = 0.0; // delta between all lowest row values vs. all highest row values of the frames
-    float maxRowDeltaTmp = 0.0; // maximum of the moving average to detect shaded rows through increasing deltas with increasingly warm tire temps vs. constantly cold bodywork
+    double totalFrameCount = 0.0; // total number of frames processed in this session
+    float runningAvgOutlierRate = 0.0; // running average of outliers detected of this session as percentage of total pixels of the zoomed frame
+    float runningAvgZoomedFramesRate = 0.0; // running average of autozoomed frames (i.e. tire detected) of this session as percentage of all frames processed
+    float movingAvgFrameTmp = 0.0; // exponential moving average of the unzoomed frame temperature after normalizing to one row (init value = 40 degrees Celsius)
+    float movingAvgStdDevFrameTmp = 0.0; // exponential moving average of the unzoomed frame temperature standard deviations after normalizing to one row
+    float movingAvgRowDeltaTmp = 0.0; // exponential moving average of the delta between all lowest row values vs. all highest row values
+    float maxRowDeltaTmp = 0.0; // maximum of the moving average (movingAvgRowDeltaTmp) to detect shaded rows through increasing deltas with increasingly warm tire temps vs. constantly cold bodywork
     
     boolean initialise(fis_t* _config, status_t* _status, TwoWire *thisI2c = &Wire, char *wheelPos = NULL);
     void measure();
