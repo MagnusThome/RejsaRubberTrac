@@ -96,8 +96,8 @@ if (config->autozoom) {
     else innerTireEdgePositionSmoothed -= rightStepSize;
     if (innerTireEdgePositionSmoothed < 0) outerTireEdgePositionSmoothed = 0;
     if (outerTireEdgePositionSmoothed < 0) innerTireEdgePositionSmoothed = 0;
-    if (outerTireEdgePositionSmoothed > config->x) outerTireEdgePositionSmoothed = 32;
-    if (innerTireEdgePositionSmoothed > config->x) innerTireEdgePositionSmoothed = 32;
+    if (outerTireEdgePositionSmoothed > config->x) outerTireEdgePositionSmoothed = FIS_X;
+    if (innerTireEdgePositionSmoothed > config->x) innerTireEdgePositionSmoothed = FIS_X;
     
     Serial.printf("lock: %d\touter: %f=>%u (delta: %f)\tinner: %f=>%u (delta: %f)\n", validAutozoomFrame, outerTireEdgePositionSmoothed, outerTireEdgePositionThisFrameViaSlopeMax, leftStepSize, innerTireEdgePositionSmoothed, innerTireEdgePositionThisFrameViaSlopeMin, rightStepSize);
     
@@ -152,7 +152,7 @@ void TireTreadTemperature::getMinMaxSlopePosition() {
   for (uint8_t i=0; i<config->x-1; i++) {
     if (measurement_slope[i] > maxSlopeValue ) {
       maxSlopeValue = measurement_slope[i];
-      outerTireEdgePositionThisFrameViaSlopeMax = i+1; // we want the first pixel on the tire; make up for the shift between measurement_slope[] and measurement[]
+      outerTireEdgePositionThisFrameViaSlopeMax = i; // we want the first pixel on the tire; make up for the shift between measurement_slope[] and measurement[]
     }
     if (measurement_slope[i] < minSlopeValue ) {
       minSlopeValue = measurement_slope[i];
@@ -178,7 +178,8 @@ boolean TireTreadTemperature::checkAutozoomValidityAndSetAvgTemps() {
     status->sensor_stat_1.autozoom_stat.autozoomFailReason = SLOPE_DELTA_TEMP_TOO_SMALL_INNER;
     return false;
   }
-  if (measurement_slope[outerTireEdgePositionThisFrameViaSlopeMax-1] < tempTriggerDeltaAmbientTire) {
+  if (measurement_slope[outerTireEdgePositionThisFrameViaSlopeMax] < tempTriggerDeltaAmbientTire) {
+    Serial.printf("%d vs %f\n",measurement_slope[outerTireEdgePositionThisFrameViaSlopeMax], tempTriggerDeltaAmbientTire);
     status->sensor_stat_1.autozoom_stat.autozoomFailReason = SLOPE_DELTA_TEMP_TOO_SMALL_OUTER;
     return false;
   }

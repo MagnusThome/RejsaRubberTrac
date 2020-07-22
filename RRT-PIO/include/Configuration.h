@@ -34,13 +34,13 @@
 
 #define COLUMN_AGGREGATE   COLUMN_AGGREGATE_AVG_MINUS_OUTLIERS // Set column aggregation algorhytm, see Constants.h
 
-#define FIS_AUTOZOOM      1
-#define AUTOZOOM_MINIMUM_TIRE_WIDTH 16 // Minimum tire width for autozooming
+#define FIS_AUTOZOOM      0
+#define AUTOZOOM_MINIMUM_TIRE_WIDTH 10 // Minimum tire width for autozooming
 
-#define TEMPSCALING        1.00  // Default = 1.00
+#define TEMPSCALING        1000  // Default = 1000 / 1000 = 1.00
 #define TEMPOFFSET         0     // Default = 0      NOTE: in TENTHS of degrees Celsius --> TEMPOFFSET 10 --> 1 degree
                   
-#define EMISSIVITY        60     // Emissivity for FIS 95/100=0.95
+#define EMISSIVITY        95     // Emissivity for FIS 95/100=0.95
 #define MIRRORTIRE        0      // 0 = default
                                  // 1 = Mirror the tire (A), making the outside edge temps the inside edge temps
 #if FIS_SENSOR2_PRESENT == 1
