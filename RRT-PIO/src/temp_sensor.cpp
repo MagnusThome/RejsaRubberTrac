@@ -153,7 +153,7 @@ void TireTreadTemperature::getMinMaxSlopePosition() {
   for (uint8_t i=0; i<config->x-1; i++) {
     if (measurement_slope[i] > maxSlopeValue ) {
       maxSlopeValue = measurement_slope[i];
-      outerTireEdgePosRaw = i; // we want the first pixel on the tire; make up for the shift between measurement_slope[] and measurement[]
+      outerTireEdgePosRaw = i+1; // we want the first pixel on the tire; make up for the shift between measurement_slope[] and measurement[]
     }
     if (measurement_slope[i] < minSlopeValue ) {
       minSlopeValue = measurement_slope[i];
@@ -178,7 +178,7 @@ boolean TireTreadTemperature::checkAutozoomValidityAndSetAvgTemps() {
     status->sensor_stat_1.autozoom_stat.autozoomFailReason = SLOPE_DELTA_TEMP_TOO_SMALL_INNER;
     return false;
   }
-  if (measurement_slope[outerTireEdgePosRaw] < tempTriggerDeltaAmbientTire) {
+  if (measurement_slope[outerTireEdgePosRaw-1] < tempTriggerDeltaAmbientTire) { // slope at index [outerTireEdgePosRaw-1] contains the delta value for the tire edge
     Serial.printf("%d vs %f\n",measurement_slope[outerTireEdgePosRaw], tempTriggerDeltaAmbientTire);
     status->sensor_stat_1.autozoom_stat.autozoomFailReason = SLOPE_DELTA_TEMP_TOO_SMALL_OUTER;
     return false;
