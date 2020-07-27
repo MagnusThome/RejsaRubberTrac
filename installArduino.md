@@ -29,9 +29,9 @@ https://www.arduino.cc/en/Main/Software
 
 <img hspace="50" src="images/installArduinoIDE-4.gif">
 
-- Enter "vl53" in the search box and then install "Adafruit_VL53L0X"
+- Enter "vl53" in the search box and then install "VL53L0X by __Polulu__" 
 
-<img hspace="50" src="images/installArduinoIDE-5.gif">
+<img hspace="50" src="images/installArduinoIDE--5.gif">
 
 - If you're using the MLX90614, enter "90614" in the search box and then install "Adafruit MLX90614 Library" (not the MINI version)
 
