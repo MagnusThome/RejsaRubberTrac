@@ -29,9 +29,9 @@ https://www.arduino.cc/en/Main/Software
 
 <img hspace="50" src="images/installArduinoIDE-4.gif">
 
-- Enter "vl53" in the search box and then install "Adafruit_VL53L0X"
+- Enter "vl53" in the search box and then install "VL53L0X by __Polulu__" 
 
-<img hspace="50" src="images/installArduinoIDE-5.gif">
+<img hspace="50" src="images/installArduinoIDE--5.gif">
 
 - Connect the Adafruit Bluefruit board to your computer's USB and choose the corresponding COM port
 
