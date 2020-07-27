@@ -1,6 +1,6 @@
 #include <bluefruit.h>
 
-BLEService  mainService   = BLEService        (0x00000001000000fd8933990d6f411ff7);
+BLEService  mainService   = BLEService        (0x1ff7);
 BLECharacteristic GATTone = BLECharacteristic (0x01);
 BLECharacteristic GATTtwo = BLECharacteristic (0x02);
 BLECharacteristic GATTthr = BLECharacteristic (0x03);
