@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
+#include <VL53L0X.h>      // Polulu library
 #include "MLX90621.h"
-#include "Adafruit_VL53L0X.h"
 #include "ble_gatt.h"
 #include "adc_vbat.h"
 
@@ -9,32 +9,31 @@
 // -------------------------------------------------------------------------
 
 
-#define WHEELPOS 7        // DEFAULT is 7
-                          // 7 = "RejsaRubber" + four last bytes from the bluetooth MAC address
-
-                          // 0 = "RejsaRubberFL" + three last bytes from the bluetooth MAC address
-                          // 1 = "RejsaRubberFR" + three last bytes from the bluetooth MAC address
-                          // 2 = "RejsaRubberRL" + three last bytes from the bluetooth MAC address
-                          // 3 = "RejsaRubberRR" + three last bytes from the bluetooth MAC address
-                          // 5 = "RejsaRubberF" + one space + three last bytes from the bluetooth MAC address
-                          // 6 = "RejsaRubberR" + one space + three last bytes from the bluetooth MAC address
-                        
-                          // NOTE!!! THIS CAN BE OVERRIDDEN WITH HARDWARE CODING WITH GPIO PINS
+#define WHEELPOS 7            // DEFAULT is 7
+                              // 7 = "RejsaRubber" + four last bytes from the bluetooth MAC address
+      
+                              // 0 = "RejsaRubberFL" + three last bytes from the bluetooth MAC address
+                              // 1 = "RejsaRubberFR" + three last bytes from the bluetooth MAC address
+                              // 2 = "RejsaRubberRL" + three last bytes from the bluetooth MAC address
+                              // 3 = "RejsaRubberRR" + three last bytes from the bluetooth MAC address
+                              // 5 = "RejsaRubberF" + one space + three last bytes from the bluetooth MAC address
+                              // 6 = "RejsaRubberR" + one space + three last bytes from the bluetooth MAC address
+                              
+                              // NOTE!!! THIS CAN BE OVERRIDDEN WITH HARDWARE CODING WITH GPIO PINS
 
                     
-#define MIRRORTIRE 0      // 0 = default
-                          // 1 = Mirror the tire, making the outside edge temps the inside edge temps
+#define MIRRORTIRE 0          // 0 = default
+                              // 1 = Mirror the tire, making the outside edge temps the inside edge temps
 
-                          // NOTE!!! THIS CAN BE OVERRIDDEN WITH HARDWARE CODING WITH A GPIO PIN
+                              // NOTE!!! THIS CAN BE OVERRIDDEN WITH HARDWARE CODING WITH A GPIO PIN
                           
 
 
-#define DISTANCEOFFSET 0  // Write distance to tire in mm here to get logged distance data value centered around zero
-                          // If you leave this value here at 0 the distance value in the logs will always be positive numbers
+#define DISTANCEOFFSET 0      // Write distance to tire in mm here to get logged distance data value centered around zero
+                              // If you leave this value here at 0 the distance value in the logs will always be positive numbers
 
                           
-
-//#define DUMMYDATA       // Uncomment to enable transmission of fake random data for testing with no sensors needed
+//#define DUMMYDATA           // Uncomment to enable transmission of fake random data for testing with no sensors needed
 
 
 // -------------------------------------------------------------------------
@@ -71,7 +70,7 @@ typedef struct {
   uint8_t  protocol;         // version of protocol used
   uint8_t  unused;
   int16_t distance;          // millimeters
-  int16_t  temps[8];         // all 16 temp spots averaged together in pairs of two and two into 8 temp values (degrees Celsius x 10)
+  int16_t  temps[8];         // All 16 temp spots used as pairs of two each, max from each pair goes into these 8 temp values (degrees Celsius x 10)
 } thr_t;
 
 
@@ -79,17 +78,24 @@ one_t datapackOne;
 two_t datapackTwo;
 thr_t datapackThr;
 
+
+#define DISTMEASUREBUDGET 80  // Number between 20 and 100 (milliseconds)
+                              // Lower number can give a higher update rate of all data over Bluetooth (especially if only 8 temperatures are fetched)
+                              // Higher number reduces noise on the distance measurements considerably 
+
 uint8_t distSensorPresent;
 uint8_t macaddr[6];
 char bleName[19];
 uint8_t mirrorTire = 0;
 
 
-Adafruit_VL53L0X distSensor = Adafruit_VL53L0X();
+VL53L0X distSensor;
 MLX90621 tempSensor; 
 
 
+// ----------------------------------------
 // Function declarations
+
 uint8_t InitDistanceSensor(void);
 int16_t distanceFilter(int16_t);
 uint8_t getWheelPosCoding(void);
@@ -97,6 +103,8 @@ void setBLEname(uint8_t);
 void printStatus(void);
 void blinkOnTempChange(int16_t);
 void blinkOnDistChange(uint16_t);
+
+
 
 
 #ifdef DUMMYDATA
@@ -118,6 +126,9 @@ void setup(){
   pinMode(GPIOFRONT, INPUT_PULLUP);
   pinMode(GPIOCAR, INPUT_PULLUP);
   pinMode(GPIOMIRR, INPUT_PULLUP);
+
+  Serial.println("Starting I2C");
+  Wire.begin();
 
   Serial.println("Starting distance sensor");
   distSensorPresent = InitDistanceSensor();
@@ -182,20 +193,12 @@ void loop() {
 
   // - - D I S T A N C E - -
   if (distSensorPresent) {
-    VL53L0X_RangingMeasurementData_t measure;
-    if (distSensor.rangingTest(&measure, false) != VL53L0X_ERROR_NONE) {
-      datapackOne.distance = 0;                                           // SENSOR FAIL
-      Serial.println("Reset distance sensor");
-      InitDistanceSensor();
+    uint16_t distance = distSensor.readRangeContinuousMillimeters();
+    if (distance == 8190) {      // MEASURE FAIL (NO VISIBLE OBJECT)
+      datapackOne.distance = 0;
     }
     else {
-      int16_t distance = measure.RangeMilliMeter;
-      if (measure.RangeStatus == 4 || distance > 8190) {   // MEASURE FAIL
-        datapackOne.distance = 0;
-      }
-      else {
-        datapackOne.distance = distanceFilter(distance) - DISTANCEOFFSET;
-      }
+      datapackOne.distance = distanceFilter(distance) - DISTANCEOFFSET;
     }
   }
 
@@ -247,7 +250,13 @@ uint8_t InitDistanceSensor(void) {
   delay(50);
   digitalWrite(GPIODISTSENSORXSHUT, HIGH);
   delay(50);
-  return distSensor.begin(VL53L0X_I2C_ADDR, false); 
+  distSensor.setTimeout(150);
+  if (!distSensor.init()) {
+    return 0; 
+  }
+  distSensor.setMeasurementTimingBudget(DISTMEASUREBUDGET*1000);
+  distSensor.startContinuous();
+  return 1; 
 }
 
 
