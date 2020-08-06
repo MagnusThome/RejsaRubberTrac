@@ -117,7 +117,7 @@ https://learn.adafruit.com/bluefruit-nrf52-feather-learning-guide
 
 # How often can I get measurements?
 
-Depends. Measuring distance takes time, same with temperatures. And on top of that, with the current library used for Bluetooth communication, depending on how much data you're transmitting some delay is added too. So, __if you don't connect a distance sensor the temperatures are updated faster__. And if the application in the other end limits to subscribe to only eight temperature zones instead of all sixteen it will also all be faster. Compromises...
+Depends. Measuring distance takes time, same with temperatures. And on top of that, with the current library used for Bluetooth communication, depending on how much data you're transmitting some delay is added too. So, __if you don't connect a distance sensor the temperatures are updated faster__. And if the application in the other end limits itself to subscribe to only eight temperature zones instead of all sixteen it will also all be faster. Compromises...
 
 | Average speed 	| Data                       	|
 |---------------	|----------------------------	|
@@ -167,7 +167,7 @@ Search <a href="https://www.ebay.com/sch/i.html?_nkw=3.7V+lipo+battery+JST-PH+2.
 
 You can of course just create your own casing. Or you can 3D print one of the versions I've put together. There are some different options, either one box for the whole kit including battery. Or a separate smaller enclosure for the sensor components only, easier to place in the wheel well but necessitates a cable between the sensor and cpu/bluetooth units. There are also some different snap-in holders so it's easy to detach the sensor from the car to recharge it.
 
-All 3D print designs are available for download. If you or a friend have a 3D printer you can print them all yourself, otherwise there are numerous online print shops that will print and ship you the parts pretty cheap. I haven't used them myself but I got recommended www.3dhubs.com as an example.
+All 3D print designs are available for download. If you or a friend have a 3D printer you can print them all yourself, otherwise there are numerous online print shops that will print and ship you the parts pretty cheap. I haven't used them myself but I got recommended Craftcloud All3DP as an example.
 
 <a href="3Dprint/">**The 3D print enclosures page >>**</a>
 
