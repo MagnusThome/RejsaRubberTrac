@@ -65,11 +65,11 @@ Short holder tube for the wide angle temperature sensor, long tube for narrow an
   
 I made this snap in holder for my own car. I can reach the plastic inner fenders from within the engine bay so I made a small hole through them just for the sensors to look through and glued these snap in holders on top of the plastic inner fenders so the sensors view exactly the top of the front tires.  
   
-<img src=images/bmw-inner-fender-snap-in-holder.jpg>
+<img src=images/bmw-inner-fender-snap-in-holder-v2.jpg>
   
 # Separate sensor enclosure
 
-The mounting rings have three threaded plus three un-threaded holes. You need three M4 screws but normally you do not need any nuts. 
+This design might need some tweaking to be perfect. The mounting rings have three threaded plus three un-threaded holes. You need three M4 screws but normally you do not need any nuts. 
 
 The big hole in the middle of the ring is larger on one side and smaller on the other to fit the curvature of the round sensor housing.  
 
