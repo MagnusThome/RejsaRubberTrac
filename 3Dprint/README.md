@@ -56,6 +56,9 @@ Short holder tube for the wide angle temperature sensor, long tube for narrow an
 <img src=images/under_car_0.jpg>  
 <img src=images/under_car_1.jpg>  
 <img src=images/under_car_2.jpg>  
+<img src=images/under_car_4.jpg>  
+<img src=images/under_car_5.jpg>  
+<img src=images/under_car_6.jpg>  
 <img src=images/ALT.%20temp%20sensor%20mounting.jpg>  
 
 ## Snap-in holder (Inner fender for BMW M2) 
