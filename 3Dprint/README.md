@@ -25,6 +25,8 @@ In the current main housing there’s a small “plastic tower window holder” 
     
 <img src=images/Windows%20and%20LED%20filaments.jpg>
 
+The three short strings of clear 1,75mm diameter 3d print filament are placed above the cpu boards three status LEDs. The short pieces of filament simply leads the LED light so it is easily viewed on the outside of the housing. 
+
 Rubber hat over power switch:  
   
 <img src=images/switch%20rubber%20hat%20(cut%20down).jpg>  <img src=images/switch%20rubber%20hat%20(pull%20through).jpg>  
