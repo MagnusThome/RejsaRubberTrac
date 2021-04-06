@@ -10,17 +10,19 @@ For around $100 per wheel you can build your own wireless sensors to log your dr
 
 The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de>__Harry's Laptimer__</a> and <a href=http://www.racechrono.com>__Racechrono__</a> support RejsaRubberTrac!  
 
-Racechrono:  
+Racechrono Youtube:  
 
 <a href="https://www.youtube.com/watch?v=dpaOF7OZ8Pg"><img src=images/Racechrono%20beta%20video.png></a>
 
 
-Harry's Laptimer:  
+Harry's Laptimer Youtube:  
 
 <a href="http://www.youtube.com/watch?v=Yuy62oPXugs"><img src=images/earlyharrysbetayoutube.jpg></a>
   
   
-Racechrono temps in video and suspension movement logg graph:  
+Racechrono temps in video, temp and suspension movement logg graph:  
+
+<img src=images/Racechrono%20wheel%20temp%20graph.jpg>
   
 <img src=images/Racechrono%20wheel%20distance%20log.png>
   
