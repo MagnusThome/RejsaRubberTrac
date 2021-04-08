@@ -8,7 +8,7 @@
 #if BOARD == BOARD_NRF52_FEATHER
   #include <bluefruit.h>
   #include <ble_gap.h>
-#elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+#elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32 || BOARD == BOARD_ESP32_M5STICK
   #include <BLEDevice.h>
   #include <BLEServer.h>
   #include <BLEUtils.h>
@@ -87,7 +87,7 @@ class Nrf52BLEDataSink : public BLEServiceDataSink {
     static void disconnectCallback(uint16_t conn_handle, uint8_t reason);
 };
 
-#elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+#elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32 || BOARD == BOARD_ESP32_M5STICK
 // ESP32-specific initialization logic. Called only once(!), even if multiple BLE services are registered for advertising.
 class Esp32BLEDataSink : public BLEServiceDataSink {
   public:
@@ -140,7 +140,7 @@ class Nrf52TrackDayApp : public Nrf52BLEDataSink, TrackDayApp {
     BLECharacteristic  GATTthr;
 };
 
-#elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+#elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32 || BOARD == BOARD_ESP32_M5STICK
 class Esp32TrackDayApp : public Esp32BLEDataSink, TrackDayApp {
   public:
     Esp32TrackDayApp() {

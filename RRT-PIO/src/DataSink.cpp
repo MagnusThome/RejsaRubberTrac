@@ -6,7 +6,7 @@ uint8_t BLEServiceDataSink::serviceCountForAdvertising;
 boolean BLEServiceDataSink::deviceIsAlreadyInitialized;
 boolean BLEServiceDataSink::deviceIsAlreadyAdvertising;
 
-#if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+#if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32 || BOARD == BOARD_ESP32_M5STICK
   BLEServer* Esp32BLEDataSink::thisBLEServer;
   BLEAdvertising* Esp32BLEDataSink::thisBLEAdvertising;
 #endif
@@ -134,7 +134,7 @@ void Nrf52BLEDataSink::disconnectCallback(uint16_t conn_handle, uint8_t reason) 
   }
 }
 
-#elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+#elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32 || BOARD == BOARD_ESP32_M5STICK
 boolean Esp32BLEDataSink::isConnected() {
   int32_t connectedCount;
   connectedCount = thisBLEServer->getConnectedCount();
@@ -236,7 +236,7 @@ void Nrf52TrackDayApp::transmit(int16_t tempMeasurements[], uint8_t mirrorTire, 
   }
 }
 
-#elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+#elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32 || BOARD == BOARD_ESP32_M5STICK
 void Esp32TrackDayApp::initializeBLEService() {
   TrackDayAppService = thisBLEServer->createService(BLEUUID(serviceUUID));
   GATTone = TrackDayAppService->createCharacteristic(BLEUUID((uint16_t)0x0001), BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY );

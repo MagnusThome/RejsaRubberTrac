@@ -49,7 +49,7 @@ void setup(){
   while (!Serial); // Wait for Serial
   Serial.printf("\nBegin startup. Arduino version: %d\n", ARDUINO);
 
-#if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+#if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32 || BOARD == BOARD_ESP32_M5STICK
   Serial.printf("ESP32 IDF version: %s\n", esp_get_idf_version());
   analogReadResolution(12); //12 bits
   analogSetAttenuation(ADC_11db);  //For all pins
@@ -85,7 +85,7 @@ void setup(){
   }
 
 // I2C channel 1
-  #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+  #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32 || BOARD == BOARD_ESP32_M5STICK
     Wire.begin(GPIOSDA,GPIOSCL); // initialize I2C w/ I2C pins from config
   #else
     Wire.begin();
@@ -105,7 +105,7 @@ void setup(){
   debug("Starting temperature sensor for %s...\n", wheelPos);
   if (!tempSensor.initialise(&Wire, wheelPos, FIS_REFRESHRATE)) {
     // perform automatic system reboot to retry temp sensor initialization
-    #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+    #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32 || BOARD == BOARD_ESP32_M5STICK
       debug("Rebooting the MCU now...\n");
       ESP.restart();
     #elif BOARD == BOARD_NRF52_FEATHER
@@ -140,7 +140,7 @@ void setup(){
     debug("Starting temperature sensor 2 for %s...\n", wheelPos2);
     if (!tempSensor2.initialise(&Wire1, wheelPos2, FIS_REFRESHRATE)) {
       // perform automatic system reboot to retry temp sensor initialization
-      #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+      #if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32 || BOARD == BOARD_ESP32_M5STICK
         debug("Rebooting the MCU now...\n");
         ESP.restart();
       #endif
@@ -159,7 +159,7 @@ void setup(){
       debug("ERROR initializing BLE Device.\n");
     }
     thisTrackDayApp = new Nrf52TrackDayApp();
-  #elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+  #elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32 || BOARD == BOARD_ESP32_M5STICK
     if (!Esp32BLEDataSink::initializeBLEDevice(bleName)) {
       debug("ERROR initializing BLE Device.\n");
     }
@@ -172,7 +172,7 @@ void setup(){
     if (!Nrf52BLEDataSink::startAdvertising()) {
       debug("ERROR advertising BLE Services.\n");
     }
-  #elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32
+  #elif BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32 || BOARD == BOARD_ESP32_M5STICK
     if (!Esp32BLEDataSink::startAdvertising()) {
       debug("ERROR advertising BLE Services.\n");
     }

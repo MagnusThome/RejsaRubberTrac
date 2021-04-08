@@ -119,6 +119,22 @@
   #define GPIOFRONT           29  // GPIO pin number
   #define GPIOLEFT            13  // GPIO pin number
   #define GPIOMIRR            14  // GPIO pin number
+#elif BOARD == BOARD_ESP32_M5STICK
+  #define MILLIVOLTFULLSCALE  3300
+  #define STEPSFULLSCALE      4096
+  #define BATRESISTORCOMP     2.000 // Compensation for a resistor voltage divider between battery and ADC input pin
+  #define VBAT_PIN            35
+  #define GPIOLEDDIST         -1
+  #define GPIOLEDTEMP         10
+  #define GPIOSDA             32 // set I2C bus GPIO pins to HY2.0-4P Pins
+  #define GPIOSCL             33
+  #define GPIOSDA2            -1 // second I2C bus only available with LOLIN D32-based PCB
+  #define GPIOSCL2            -1
+  #define GPIODISTSENSORXSHUT -1
+  #define GPIOCAR             36          // GPIO pin number       //2do
+  #define GPIOFRONT           4           // GPIO pin number       //2do
+  #define GPIOLEFT            MOSI // =22 // GPIO pin number       //2do
+  #define GPIOMIRR            MISO // =23 // GPIO pin number       //2do
 #endif
 
 

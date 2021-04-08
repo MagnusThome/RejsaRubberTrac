@@ -23,7 +23,7 @@ uint8_t lipoPercent(float mvolts) {
 
 int getVbat(void) {
   double adcRead=0;
-#if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32 // Compensation for ESP32's crappy ADC -> https://bitbucket.org/Blackneron/esp32_adc/src/master/
+#if BOARD == BOARD_ESP32_FEATHER || BOARD == BOARD_ESP32_LOLIND32 || BOARD == BOARD_ESP32_M5STICK // Compensation for ESP32's crappy ADC -> https://bitbucket.org/Blackneron/esp32_adc/src/master/
   const double f1 = 1.7111361460487501e+001;
   const double f2 = 4.2319467860421662e+000;
   const double f3 = -1.9077375643188468e-002;

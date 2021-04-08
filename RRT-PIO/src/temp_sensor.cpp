@@ -5,6 +5,9 @@
 #include <Wire.h>
 #include "spline.h"
 
+#define M_SQRT2		1.41421356237309504880
+
+
 boolean TireTreadTemperature::initialise(TwoWire *thisI2c, char *wheelPos, int fisRefrate) {
   #if FIS_SENSOR == FIS_MLX90621
     thisFISDevice = new MLX90621();
