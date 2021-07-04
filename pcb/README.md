@@ -12,7 +12,7 @@ https://github.com/MagnusThome/RejsaRubberTrac/tree/master/pcb
 
 You can download the gerber files here and get boards done anywhere you want. Or you can order them here too, this is where I got my made. I get a small kickback if you order here but again, get them done wherever you want :-)
 
-https://www.pcbway.com/project/shareproject/RejsaRubberTrac_____v1_1.html
+https://www.pcbway.com/project/member/?bmbno=5B8F5C6E-CD51-47
   
 
 # Running from 12 volts
