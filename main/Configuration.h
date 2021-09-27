@@ -26,8 +26,19 @@
 #endif
 #define FIS_REFRESHRATE    16            // Sets the FIS refresh rate in Hz, MLX90640 should be 4 with nRF52, MLX90621 works at 16Hz
 
-#define IGNORE_TOP_ROWS    3     // Ignore this many rows from the top of the sensor
-#define IGNORE_BOTTOM_ROWS 3     // Ignore this many rows from the bottom of the sensor
+#if FIS_SENSOR == FIS_MLX90621
+  #define IGNORE_TOP_ROWS    0     // Ignore this many rows from the top of the sensor
+  #define IGNORE_BOTTOM_ROWS 0     // Ignore this many rows from the bottom of the sensor
+#elif FIS_SENSOR == FIS_MLX90640
+  #define IGNORE_TOP_ROWS    10
+  #define IGNORE_BOTTOM_ROWS 10
+#elif FIS_SENSOR == FIS_DUMMY
+  #define IGNORE_TOP_ROWS    0
+  #define IGNORE_BOTTOM_ROWS 0
+#elif FIS_SENSOR == FIS_AMG8833
+  #define IGNORE_TOP_ROWS    2
+  #define IGNORE_BOTTOM_ROWS 2
+#endif
 
 #define COLUMN_AGGREGATE   COLUMN_AGGREGATE_AVG_MINUS_OUTLIERS // Set column aggregation algorhytm, see Constants.h
 
