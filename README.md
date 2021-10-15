@@ -181,11 +181,11 @@ If you design your own case or make an updated variant of any of the 3D print do
 
 # Bluetooth device name
 
-The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the Bluetooth address, __this automatic name will work in most situations__, here's an example of what it can look like:
+The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the Bluetooth address, here's an example of what it can look like:
 ```
 "RejsaRubber6412051B" - for a device with MAC address CC:C9:64:12:05:1B
 ```
-If you want there's an option to include two letters in the name, designating a sensor for Front/Rear and Left/Right. Like FL, RL and so on. 
+For Harry's laptimer this above will suffice but for Racechrono you __must__ assign each board a tire position by including two letters in the name, designating a sensor for Front/Rear and Left/Right. Like FL, RL and so on. This is done either by strapping pins on the boards or by choosing this in the code.
 
 Default: "RejsaRubber" + four adress bytes  
 Optionally: "RejsaRubber" + one of "FL", "FR", "RL", "RR" + three adress bytes      
@@ -218,6 +218,8 @@ CAR is the connection marked "A4" on the main board
 FRONT is the connection marked "A5" on the main board  
 LEFT is the connection marked "MOSI" on the main board  
 Connect them to the pin marked "GND".
+
+Another option is to set the tire position in the source code you use for each board.
 
 # Mirror temperature zones, reverse outside and inside of tire
 
