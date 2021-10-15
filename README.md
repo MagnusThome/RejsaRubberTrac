@@ -41,6 +41,10 @@ To build it you need to purchase two small boards (three if you also add distanc
   
 Tips on where to order is further down on this page, keep reading :-)
 
+EDIT: October 2021:
+There is a version of the RejsaRubberTrac code that you can run on any ESP32 based board instead of the nRF52 based one above. That version also supports the cheaper IR arraysensor AMG8833 (which only has 60 degree FOV). Find the code at this branch: https://github.com/MagnusThome/RejsaRubberTrac/tree/MagnusThome-amg8833
+
+
 # Power supply
 
 The CPU board and the two sensor boards are all powered by connecting power to the CPU board's USB micro connector. The CPU board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery. The system can also be run directly from the car's power, not using any Lipo battery, but then a 12V to USB 5V converter must be added.
