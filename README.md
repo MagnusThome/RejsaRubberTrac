@@ -185,7 +185,7 @@ The default Bluetooth name of each device is "RejsaRubber" __plus__ the last fou
 ```
 "RejsaRubber6412051B" - for a device with MAC address CC:C9:64:12:05:1B
 ```
-For Harry's laptimer this above will suffice but for Racechrono you __must__ assign each board a tire position by including two letters in the name, designating a sensor for Front/Rear and Left/Right. Like FL, RL and so on. This is done either by strapping pins on the boards or by choosing this in the code.
+For Harry's laptimer this above will suffice but for Racechrono you __must__ assign each board a tire position by including two letters in the name, designating a sensor for Front/Rear and Left/Right. Like FL, RL and so on. This is done either by strapping pins on the boards or by choosing the tire position in the code.
 
 Default: "RejsaRubber" + four adress bytes  
 Optionally: "RejsaRubber" + one of "FL", "FR", "RL", "RR" + three adress bytes      
