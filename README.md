@@ -34,8 +34,9 @@ To build it you need to purchase two small boards (three if you also add distanc
   
 # What you need for a basic working kit
   
-- Temperature IR-arraysensor: MLX90621 / MLX90641 / MLX90641 / AMG8833 / The MLX90614 one single pixel IR is also supported
-- Cpu/bluetooth board: Adafruit BlueFruit nRF52 (has low power consumption) or any ESP32 based board (higher power draw, not best choice to run on battery)
+- Temperature IR-arraysensor: MLX90621 / MLX90641 / MLX90641 / AMG8833  
+  (the MLX90614 one single pixel IR sensor is also supported)  
+- Cpu/bluetooth board: Adafruit BlueFruit nRF52 has low power consumption and is the board the project is based on. There has been support added for all ESP32 based boards but they have a higher power consumption, so not best choice to run on battery. And 3D print casings, daughter board and other bits and pieces on these pages are made with the Adafruit nRF52 board in mind.  
 - OPTIONAL: Laser distance sensor: VL53L0XV2 
 - OPTIONAL: Rechargable 3,7V Lipo battery (if the main board you get supports this) 
   
@@ -43,7 +44,7 @@ Tips on where to order is further down on this page, keep reading :-)
 
 # Power supply
 
-The CPU board and the two sensor boards are all powered by connecting power to the CPU board's USB micro connector. The Nrf Bluefruit board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery when using a Nrf Bluefruit board. ESP32 based boards draw much more current though. The system can also be run directly from the car's power, not using any Lipo battery, but then a 12V to USB 5V converter must be added.
+The CPU board and the two sensor boards are all powered by connecting power to the CPU board's USB micro connector. The nRF52 Bluefruit board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery when using a nRF52 Bluefruit board. ESP32 based boards draw much more current though. The system can also be run directly from the car's power, not using any Lipo battery, but then a 12V to USB 5V converter must be added.
 
 # Positioning the sensors
 
