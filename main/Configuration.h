@@ -1,3 +1,5 @@
+#ifndef CONFIGURATION_H
+#define CONFIGURATION_H
 #include "Constants.h"
 
 #define _DEBUG                    // Set debug mode, results in more verbose output on serial port
@@ -153,3 +155,4 @@
 #endif
 
 #define EFFECTIVE_ROWS ( FIS_Y - IGNORE_TOP_ROWS - IGNORE_BOTTOM_ROWS )
+#endif /* CONFIGURATION_H */
