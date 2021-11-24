@@ -285,13 +285,13 @@ void printStatus(void) {
   char distSensor_str[6];
   sprintf(distSensor_str, "%imm", distSensor.distance);
 #else
-  char* distSensor_str = "N/A  ";
+  const char* distSensor_str = "N/A  ";
 #endif
 #if DIST_SENSOR2 != DIST_NONE
   char distSensor2_str[6];
   sprintf(distSensor2_str, "%imm", distSensor2.distance);
 #else
-  char* distSensor2_str = "N/A  ";
+  const char* distSensor2_str = "N/A  ";
 #endif
 
 
