@@ -10,24 +10,35 @@
 
 // -- Distance Sensor related settings
 
-#define DIST_SENSOR        DIST_VL53L0X
-#define DIST_SENSOR2       DIST_VL53L0X // Device to use for second sensor on second I2C hardware bus (ESP32 only), see Constants.h
+#define DIST_SENSOR        DIST_NONE
+#define DIST_SENSOR2       DIST_NONE // Device to use for second sensor on second I2C hardware bus (ESP32 only), see Constants.h
 
 #define DISTANCEOFFSET 0         // Write distance to tire in mm here to get logged distance data value centered around zero
                                  // If you leave this value here at 0 the distance value in the logs will always be positive numbers
 
 // -- Far Infrared Sensor related settings
 
-#define FIS_SENSOR         FIS_MLX90640  // Device to use, see Constants.h                        
+#define FIS_SENSOR         FIS_AMG8833     // Device to use, see Constants.h                        
 #if BOARD == BOARD_ESP32_LOLIND32
-  #define FIS_SENSOR2_PRESENT 1            // Set to 1 if second sensor on second I2C hardware bus is present (ESP32 only)
+  #define FIS_SENSOR2_PRESENT 0            // Set to 1 if second sensor on second I2C hardware bus is present (ESP32 only)
 #else
   #define FIS_SENSOR2_PRESENT 0
 #endif
 #define FIS_REFRESHRATE    16            // Sets the FIS refresh rate in Hz, MLX90640 should be 4 with nRF52, MLX90621 works at 16Hz
 
-#define IGNORE_TOP_ROWS    10     // Ignore this many rows from the top of the sensor
-#define IGNORE_BOTTOM_ROWS 10     // Ignore this many rows from the bottom of the sensor
+#if FIS_SENSOR == FIS_MLX90621
+  #define IGNORE_TOP_ROWS    0     // Ignore this many rows from the top of the sensor
+  #define IGNORE_BOTTOM_ROWS 0     // Ignore this many rows from the bottom of the sensor
+#elif FIS_SENSOR == FIS_MLX90640
+  #define IGNORE_TOP_ROWS    10
+  #define IGNORE_BOTTOM_ROWS 10
+#elif FIS_SENSOR == FIS_DUMMY
+  #define IGNORE_TOP_ROWS    0
+  #define IGNORE_BOTTOM_ROWS 0
+#elif FIS_SENSOR == FIS_AMG8833
+  #define IGNORE_TOP_ROWS    2
+  #define IGNORE_BOTTOM_ROWS 2
+#endif
 
 #define COLUMN_AGGREGATE   COLUMN_AGGREGATE_AVG_MINUS_OUTLIERS // Set column aggregation algorhytm, see Constants.h
 
@@ -129,7 +140,10 @@
   #define FIS_Y           24
 #elif FIS_SENSOR == FIS_DUMMY
   #define FIS_X           16
-  #define FIS_X            4
+  #define FIS_Y            4
+#elif FIS_SENSOR == FIS_AMG8833
+  #define FIS_X            8
+  #define FIS_Y            8
 #endif
 
 #define EFFECTIVE_ROWS ( FIS_Y - IGNORE_TOP_ROWS - IGNORE_BOTTOM_ROWS )

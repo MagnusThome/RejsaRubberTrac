@@ -2,6 +2,7 @@
 #define FIS_MLX90621 0
 #define FIS_MLX90640 1
 #define FIS_DUMMY    2
+#define FIS_AMG8833  3
 
 // Distance sensor identifiers
 #define DIST_VL53L0X 0

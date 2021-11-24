@@ -5,23 +5,36 @@
 #include <Wire.h>
 #include "spline.h"
 
+
 boolean TempSensor::initialise(int refrate, TwoWire *I2Cpipe) {
   innerTireEdgePositionThisFrameViaSlopeMin = FIS_X;
   outerTireEdgePositionThisFrameViaSlopeMax = 0;
   outerTireEdgePositionSmoothed = 0.0;
   innerTireEdgePositionSmoothed = (float)FIS_X;
   thisWire = I2Cpipe;
+#if FIS_SENSOR == FIS_MLX90621 || FIS_SENSOR == FIS_MLX90640
   return FISDevice.initialise(refrate, thisWire);
+#elif FIS_SENSOR == FIS_AMG8833
+  FISDevice.resetFlagsAndSettings();
+  FISDevice.setFPSMode(FPS_MODE::FPS_10);
+  return 1;
+#endif
 };
 
 void TempSensor::measure() {
+	
   int16_t column_content[EFFECTIVE_ROWS];
   float avgMins = 0.0;
   float avgMaxs = 0.0;
 
   totalFrameCount++;
   totalOutliersThisFrame = 0;
+#if FIS_SENSOR == FIS_MLX90621 || FIS_SENSOR == FIS_MLX90640
   FISDevice.measure(true);
+#elif FIS_SENSOR == FIS_AMG8833
+  FISDevice.updateThermistorTemperature();
+  FISDevice.updatePixelMatrix();
+#endif
   
   for(uint8_t x=0; x<FIS_X; x++){
     for (uint8_t y=0; y<EFFECTIVE_ROWS; y++) { // Read the columns first
@@ -78,9 +91,11 @@ void TempSensor::measure() {
 
 int16_t TempSensor::getPixelTemperature(uint8_t x, uint8_t y) {
 #if FIS_SENSOR == FIS_MLX90621
-  return (int16_t)FISDevice.getTemperature((y+IGNORE_TOP_ROWS+x*FIS_Y) + TEMPOFFSET) * 10 * TEMPSCALING; // MLX90621 iterates in columns
+  return (int16_t)(FISDevice.getTemperature(y+IGNORE_TOP_ROWS+x*FIS_Y) + TEMPOFFSET) * 10 * TEMPSCALING; // MLX90621 iterates in columns
 #elif FIS_SENSOR == FIS_MLX90640
-  return (int16_t)FISDevice.getTemperature((y*FIS_X+IGNORE_TOP_ROWS*FIS_X+x) + TEMPOFFSET) * 10 * TEMPSCALING; // MLX90640 iterates in rows
+  return (int16_t)(FISDevice.getTemperature(y*FIS_X+IGNORE_TOP_ROWS*FIS_X+x) + TEMPOFFSET) * 10 * TEMPSCALING; // MLX90640 iterates in rows
+#elif FIS_SENSOR == FIS_AMG8833
+  return (int16_t)(FISDevice.pixelMatrix[x][y+IGNORE_TOP_ROWS] + TEMPOFFSET) * 10 * TEMPSCALING; 
 #endif
 }
 
