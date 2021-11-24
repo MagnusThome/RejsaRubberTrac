@@ -1,10 +1,10 @@
-# Print you own enclosures
+# Print your own enclosures
 
 You can of course create your own casing. Or you can 3D print one of the versions I've put together. There are some different options, either one box for the whole kit including rechargeable battery. Or a separate smaller enclosure for the sensor components only, easier to place in the wheel well but it obviosuly necessitates a cable between the sensor and cpu/bluetooth unit.
 
 All printable and editable files are in the <a href=printables/>printables sub directory</a>  
 
-If you or a friend have a 3D printer you can print them all yourself, otherwise there are numerous online print shops that will print and ship you the parts pretty cheap. I haven't used them myself but I got recommended www.3dhubs.com as an example.
+If you or a friend have a 3D printer you can print them all yourself, otherwise there are numerous online print shops that will print and ship you the parts pretty cheap. I haven't used them myself but I got recommended Craftcloud All3DP as an example.
 
 ## Print 
 
@@ -23,7 +23,9 @@ The distance sensor though works with many clear transparant plastics and glass 
 
 In the current main housing there’s a small “plastic tower window holder” that with its height makes the transparent protection glass (or plastic) window to come right up to and touch the distance sensor housing. Make sure you solder the distance sensor at the exact right height so it actually touches the protection window! You can of course also heat the plastic slightly to make it soft and then adjust the height of the "tower".  
     
-<img src=images/Windows%20and%20LED-filaments.jpg>
+<img src=images/Windows%20and%20LED%20filaments.jpg>
+
+The three short strings of transparent 1,75mm diameter 3d print filament are placed above the cpu boards three status LEDs. The short pieces of filament simply leads the LED light so it is easily viewed on the outside of the housing. 
 
 Rubber hat over power switch:  
   
@@ -35,13 +37,10 @@ Rubber hat over power switch:
 
 ## Main Housing 
 
-- Main Housing (CONE dist. sensor)
-- Main Housing (ELEVATED dist. sensor)
+- Main Housing  
   
 Temperature sensor and distance sensor are both aiming straight out from the front panel of the housing. To be mounted in the wheel well for example.
   
-The "CONE" version and the "ELEVATED" version are almost identcial. The only difference is how the protection window for the distance sensor is placed. "CONE" has a deep cone as a hole down to the distance sensor where you mount the protection window squeezed between the sensor and the housing. The sensor on it's daughter board is mounted as described on the first page, quite close to the main board. The second variant ("ELEVATED dist. sensor") has two small holes as windows where the distance sensor is placed further up away from the main board (just use longer pin headers) still squeezing the protection window between the sensor and housing but now much closer to the front side of the housing, further away from the main board. Which you choose of these two is a matter of taste.
-
 <img src=images/cone_and_snapin_0.jpg>  
 <img src=images/cone_and_snapin_1.jpg>  
 <img src=images/cone_and_snapin_2.jpg>  
@@ -59,16 +58,20 @@ Short holder tube for the wide angle temperature sensor, long tube for narrow an
 <img src=images/under_car_0.jpg>  
 <img src=images/under_car_1.jpg>  
 <img src=images/under_car_2.jpg>  
+<img src=images/under_car_4.jpg>  
+<img src=images/under_car_5.jpg>  
+<img src=images/under_car_6.jpg>  
+<img src=images/ALT.%20temp%20sensor%20mounting.jpg>  
 
 ## Snap-in holder (Inner fender for BMW M2) 
   
 I made this snap in holder for my own car. I can reach the plastic inner fenders from within the engine bay so I made a small hole through them just for the sensors to look through and glued these snap in holders on top of the plastic inner fenders so the sensors view exactly the top of the front tires.  
   
-<img src=images/bmw-inner-fender-snap-in-holder.jpg>
+<img src=images/bmw-inner-fender-snap-in-holder-v2.jpg>
   
 # Separate sensor enclosure
 
-The mounting rings have three threaded plus three un-threaded holes. You need three M4 screws but normally you do not need any nuts. 
+This design might need some tweaking to be perfect. The mounting rings have three threaded plus three un-threaded holes. You need three M4 screws but normally you do not need any nuts. 
 
 The big hole in the middle of the ring is larger on one side and smaller on the other to fit the curvature of the round sensor housing.  
 

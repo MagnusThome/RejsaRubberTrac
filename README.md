@@ -10,17 +10,19 @@ For around $100 per wheel you can build your own wireless sensors to log your dr
 
 The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de>__Harry's Laptimer__</a> and <a href=http://www.racechrono.com>__Racechrono__</a> support RejsaRubberTrac!  
 
-Racechrono:  
+Racechrono Youtube:  
 
-<a href="https://www.youtube.com/watch?v=JjM8beZJZ2o"><img src=images/Racechrono%20beta%20video.png></a>
+<a href="https://www.youtube.com/watch?v=dpaOF7OZ8Pg"><img src=images/Racechrono%20beta%20video.png></a>
 
 
-Harry's Laptimer:  
+Harry's Laptimer Youtube:  
 
 <a href="http://www.youtube.com/watch?v=Yuy62oPXugs"><img src=images/earlyharrysbetayoutube.jpg></a>
   
   
-Racechrono temps in video and suspension movement logg graph:  
+Racechrono temps in video, temp and suspension movement logg graph:  
+
+<img src=images/Racechrono%20wheel%20temp%20graph.jpg>
   
 <img src=images/Racechrono%20wheel%20distance%20log.png>
   
@@ -38,6 +40,10 @@ To build it you need to purchase two small boards (three if you also add distanc
 - OPTIONAL: Rechargable 3,7V Lipo battery ($8-$10)  
   
 Tips on where to order is further down on this page, keep reading :-)
+
+EDIT: October 2021:
+There is a version of the RejsaRubberTrac code that you can run on any ESP32 based board instead of the nRF52 based one above. That version also supports the cheaper IR arraysensor AMG8833 (which only has 60 degree FOV) and the newer MLX90640. Find the code at this branch: https://github.com/MagnusThome/RejsaRubberTrac/tree/develop
+
 
 # Power supply
 
@@ -117,7 +123,7 @@ https://learn.adafruit.com/bluefruit-nrf52-feather-learning-guide
 
 # How often can I get measurements?
 
-Depends. Measuring distance takes time, same with temperatures. And on top of that, with the current library used for Bluetooth communication, depending on how much data you're transmitting some delay is added too. So, __if you don't connect a distance sensor the temperatures are updated faster__. And if the application in the other end limits to subscribe to only eight temperature zones instead of all sixteen it will also all be faster. Compromises...
+Depends. Measuring distance takes time, same with temperatures. And on top of that, with the current library used for Bluetooth communication, depending on how much data you're transmitting some delay is added too. So, __if you don't connect a distance sensor the temperatures are updated faster__. And if the application in the other end limits itself to subscribe to only eight temperature zones instead of all sixteen it will also all be faster. Compromises...
 
 | Average speed 	| Data                       	|
 |---------------	|----------------------------	|
@@ -167,7 +173,7 @@ Search <a href="https://www.ebay.com/sch/i.html?_nkw=3.7V+lipo+battery+JST-PH+2.
 
 You can of course just create your own casing. Or you can 3D print one of the versions I've put together. There are some different options, either one box for the whole kit including battery. Or a separate smaller enclosure for the sensor components only, easier to place in the wheel well but necessitates a cable between the sensor and cpu/bluetooth units. There are also some different snap-in holders so it's easy to detach the sensor from the car to recharge it.
 
-All 3D print designs are available for download. If you or a friend have a 3D printer you can print them all yourself, otherwise there are numerous online print shops that will print and ship you the parts pretty cheap. I haven't used them myself but I got recommended www.3dhubs.com as an example.
+All 3D print designs are available for download. If you or a friend have a 3D printer you can print them all yourself, otherwise there are numerous online print shops that will print and ship you the parts pretty cheap. I haven't used them myself but I got recommended Craftcloud All3DP as an example.
 
 <a href="3Dprint/">**The 3D print enclosures page >>**</a>
 
@@ -175,11 +181,11 @@ If you design your own case or make an updated variant of any of the 3D print do
 
 # Bluetooth device name
 
-The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the Bluetooth address, __this automatic name will work in most situations__, here's an example of what it can look like:
+The default Bluetooth name of each device is "RejsaRubber" __plus__ the last four bytes in the Bluetooth address, here's an example of what it can look like:
 ```
 "RejsaRubber6412051B" - for a device with MAC address CC:C9:64:12:05:1B
 ```
-If you want there's an option to include two letters in the name, designating a sensor for Front/Rear and Left/Right. Like FL, RL and so on. 
+For Harry's laptimer this above will suffice but for Racechrono you __must__ assign each board a tire position by including two letters in the name, designating a sensor for Front/Rear and Left/Right. Like FL, RL and so on. This is done either by strapping pins on the boards or by choosing the tire position in the code.
 
 Default: "RejsaRubber" + four adress bytes  
 Optionally: "RejsaRubber" + one of "FL", "FR", "RL", "RR" + three adress bytes      
@@ -212,6 +218,8 @@ CAR is the connection marked "A4" on the main board
 FRONT is the connection marked "A5" on the main board  
 LEFT is the connection marked "MOSI" on the main board  
 Connect them to the pin marked "GND".
+
+Another option is to set the tire position in the source code you use for each board.
 
 # Mirror temperature zones, reverse outside and inside of tire
 
