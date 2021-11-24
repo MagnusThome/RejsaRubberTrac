@@ -33,6 +33,8 @@ https://www.arduino.cc/en/Main/Software
 
 <img hspace="50" src="images/installArduinoIDE-5.gif">
 
+- If you're using the MLX90614, enter "90614" in the search box and then install "Adafruit MLX90614 Library" (not the MINI version)
+
 - Connect the Adafruit Bluefruit board to your computer's USB and choose the corresponding COM port
 
 <img hspace="50" src="images/installArduinoIDE-6.gif">

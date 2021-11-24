@@ -38,6 +38,9 @@
 #elif FIS_SENSOR == FIS_AMG8833
   #define IGNORE_TOP_ROWS    2
   #define IGNORE_BOTTOM_ROWS 2
+#elif FIS_SENSOR == FIS_MLX90614
+  #define IGNORE_TOP_ROWS    0
+  #define IGNORE_BOTTOM_ROWS 0
 #endif
 
 #define COLUMN_AGGREGATE   COLUMN_AGGREGATE_AVG_MINUS_OUTLIERS // Set column aggregation algorhytm, see Constants.h
@@ -144,6 +147,9 @@
 #elif FIS_SENSOR == FIS_AMG8833
   #define FIS_X            8
   #define FIS_Y            8
+#elif FIS_SENSOR == FIS_MLX90614
+  #define FIS_X            1
+  #define FIS_Y            1
 #endif
 
 #define EFFECTIVE_ROWS ( FIS_Y - IGNORE_TOP_ROWS - IGNORE_BOTTOM_ROWS )

@@ -7,6 +7,8 @@
   #include "MLX90640.h"
 #elif FIS_SENSOR == FIS_AMG8833
   #include "Melopero_AMG8833.h"
+#elif FIS_SENSOR == FIS_MLX90614
+  #include <Adafruit_MLX90614.h>
 #endif
 
 #define ABS_ZERO -2732
@@ -37,6 +39,8 @@ private:
   MLX90640 FISDevice;
 #elif FIS_SENSOR == FIS_AMG8833
   Melopero_AMG8833 FISDevice;
+#elif FIS_SENSOR == FIS_MLX90614
+  Adafruit_MLX90614 FISDevice;
 #endif
   
   TwoWire *thisWire;

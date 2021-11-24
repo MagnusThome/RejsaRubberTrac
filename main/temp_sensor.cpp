@@ -18,6 +18,8 @@ boolean TempSensor::initialise(int refrate, TwoWire *I2Cpipe) {
   FISDevice.resetFlagsAndSettings();
   FISDevice.setFPSMode(FPS_MODE::FPS_10);
   return 1;
+#elif FIS_SENSOR == FIS_MLX90614
+  return FISDevice.begin();
 #endif
 };
 
@@ -96,11 +98,20 @@ int16_t TempSensor::getPixelTemperature(uint8_t x, uint8_t y) {
   return (int16_t)(FISDevice.getTemperature(y*FIS_X+IGNORE_TOP_ROWS*FIS_X+x) + TEMPOFFSET) * 10 * TEMPSCALING; // MLX90640 iterates in rows
 #elif FIS_SENSOR == FIS_AMG8833
   return (int16_t)(FISDevice.pixelMatrix[x][y+IGNORE_TOP_ROWS] + TEMPOFFSET) * 10 * TEMPSCALING; 
+#elif FIS_SENSOR == FIS_MLX90614
+  double temp = FISDevice.readObjectTempC();
+  if (temp == NAN) {
+    // reading failed
+    return ABS_ZERO;
+  }
+  return (int16_t)(temp + TEMPOFFSET) * 10 * TEMPSCALING; // MLX90614 only has one pixel
 #endif
 }
 
 int16_t TempSensor::calculateColumnTemperature(int16_t column_content[], uint8_t size) {
-#if COLUMN_AGGREGATE == COLUMN_AGGREGATE_MAX
+#if FIS_SENSOR == FIS_MLX90614
+  return column_content[0];
+#elif COLUMN_AGGREGATE == COLUMN_AGGREGATE_MAX
   return getMaximum(column_content, size);
 #elif COLUMN_AGGREGATE == COLUMN_AGGREGATE_AVG
   return (int16_t)getAverage(column_content, size);
