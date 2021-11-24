@@ -34,20 +34,16 @@ To build it you need to purchase two small boards (three if you also add distanc
   
 # What you need for a basic working kit
   
-- Temperature IR-arraysensor: MLX90621($35-$55)  
-- Cpu/bluetooth board: Adafruit BlueFruit nRF52 ($25)  
-- OPTIONAL: Laser distance sensor: VL53L0XV2 ($2,50)  
-- OPTIONAL: Rechargable 3,7V Lipo battery ($8-$10)  
+- Temperature IR-arraysensor: MLX90621 / MLX90641 / MLX90641 / AMG8833 / The MLX90614 one single pixel IR is also supported
+- Cpu/bluetooth board: Adafruit BlueFruit nRF52 (has low power consumption) or any ESP32 based board (higher power draw, not best choice to run on battery)
+- OPTIONAL: Laser distance sensor: VL53L0XV2 
+- OPTIONAL: Rechargable 3,7V Lipo battery (if the main board you get supports this) 
   
 Tips on where to order is further down on this page, keep reading :-)
 
-EDIT: October 2021:
-There is a version of the RejsaRubberTrac code that you can run on any ESP32 based board instead of the nRF52 based one above. That version also supports the cheaper IR arraysensor AMG8833 (which only has 60 degree FOV) and the newer MLX90640. Find the code at this branch: https://github.com/MagnusThome/RejsaRubberTrac/tree/develop
-
-
 # Power supply
 
-The CPU board and the two sensor boards are all powered by connecting power to the CPU board's USB micro connector. The CPU board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery. The system can also be run directly from the car's power, not using any Lipo battery, but then a 12V to USB 5V converter must be added.
+The CPU board and the two sensor boards are all powered by connecting power to the CPU board's USB micro connector. The Nrf Bluefruit board also has a connector for a Lipo battery - which is automatically charged via the USB connector - so the whole system can run completey wireless with it's own power source for roughly 24 hours with a 500mAh 3,7V Lipo battery when using a Nrf Bluefruit board. ESP32 based boards draw much more current though. The system can also be run directly from the car's power, not using any Lipo battery, but then a 12V to USB 5V converter must be added.
 
 # Positioning the sensors
 
@@ -152,6 +148,8 @@ Without the extras using the main board above, here are some tips on where to bu
 <a href="https://eckstein-shop.de/GY-906LLC-BAB-IR-Array-Temperature-Sensor-Module">www.eckstein-shop.de</a> (~ 55€ incl daugther board)  
 <a href="https://www.mouser.se/ProductDetail/Melexis/MLX90621ESF-BAB-000-SP?qs=sGAEpiMZZMucenltShoSnqRDBUuVzCzKa3Zx6liDTBzqGCq1%252bjAaAA%3d%3d">www.mouser.com</a> (~ 35€ excl daugther board)  
 <a href="https://www.digikey.com/product-detail/en/melexis-technologies-nv/MLX90621ESF-BAB-000-TU/MLX90621ESF-BAB-000-TU-ND/4968086">www.digikey.com</a> (~ 36€ excl daugther board)  
+
+Beware of some sellers that on Aliexpress sell the one single pixel MLX90614 with very misleading info so it looks like you are buying the proper multi pixel Melexis.   
   
 - __CPU and Bluetooth board Adafruit BlueFruit nRF52__  
 <a href="https://www.mouser.com/ProductDetail/485-3406">www.mouser.com</a> (~ $25)  
