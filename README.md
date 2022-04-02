@@ -34,7 +34,7 @@ To build it you need to purchase two small boards (three if you also add distanc
   
 # What you need for a basic working kit
   
-- Temperature IR-arraysensor: MLX90621 / MLX90641 / MLX90641 / AMG8833  
+- Temperature IR-arraysensor: MLX90621 / MLX90640 / MLX90641 / AMG8833  
   (the MLX90614 one single pixel IR sensor is also supported)  
 - Cpu/bluetooth board: Adafruit BlueFruit nRF52 has low power consumption and is the board the project is based on. There has been support added for all ESP32 based boards but they have a higher power consumption, so not best choice to run on battery. And 3D print casings, daughter board and other bits and pieces on these pages are made with the Adafruit nRF52 board in mind.  
 - OPTIONAL: Laser distance sensor: VL53L0XV2 
