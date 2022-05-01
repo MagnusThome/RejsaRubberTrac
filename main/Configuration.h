@@ -1,8 +1,9 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
-#include "Constants.h"
 
 #define _DEBUG                    // Set debug mode, results in more verbose output on serial port
+#include "Constants.h"
+
 //#define DUMMYDATA       // Uncomment to enable transmission of fake random data for testing with no sensors needed
 
 
@@ -20,7 +21,8 @@
 
 // -- Far Infrared Sensor related settings
 
-#define FIS_SENSOR         FIS_AMG8833     // Device to use, see Constants.h                        
+#define FIS_SENSOR         FIS_MLX90640    // Device to use, see Constants.h    
+
 #if BOARD == BOARD_ESP32_LOLIND32
   #define FIS_SENSOR2_PRESENT 0            // Set to 1 if second sensor on second I2C hardware bus is present (ESP32 only)
 #else
@@ -45,9 +47,9 @@
   #define IGNORE_BOTTOM_ROWS 0
 #endif
 
-#define COLUMN_AGGREGATE   COLUMN_AGGREGATE_AVG_MINUS_OUTLIERS // Set column aggregation algorhytm, see Constants.h
+#define COLUMN_AGGREGATE   COLUMN_AGGREGATE_MAX  // Set column aggregation algorhytm, see Constants.h
 
-#define FIS_AUTOZOOM          // Comment to disable autozooming
+//#define FIS_AUTOZOOM          // Comment to disable autozooming
 #define AUTOZOOM_MINIMUM_TIRE_WIDTH 16 // Minimum tire width for autozooming
 
 #define TEMPSCALING        1.00  // Default = 1.00
