@@ -8,7 +8,7 @@
 
 
 // -- Basic device configuration, see Constants.h
-#define BOARD              BOARD_ESP32_LOLIND32
+#define BOARD              BOARD_ESP32_FEATHER
 #define DISP_DEVICE        DISP_NONE
 
 // -- Distance Sensor related settings
