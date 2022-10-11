@@ -12,7 +12,9 @@ The two major track loggers for mobile phones <a href=http://www.gps-laptimer.de
 
 Racechrono Youtube:  
 
-<a href="https://www.youtube.com/watch?v=dpaOF7OZ8Pg"><img src=images/Racechrono%20beta%20video.png></a>
+
+
+<a href="https://www.youtube.com/watch?v=dpaOF7OZ8Pg">![Screenshot 2022-10-11 191902](https://user-images.githubusercontent.com/32169384/195157877-49d9d551-9b0f-43b2-9f98-b78d4d01f788.png)</a>
 
 
 Harry's Laptimer Youtube:  
