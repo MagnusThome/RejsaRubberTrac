@@ -59,6 +59,7 @@ int16_t Spline::value( int16_t x )
       }
     }    
   }
+  return -1; // error
 }
 
 int16_t Spline::calc( int16_t x, int i )
@@ -89,6 +90,7 @@ int16_t Spline::calc( int16_t x, int i )
         return hermite( t, _y[i], _y[i+1], m0, m1, _x[i], _x[i+1]);        
       }
   }
+  return -1; // error
 }
 
 int16_t Spline::hermite( int16_t t, int16_t p0, int16_t p1, int16_t m0, int16_t m1, int16_t x0, int16_t x1 ) {
@@ -107,4 +109,5 @@ int16_t Spline::catmull_tangent( int i )
   } else {  
     return (_y[i+1] - _y[i-1]) / (_x[i+1] - _x[i-1]);    
   } 
+  return -1; // error
 }
