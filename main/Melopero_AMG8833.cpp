@@ -179,5 +179,5 @@ String Melopero_AMG8833::getErrorDescription(int errorCode){
         return "Error writing to device";
     if (errorCode == -3)
         return "Argument error: argument value is out of valid range";
-    return -1; // error
+    return "coding error"; 
 }
