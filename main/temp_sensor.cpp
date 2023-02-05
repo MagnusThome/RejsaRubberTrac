@@ -16,6 +16,7 @@ boolean TempSensor::initialise(int refrate, TwoWire *I2Cpipe) {
   return FISDevice.initialise(refrate, thisWire);
 #elif FIS_SENSOR == FIS_AMG8833
   FISDevice.resetFlagsAndSettings();
+  FISDevice.setMode(DEVICE_MODE::NORMAL);
   FISDevice.setFPSMode(FPS_MODE::FPS_10);
   return 1;
 #elif FIS_SENSOR == FIS_MLX90614
