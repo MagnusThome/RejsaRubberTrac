@@ -4,7 +4,6 @@
 
 Melopero_AMG8833::Melopero_AMG8833(uint8_t i2cAddr){
     this->i2cAddress = i2cAddr;
-    Wire.begin();
 }
 
 int Melopero_AMG8833::readByte(uint8_t registerAddress){
