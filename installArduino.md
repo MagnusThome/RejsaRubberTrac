@@ -1,16 +1,12 @@
 # Install Arduino IDE to compile and upload the code
 
-- Download the released version of Arduino IDE __and__ the beta build (not the hourly)
+- Download and install the Arduino IDE 
 https://www.arduino.cc/en/Main/Software
-
-- Install the released version
-
-- Unzip the beta build on top of your newly installed folder, replacing the just installed files with the newer ones from the zip
-
+  
 - Start Arduino IDE, choose "File" > "Preferences" and copy this line below into the "Additional Boards Manager URLs" field
 
-  ```https://adafruit.github.io/arduino-board-index/package_adafruit_index.json```
-
+  ```https://adafruit.github.io/arduino-board-index/package_adafruit_index.json```  
+  
 <img hspace="50" src="images/installArduinoIDE-0.gif">
 
 - Go to "Boards Manager"
