@@ -44,7 +44,7 @@ To build it you need to purchase two small boards (three if you also add distanc
 Tips on where to order is further down on this page, keep reading :-)
 
 EDIT: October 2021:
-There is a version of the RejsaRubberTrac code that you can run on any ESP32 based board instead of the nRF52 based one above. That version also supports the cheaper IR arraysensor AMG8833 (which only has 60 degree FOV) and the newer MLX90640. Find the code at this branch: https://github.com/MagnusThome/RejsaRubberTrac/tree/develop
+There is a WIP version of the RejsaRubberTrac code that you can run on any ESP32 based board instead of the nRF52 based one above. That version also supports the cheaper IR arraysensor AMG8833 (which only has 60 degree FOV) and the newer MLX90640. Find the code at this branch: https://github.com/MagnusThome/RejsaRubberTrac/tree/develop
 
 
 # Power supply
