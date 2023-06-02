@@ -9,7 +9,7 @@ https://www.arduino.cc/en/Main/Software
 
 - Start Arduino IDE, choose "File" > "Preferences" and copy this line below into the "Additional Boards Manager URLs" field
 
-  ```https://www.adafruit.com/package_adafruit_index.json```
+ ```https://adafruit.github.io/arduino-board-index/package_adafruit_index.json```  
 
 <img hspace="50" src="images/installArduinoIDE-0.gif">
 
