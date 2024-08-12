@@ -29,6 +29,7 @@ void BLDevice::setupDevice(char bleName[]) {
 #elif BOARD == BOARD_ESP32_FEATHER || BOARD_ESP32_LOLIND32
   BLEDevice::init(bleName);
   mainServer = BLEDevice::createServer();
+  mainServer->setCallbacks(new ServerCallbacks());
 #endif
   Serial.printf("Device name: %s\n", bleName);
 
