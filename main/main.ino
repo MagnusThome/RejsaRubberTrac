@@ -12,6 +12,7 @@ TempSensor tempSensor;
 DistSensor distSensor;
 uint8_t mirrorTire = 0;
 char wheelPos[] = "  ";  // Wheel position for Tire A
+bool rotateTire = false;
 char deviceNameSuffix[] = "  ";
 
 #if BOARD == BOARD_ESP32_LOLIND32
@@ -106,6 +107,16 @@ void setup(){
       debug("ERROR: Distance sensor for %s not present.\n", wheelPos);
     }
   #endif
+  
+#ifdef ROTATETIRE
+  // TIRE 1 ROTATED?
+  if (ROTATETIRE == 1)
+  {
+    rotateTire = true;
+    debug("Temperature sensor orientation for %s is rotated.\n", wheelPos);
+  }
+#endif
+
 
   debug("Starting temperature sensor for %s...\n", wheelPos);
   if (!tempSensor.initialise(FIS_REFRESHRATE, &Wire)) {
@@ -186,7 +197,7 @@ void loop() {
   #if DIST_SENSOR != DIST_NONE
     distSensor.measure();
   #endif
-  tempSensor.measure();
+  tempSensor.measure(rotateTire);
 
 // I2C channel 2
 #if FIS_SENSOR2_PRESENT == 1

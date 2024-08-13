@@ -63,6 +63,14 @@
 #endif
                                  // NOTE!!! THESE CAN BE OVERRIDDEN WITH HARDWARE CODING WITH A GPIO PIN
                           
+
+#if FIS_SENSOR == FIS_AMG8833
+//Untested with other sensors so only enabled for AMG8833
+#define ROTATETIRE 0  // 0 = default \
+                      // 1 = Rotate the tire (A), making the top edge temps the outside edge temps \
+                      // Can be used with mirror to rotate the other way
+#endif
+
 // -- General settings
 
 #define DEVICENAMECODE 7      // DEFAULT is 7
